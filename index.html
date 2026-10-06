@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <title>VISUALL — реклама для малого бизнеса от 990 ₽ · Светлана Музыка</title>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "VISUALL", "description": "Реклама в едином стиле для малого бизнеса: постеры, визитки, сертификаты, прайсы, видео, Instagram, Telegram-боты и сайты.", "founder": {"@type": "Person", "name": "Светлана Музыка"}, "telephone": "+7 (925) 062-00-01", "sameAs": ["https://t.me/sveta_muzyka"], "priceRange": "от 990 ₽", "areaServed": "RU", "image": "https://svetayurkina-rgb.github.io/visuall-site/img/hero-v.jpg", "url": "https://svetayurkina-rgb.github.io/visuall-site/"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "VISUALL", "description": "Реклама в едином стиле для малого бизнеса: постеры, визитки, сертификаты, прайсы, видео, Instagram, Telegram-боты и сайты.", "founder": {"@type": "Person", "name": "Светлана Музыка"}, "telephone": "+7 (925) 062-00-01", "sameAs": ["https://t.me/sveta_muzyka"], "priceRange": "от 990 ₽", "areaServed": "RU", "paymentAccepted": "СБП (Сбербанк)", "url": "https://svetayurkina-rgb.github.io/visuall-site/", "image": "https://svetayurkina-rgb.github.io/visuall-site/img/hero-v.jpg"}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 28%22%3E%3Cpath d=%22M3 8l9 8 8-13 8 13 9-8-4 16H7z%22 fill=%22%23d4a64f%22/%3E%3C/svg%3E">
 <meta name="description" content="VISUALL — реклама в едином стиле для малого бизнеса: постеры, визитки, сертификаты, прайсы, видео и сайты. Светлана Музыка.">
 <link rel="stylesheet" href="fonts.css">
@@ -648,6 +648,11 @@ nav a{white-space:nowrap}
 .terms-cta{display:flex;justify-content:center;margin-top:16px}
 @media (max-width:900px){.terms{grid-template-columns:1fr 1fr}.terms-steps{grid-template-columns:1fr 1fr!important}}@media (max-width:560px){.terms{grid-template-columns:1fr}.terms-steps{grid-template-columns:1fr!important}}
 
+.pay{max-width:940px;margin:14px auto 0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 16px;padding:14px 18px;border-radius:16px;background:linear-gradient(120deg,#0f2418,#121019 60%);border:1px solid rgba(33,160,56,.45)}
+.pay-i{font-size:30px}.pay-t b{display:block;font-family:"Playfair Display",serif;font-weight:500;font-size:19px;color:#fff}.pay-t span{font-size:13.5px;color:#d0c7b9}.pay-t em{font-style:normal;color:#7fdc8f;font-weight:700;white-space:nowrap}
+.pay .btn{padding:10px 16px;font-size:13px;border-color:#3fb85a}.pay-chk{grid-column:1/-1;font-size:12.5px;color:#9fe0ab}
+.pay-copy{margin-left:6px;padding:2px 9px;border-radius:999px;border:1px solid var(--gold);background:none;color:var(--gold);font:inherit;font-size:11.5px;cursor:pointer}
+@media (max-width:560px){.pay{grid-template-columns:auto 1fr}.pay .btn{grid-column:1/-1;justify-content:center}}
 /* PROMO & BONUS */
 .promo{position:relative;max-width:1100px;margin:14px auto 16px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px 22px;padding:16px 20px;border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#2a1d0e,#171320 55%,#24142a);border:1px solid rgba(232,201,145,.45);box-shadow:0 14px 40px rgba(0,0,0,.45)}
 .promo::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,230,180,.13) 50%,transparent 70%);animation:sheen 5s ease-in-out infinite;pointer-events:none}
@@ -915,6 +920,12 @@ main,footer{position:relative;z-index:1}
       <div><b>3</b><span>Пришлите текст, цены и контакты</span></div>
       <div><b>4</b><span>Получите готовую рекламу для соцсетей и печати</span></div>
     </div>
+      <div class="pay">
+      <div class="pay-i">💳</div>
+      <div class="pay-t"><b>Оплата по СБП · Сбербанк</b><span>по номеру <em>+7 (925) 062-00-01</em> · предоплата 50% после согласования заказа</span></div>
+      <button type="button" class="btn" data-copy-phone>Скопировать номер</button>
+      <div class="pay-chk">🧾 Самозанятая — выдаю чек</div>
+    </div>
   </section>
 
   <section id="bonus">
@@ -948,7 +959,7 @@ main,footer{position:relative;z-index:1}
         <div class="calc-sum" id="cSum">0 ₽</div>
         <div class="calc-days" id="cDays"></div>
         <button class="btn gold" type="button" id="cSend">Отправить заказ в Telegram</button>
-        <div class="dl-cap" style="text-align:left">Итог предварительный: для видео, бота и сайта указана цена «от» — точную назову после брифа.</div>
+        <div class="dl-cap" style="text-align:left">Итог предварительный: для видео, бота и сайта указана цена «от» — точную назову после брифа. Оплата — СБП на Сбербанк по номеру +7 (925) 062-00-01, предоплата 50%. Выдаю чек самозанятой.</div>
       </div>
     </div>
   </section>
@@ -973,7 +984,7 @@ main,footer{position:relative;z-index:1}
       <div class="tcard"><h3>💻 Сайт — от 24 900 ₽</h3><ul><li>Сайт как этот: до 5 разделов, видео, кнопки связи</li><li>Удобно смотрится на телефоне и компьютере</li><li>Помощь с размещением и доменом</li><li>Срок: 7–14 рабочих дней · 3 круга правок</li></ul></div>
       <div class="tcard"><h3>✏️ Правки</h3><ul><li>Бесплатно в пределах кругов правок: текст, цены, контакты, цвета, мелкие детали</li><li>Дополнительный круг правок — 300 ₽</li><li>Смена стиля после согласования — как новый заказ со скидкой 50%</li><li>Срочно за 24 часа — +50% к цене</li></ul></div>
       <div class="tcard"><h3>🎟 Скидки</h3><ul><li>Промокод VISUALL10 — −10% на первый заказ, действует до конца недели</li><li>За отзыв — −15% на следующий заказ</li><li>За разрешение показать «было — стало» — −20% на этот заказ</li><li>Приведите друга — −15% вам обоим</li><li>Скидки не суммируются — действует самая большая</li></ul></div>
-      <div class="tcard"><h3>💳 Оплата</h3><ul><li>Предоплата 50%, остаток — после согласования результата</li><li>Перевод по СБП или на карту</li><li>Готовые файлы отправляю сразу после полной оплаты</li><li>Если работа ещё не начата — верну предоплату полностью</li></ul></div>
+      <div class="tcard"><h3>💳 Оплата</h3><ul><li>Предоплата 50%, остаток — после согласования результата</li><li>СБП по номеру <b>+7 (925) 062-00-01</b> — Сбербанк <button type="button" class="pay-copy" data-copy-phone>скопировать</button></li><li>Работаю как самозанятая — после оплаты присылаю официальный чек</li><li>Оплачивайте только после того, как согласуем заказ в Telegram</li><li>Готовые файлы отправляю сразу после полной оплаты</li><li>Если работа ещё не начата — верну предоплату полностью</li></ul></div>
     </div>
     <div class="terms-cta"><a class="btn gold" href="https://t.me/sveta_muzyka" target="_blank" rel="noopener" data-pick="pack">Начать заказ</a></div>
   </section>
@@ -1012,7 +1023,7 @@ main,footer{position:relative;z-index:1}
 
   <section id="faq">
     <div class="center"><h2>Частые вопросы</h2></div>
-    <div class="faq"><details class="faq-i"><summary>Есть ли скидки?</summary><p>Да. Промокод VISUALL10 — −10% на первый заказ (действует до конца недели). За отзыв — −15% на следующий заказ, за разрешение показать «было — стало» — −20%, за приглашённого друга — −15% вам обоим. Скидки не суммируются — действует самая большая.</p></details><details class="faq-i"><summary>Как сделать заказ?</summary><p>Выберите сферу и понравившийся стиль в каталоге, напишите мне в Telegram @sveta_muzyka и пришлите текст, цены и контакты. Дальше я всё сделаю сама.</p></details><details class="faq-i"><summary>Что нужно прислать?</summary><p>Название бизнеса или имя мастера, список услуг с ценами, телефон и соцсети. Если есть логотип или свои фото — тоже присылайте, я использую их в дизайне.</p></details><details class="faq-i"><summary>Сколько стоит?</summary><p>Постер — 990 ₽, комбо (постер + визитка, сертификат или прайс) — 1 490 ₽, пакет из 4 форматов — 2 590 ₽. Отдельно: визитка — 590 ₽, сертификат — 690 ₽, прайс на 3 страницы — 1 290 ₽, видео — от 1 990 ₽, Telegram-бот — от 9 900 ₽, сайт — от 24 900 ₽, ведение Instagram — от 15 000 ₽ в месяц.</p></details><details class="faq-i"><summary>Как проходит оплата?</summary><p>Предоплата 50% по СБП или на карту, остаток — после того как вы согласовали результат. Готовые файлы отправляю сразу после полной оплаты. Если я ещё не начала работу — верну предоплату полностью.</p></details><details class="faq-i"><summary>Можно ли внести правки?</summary><p>Да. Да. В постер, комбо и пакет входят 2 круга правок бесплатно, в видео — 1, в сайт — 3. Правки — это текст, цены, контакты, цвета и мелкие детали. Дополнительный круг — 300 ₽, смена стиля после согласования — как новый заказ со скидкой 50%.</p></details><details class="faq-i"><summary>В каком виде я получу рекламу?</summary><p>Картинки для соцсетей и мессенджеров (1080×1350) и PDF для типографии: визитка 90×50 мм с двух сторон, сертификат 210×99 мм, прайс на 3 страницы. Файлы отправляю в Telegram сразу после полной оплаты.</p></details><details class="faq-i"><summary>Вы делаете только картинки?</summary><p>Нет. Ещё делаю рекламные видеоролики и Reels, веду Instagram в едином стиле, настраиваю Telegram-ботов для заявок и делаю сайты — такие же, как этот. Видео — от 1 990 ₽, Instagram — от 15 000 ₽ в месяц, бот — от 9 900 ₽, сайт — от 24 900 ₽. Точную цену назову под вашу задачу.</p></details><details class="faq-i"><summary>Можно сделать дизайн не из каталога?</summary><p>Да, напишите мне в Telegram и расскажите идею — обсудим, что можно сделать.</p></details><details class="faq-i"><summary>Сколько времени занимает работа?</summary><p>Постер — 1 рабочий день, комбо — 1–2 дня, пакет из 4 форматов — 2–3 дня, видео — 2–3 дня, бот — 5–7 дней, сайт — 7–14 дней. Срочно за 24 часа — +50% к цене. Срок считается с момента, когда вы прислали все материалы и предоплату.</p></details><details class="faq-i"><summary>Можно ли использовать свои фотографии?</summary><p>Конечно. Пришлите фото вашего торта, маникюра или интерьера — я превращу его в рекламный постер, как в блоке «Было — стало».</p></details></div>
+    <div class="faq"><details class="faq-i"><summary>Есть ли скидки?</summary><p>Да. Промокод VISUALL10 — −10% на первый заказ (действует до конца недели). За отзыв — −15% на следующий заказ, за разрешение показать «было — стало» — −20%, за приглашённого друга — −15% вам обоим. Скидки не суммируются — действует самая большая.</p></details><details class="faq-i"><summary>Как сделать заказ?</summary><p>Выберите сферу и понравившийся стиль в каталоге, напишите мне в Telegram @sveta_muzyka и пришлите текст, цены и контакты. Дальше я всё сделаю сама.</p></details><details class="faq-i"><summary>Что нужно прислать?</summary><p>Название бизнеса или имя мастера, список услуг с ценами, телефон и соцсети. Если есть логотип или свои фото — тоже присылайте, я использую их в дизайне.</p></details><details class="faq-i"><summary>Сколько стоит?</summary><p>Постер — 990 ₽, комбо (постер + визитка, сертификат или прайс) — 1 490 ₽, пакет из 4 форматов — 2 590 ₽. Отдельно: визитка — 590 ₽, сертификат — 690 ₽, прайс на 3 страницы — 1 290 ₽, видео — от 1 990 ₽, Telegram-бот — от 9 900 ₽, сайт — от 24 900 ₽, ведение Instagram — от 15 000 ₽ в месяц.</p></details><details class="faq-i"><summary>Как проходит оплата?</summary><p>Предоплата 50% по СБП на Сбербанк по номеру +7 (925) 062-00-01 — после того как мы согласуем заказ в Telegram. Остаток — после того как вы согласовали результат. Я самозанятая: после каждой оплаты присылаю официальный чек. Готовые файлы отправляю сразу после полной оплаты. Если я ещё не начала работу — верну предоплату полностью.</p></details><details class="faq-i"><summary>Вы выдаёте чек?</summary><p>Да. Я работаю как самозанятая и после каждой оплаты присылаю официальный чек из приложения «Мой налог». Он подходит и для физлиц, и для ИП и компаний.</p></details><details class="faq-i"><summary>Можно ли внести правки?</summary><p>Да. Да. В постер, комбо и пакет входят 2 круга правок бесплатно, в видео — 1, в сайт — 3. Правки — это текст, цены, контакты, цвета и мелкие детали. Дополнительный круг — 300 ₽, смена стиля после согласования — как новый заказ со скидкой 50%.</p></details><details class="faq-i"><summary>В каком виде я получу рекламу?</summary><p>Картинки для соцсетей и мессенджеров (1080×1350) и PDF для типографии: визитка 90×50 мм с двух сторон, сертификат 210×99 мм, прайс на 3 страницы. Файлы отправляю в Telegram сразу после полной оплаты.</p></details><details class="faq-i"><summary>Вы делаете только картинки?</summary><p>Нет. Ещё делаю рекламные видеоролики и Reels, веду Instagram в едином стиле, настраиваю Telegram-ботов для заявок и делаю сайты — такие же, как этот. Видео — от 1 990 ₽, Instagram — от 15 000 ₽ в месяц, бот — от 9 900 ₽, сайт — от 24 900 ₽. Точную цену назову под вашу задачу.</p></details><details class="faq-i"><summary>Можно сделать дизайн не из каталога?</summary><p>Да, напишите мне в Telegram и расскажите идею — обсудим, что можно сделать.</p></details><details class="faq-i"><summary>Сколько времени занимает работа?</summary><p>Постер — 1 рабочий день, комбо — 1–2 дня, пакет из 4 форматов — 2–3 дня, видео — 2–3 дня, бот — 5–7 дней, сайт — 7–14 дней. Срочно за 24 часа — +50% к цене. Срок считается с момента, когда вы прислали все материалы и предоплату.</p></details><details class="faq-i"><summary>Можно ли использовать свои фотографии?</summary><p>Конечно. Пришлите фото вашего торта, маникюра или интерьера — я превращу его в рекламный постер, как в блоке «Было — стало».</p></details></div>
   </section>
 
   <div class="banner">
@@ -1102,7 +1113,7 @@ main,footer{position:relative;z-index:1}
     <textarea id="mText" rows="7"></textarea>
     <div class="fx-acts"><button class="btn gold" type="button" id="mSend"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.5 3.5 2.8 10.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3.9 1.4 1.1 2 .4l2.6-2.6 4.7 3.5c.8.6 1.9.1 2.1-.9l3-15c.2-1.1-.9-2-1.9-1.6z"/></svg>Отправить в Telegram</button><button class="btn" type="button" id="mCopy">Скопировать</button></div>
     <div class="try-note" id="mNote" hidden>Сообщение скопировано. Если оно не появилось в чате само — вставьте его (долгое нажатие → «Вставить»).</div>
-    <div class="m-alt">Или позвоните: <a href="tel:+79250620001">+7 (925) 062-00-01</a></div></div></div>
+    <div class="m-alt">Или позвоните: <a href="tel:+79250620001">+7 (925) 062-00-01</a><br>Оплата — СБП на Сбербанк по этому же номеру, после согласования заказа. Самозанятая, выдаю чек.</div></div></div>
   <div class="fx-modal" id="exitModal" hidden><div class="fx-box exit-box"><button class="lb-close fx-x" type="button" data-close>×</button>
     <div class="eyebrow">Подарок перед уходом</div>
     <div class="promo-pct">−10%</div>
@@ -1112,6 +1123,7 @@ main,footer{position:relative;z-index:1}
     <button type="button" class="promo-code" data-copy-promo>VISUALL10 <small>нажмите, чтобы скопировать</small></button>
     <div class="fx-acts" style="justify-content:center"><a class="btn gold" href="https://t.me/sveta_muzyka" target="_blank" rel="noopener" data-pick="pack">Заказать со скидкой</a><button class="btn" type="button" data-close>Посмотрю ещё</button></div></div></div>
   <div class="m-bar"><div class="mb-t"><b>−10% · VISUALL10</b>Реклама от 990 ₽</div><a class="btn gold" href="https://t.me/sveta_muzyka" target="_blank" rel="noopener" data-pick="poster">Заказать</a></div>
+  <div class="try-note" id="phoneToast" hidden style="position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:90;background:#1b1724;border:1px solid #3fb85a;padding:10px 16px;border-radius:12px">Номер для оплаты +7 (925) 062-00-01 скопирован ✓</div>
   <div class="try-note" id="promoToast" hidden style="position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:90;background:#1b1724;border:1px solid var(--gold);padding:10px 16px;border-radius:12px">Промокод VISUALL10 скопирован ✓</div>
   <a class="tg-float" href="https://t.me/sveta_muzyka" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.8 10.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3.9 1.4 1.1 2 .4l2.6-2.6 4.7 3.5c.8.6 1.9.1 2.1-.9l3-15c.2-1.1-.9-2-1.9-1.6zM9.6 14.2l8.2-7.3-6.4 8.4-.3 3-1.5-4.1z"/></svg><span>Написать</span></a>
   <div class="kit" id="kit" hidden>
@@ -3305,6 +3317,9 @@ requestAnimationFrame(f);})();</script>
   let tT;document.addEventListener("click",e=>{const b=e.target.closest("[data-copy-promo]");if(!b)return;
     try{navigator.clipboard.writeText("VISUALL10").catch(()=>{});}catch(_){}
     const t=$("promoToast");t.hidden=false;clearTimeout(tT);tT=setTimeout(()=>t.hidden=true,2200);});
+  let pT;document.addEventListener("click",e=>{if(!e.target.closest("[data-copy-phone]"))return;
+    try{navigator.clipboard.writeText("+79250620001").catch(()=>{});}catch(_){}
+    const t=$("phoneToast");t.hidden=false;clearTimeout(pT);pT=setTimeout(()=>t.hidden=true,2400);});
   document.querySelectorAll("[data-rev]").forEach(b=>b.onclick=()=>$("revOpen").click());
   /* calculator */
   const BASE=[["none","Без основы",0,0,0],["poster","Постер",990,1,1],["combo","Комбо: постер + 1 формат",1490,1,2],["pack","Пакет из 4 форматов",2590,2,3]];
