@@ -73,6 +73,7 @@ async function media(env, chat, kind, file, caption, reply_markup) {
   const field = kind === "anim" ? "animation" : kind;
   const body = { chat_id: chat, [field]: file.startsWith("http") ? file : IMG + file, caption, parse_mode: "HTML", reply_markup };
   if (kind !== "photo") body.supports_streaming = true;
+  body.protect_content = true; // запрет пересылки, сохранения и скриншотов в Telegram
   const r = await tg(env, method, body);
   if (!r || r.ok === false) return send(env, chat, caption, reply_markup);
   return r;
@@ -101,7 +102,7 @@ async function showSphere(env, chat, k) {
 async function showItem(env, chat, k, idx) {
   const it = (CAT[k] || [])[idx]; if (!it) return showSpheres(env, chat);
   const refs = it.r.slice(0, 10);
-  const r = await tg(env, "sendMediaGroup", { chat_id: chat, media: refs.map(([f, t], i) => ({ type: "photo", media: IMG + f, caption: i === 0 ? `<b>${esc(it.n)}</b> · стиль «${esc(t)}»` : `«${esc(t)}»`, parse_mode: "HTML" })) });
+  const r = await tg(env, "sendMediaGroup", { chat_id: chat, protect_content: true, media: refs.map(([f, t], i) => ({ type: "photo", media: IMG + f, caption: i === 0 ? `<b>${esc(it.n)}</b> · стиль «${esc(t)}»` : `«${esc(t)}»`, parse_mode: "HTML" })) });
   if (!r || r.ok === false) for (const [f, t] of refs.slice(0, 3)) await media(env, chat, "photo", f, `<b>${esc(it.n)}</b> · «${esc(t)}»`);
   const rows = [];
   for (let i = 0; i < refs.length; i += 2) rows.push(refs.slice(i, i + 2).map(([, t], x) => ({ text: `💛 Хочу «${t}»`, callback_data: `w:${k}:${idx}:${i + x}` })));
