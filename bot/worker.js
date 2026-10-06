@@ -13,6 +13,10 @@ const SERVICES = {
   poster: { n: "Постер", p: 990, d: "1 рабочий день", design: true, inc: "1 постер в выбранном стиле с вашим текстом, ценами и контактами, QR-код, формат для соцсетей 1080×1350 + PDF для печати, 2 круга правок" },
   combo: { n: "Комбо: постер + 1 формат", p: 1490, d: "1–2 рабочих дня", design: true, inc: "постер + визитка, сертификат или прайс в одном стиле, файлы для соцсетей и печати, 2 круга правок" },
   pack: { n: "Пакет из 4 форматов", p: 2590, d: "2–3 рабочих дня", design: true, inc: "постер, визитка (2 стороны, 90×50 мм), подарочный сертификат (210×99 мм), прайс на 3 страницы, файлы для соцсетей + PDF для типографии, 2 круга правок" },
+  card: { n: "Визитка (2 стороны)", p: 590, d: "1 рабочий день", design: true, inc: "визитка 90×50 мм с двух сторон в выбранном стиле, PDF для типографии + картинка для соцсетей, 2 круга правок" },
+  cert: { n: "Подарочный сертификат", p: 690, d: "1 рабочий день", design: true, inc: "сертификат 210×99 мм в выбранном стиле, PDF для типографии + картинка для соцсетей, 2 круга правок" },
+  price: { n: "Прайс на 3 страницы", p: 1290, d: "1–2 рабочих дня", design: true, inc: "прайс на 3 страницы с вашими услугами и ценами, PDF для печати + картинки для соцсетей, 2 круга правок" },
+  text: { n: "Рекламный текст — 10 вариантов", p: 490, d: "1 рабочий день", design: true, inc: "10 вариантов рекламного текста: боль клиента, слоган и призыв к действию в разных тонах — с юмором, дружески, тепло, профессионально" },
   video: { n: "Видео / Reels", p: 1990, from: true, d: "2–3 рабочих дня", inc: "оживление вашего постера или фото, 8–15 секунд, вертикальный формат для Reels и сторис, 1 круг правок" },
   insta: { n: "Instagram под ключ", p: 15000, from: true, month: true, d: "старт через 3 рабочих дня после брифа", inc: "12 постов и 8 сторис в месяц в едином стиле, тексты к постам, оформление шапки и актуальных, контент-план" },
   bot: { n: "Telegram-бот", p: 9900, from: true, d: "5–7 рабочих дней", inc: "меню услуг и цен, приём заявок, уведомления вам в Telegram, оформление в стиле вашей рекламы, 2 круга правок" },
@@ -245,7 +249,7 @@ function summary(o, forAdmin = false, user = null) {
   const c = calc(o); const s = c.s; const L = [];
   L.push(forAdmin ? "🔔 <b>Новая заявка VISUALL</b>" : "📋 <b>Ваша заявка</b>");
   if (forAdmin && user) L.push(`👤 ${esc([user.first_name, user.last_name].filter(Boolean).join(" "))}${user.username ? " (@" + esc(user.username) + ")" : ""}`);
-  L.push(`🛍 Услуга: <b>${esc(s.n)}</b> — ${priceStr(s)}`);
+  L.push(`🛍 Услуга: <b>${esc(o.svc === "combo" && o.fmt ? "Комбо: постер + " + o.fmt : s.n)}</b> — ${priceStr(s)}`);
   if (o.sphere) L.push(`🏷 Сфера: ${esc(SPHERES[o.sphere] || o.sphere)}`);
   if (o.biz) L.push(`🏪 Бизнес: ${esc(o.biz)}`);
   if (o.style) L.push(`🎨 Стиль / идея: ${esc(o.style)}`);
@@ -260,7 +264,7 @@ function summary(o, forAdmin = false, user = null) {
 
 // ---------- шаги заказа ----------
 async function askService(env, chat) {
-  const rows = [["poster", "combo"], ["pack"], ["video", "bot"], ["site", "insta"], ["all", "custom"]]
+  const rows = [["poster", "combo"], ["pack"], ["card", "cert"], ["price", "text"], ["video", "bot"], ["site", "insta"], ["all", "custom"]]
     .map((r) => r.map((k) => ({ text: `${SERVICES[k].n} · ${priceStr(SERVICES[k])}`, callback_data: "svc:" + k })));
   rows.push([{ text: "⬅️ Меню", callback_data: "menu" }]);
   return send(env, chat, "🛒 <b>Шаг 1 из 5.</b> Что нужно сделать?", kb(rows));
@@ -290,8 +294,8 @@ async function showConfirm(env, chat, o) {
 
 // ---------- калькулятор ----------
 async function showCalc(env, chat, o, msgId) {
-  const keys = ["poster", "combo", "pack"];
-  const rows = [keys.map((k) => ({ text: `${o.svc === k ? "✅ " : ""}${SERVICES[k].n.split(":")[0]}`, callback_data: "c:svc:" + k }))];
+  const short = { poster: "Постер", combo: "Комбо", pack: "Пакет из 4", card: "Визитка", cert: "Сертификат", price: "Прайс", text: "Текст" };
+  const rows = [["poster", "combo", "pack"], ["card", "cert"], ["price", "text"]].map((r) => r.map((k) => ({ text: `${o.svc === k ? "✅ " : ""}${short[k]} · ${rub(SERVICES[k].p)}`, callback_data: "c:svc:" + k })));
   rows.push([{ text: `${o.urgent ? "✅" : "⬜️"} Срочно +50%`, callback_data: "c:urg" }]);
   rows.push(Object.entries(DISC).filter(([k]) => k !== "no").map(([k, [, p]]) => ({ text: `${o.disc === k ? "✅" : ""}−${p}%`, callback_data: "c:disc:" + k })));
   rows.push([{ text: "🛒 Оформить такой заказ", callback_data: "c:order" }], [{ text: "⬅️ Меню", callback_data: "menu" }]);
@@ -314,6 +318,97 @@ const KW = [
   [/(пример|каталог|стил[ьяеи]|портфол|ваши работ)/i, "catalog"],
   [/^(привет|здравствуй|добрый|hi|hello|start)/i, "menu"],
 ];
+
+
+// ---------- умные ответы: бот отвечает сам, Светлане — только то, на что ответа нет ----------
+const ITEM_RE = [
+  ["card", /визитк/], ["cert", /сертификат/], ["text", /(рекламн\S* текст|текст[аы]? для рекламы|10 вариантов|копирайт)/],
+  ["price", /(прайс на|сделать прайс|нужен прайс|прайс-лист для|прайс для|меню для кафе|прайс \d)/],
+  ["combo", /комбо/], ["pack", /(пакет|комплект|все форматы|4 формата)/], ["poster", /(постер|афиш|плакат|баннер|флаер|листовк)/],
+  ["video", /(видео|reels|рилс|ролик|анимац|оживить)/], ["bot", /(телеграм-?бот|чат-?бот|(?<![а-яa-z])бот(а|у|ом)?(?![а-яa-z]))/],
+  ["site", /(сайт|лендинг|landing)/], ["insta", /(инстаграм|instagram|инсту|инста(?![а-яa-z])|ведение|smm|смм|контент-план|сторис)/], ["all", /(под ключ|всё сразу|все сразу)/],
+];
+const STOP = new Set(["услуг", "уроки", "дизай", "ремон", "салон", "мастер", "реклам"]);
+const ALIAS = [];
+for (const [k, items] of Object.entries(CAT)) items.forEach((it, i) => it.n.toLowerCase().replace(/[^а-яёa-z ]/g, " ").split(/\s+/).filter((w) => w.length >= 4).forEach((w) => { const st = w.slice(0, 5); if (!STOP.has(st)) ALIAS.push([st, k, i]); }));
+const SPH_WORDS = [["beauty", /(салон|бьюти|beauty|красот|ногт|ресниц|бров|волос|эпиляц|космет|массаж|тату)/], ["food", /(кафе|кофе|ресторан|еда|доставк|пекарн|торт|десерт|пицц|кондитер|(?<![а-яa-z])бар(?![а-яa-z]))/],
+  ["kids", /(дет|ребён|ребен|школ|репетит|логопед|няня|(?<![а-яa-z])сад(?![а-яa-z])|танц|музык|английск)/], ["consult", /(психолог|консульт|коуч|астролог|психиатр)/], ["house", /(ремонт|клининг|уборк|сантехн|электрик|интерьер|потолк|балкон|мастер на час)/],
+  ["auto", /(авто|машин|шиномонтаж|(?<![а-яa-z])сто(?![а-яa-z])|автосервис)/], ["pets", /(груминг|собак|кошк|животн|питомц|ветеринар)/], ["fit", /(фитнес|тренер|йог|пилатес|спорт|похуд|нутрициолог|(?<![а-яa-z])зал(?![а-яa-z]))/], ["other", /(фотограф|дизайнер)/]];
+function findItem(t) {
+  for (const [st, k, i] of ALIAS) if (t.includes(st)) return [k, i];
+  return null;
+}
+const A = {
+  itemPrice: (k) => { const sv = SERVICES[k]; return `💰 <b>${esc(sv.n)}</b> — ${priceStr(sv)}\n⏱ Срок: ${sv.d}\n✅ Что входит: ${esc(sv.inc)}.${sv.design ? `\n\n🎟 −10% по промокоду <code>${PROMO}</code> до ${promoUntil()}. Срочно за 24 часа — +50%.` : "\n\nТочную цену Светлана назовёт после короткого брифа."}`; },
+  urgent: () => `⚡ <b>Срочно — да, можно!</b>\nЗа 24 часа делаю постер, визитку, сертификат, прайс, текст, комбо или пакет — +50% к цене.\nНапример: постер срочно — 1 485 ₽, пакет из 4 форматов срочно — 3 885 ₽.\n\nСрок считается с момента, когда пришли все материалы и предоплата.`,
+  refund: () => `🤝 <b>Гарантии</b>\n• Предоплата 50% — только после согласования заказа\n• Если работа ещё не начата — предоплата возвращается полностью\n• В постер, комбо и пакет входят 2 круга правок бесплатно (видео — 1, сайт — 3)\n• Дополнительный круг правок — 300 ₽\n• Захотите сменить стиль после согласования — новый вариант со скидкой 50%\n• Готовые файлы — после полной оплаты, официальный чек самозанятой`,
+  receipt: () => `🧾 <b>Да, чек будет.</b> Светлана работает как самозанятая и после каждой оплаты присылает официальный чек из «Мой налог». Он подходит и физлицам, и ИП, и компаниям.\n\nОплата — СБП на Сбербанк по номеру <code>${PHONE}</code>, предоплата 50% после согласования заказа.`,
+  formats: () => `🖼 <b>В каком виде вы получите рекламу</b>\n• Картинки для соцсетей и мессенджеров — 1080×1350\n• PDF для типографии: визитка 90×50 мм с двух сторон, сертификат 210×99 мм, прайс на 3 страницы\n• Видео — вертикальное, для Reels и сторис\n\nФайлы присылаются в Telegram сразу после полной оплаты. PDF можно сразу отдавать в любую типографию.`,
+  photos: () => `📸 <b>Конечно, можно со своими фото!</b>\nПришлите фото работы, товара, интерьера или себя — Светлана превратит его в рекламный постер в выбранном стиле. Логотип, если есть, тоже пригодится.\n\nМожно прислать фото прямо сюда — я передам.`,
+  custom: () => `🎨 <b>Да, можно дизайн не из каталога.</b>\nОпишите идею — Светлана предложит, как её воплотить. Оформите заявку «Свой дизайн / другое» — это займёт минуту.`,
+  online: () => `🌍 <b>Работаем онлайн</b> — всё общение и файлы в Telegram, поэтому город не важен. Вы присылаете материалы, получаете макеты, вносите правки и забираете готовые файлы прямо в чате.`,
+  hours: () => `🕐 Я, бот, работаю круглосуточно — заявку можно оставить в любое время. Светлана ответит, как только увидит сообщение.`,
+  contacts: () => `📱 <b>Контакты</b>\nTelegram: @sveta_muzyka\nТелефон: ${PHONE}\nСайт: ${SITE}\nА заказ можно оформить прямо здесь, в боте, — за минуту.`,
+  reviewsAsk: () => `⭐ Отзывы клиентов собираются после каждого заказа и появляются на сайте. А пока можно посмотреть ${Object.values(CAT).flat().reduce((n, i) => n + i.r.length, 0)}+ примеров работ — и выбрать стиль под себя.`,
+  thanks: () => `Пожалуйста! 💛 Если появятся вопросы — пишите, я на связи круглосуточно.`,
+  styles: () => `🎨 <b>Стили</b>: люкс и тёмный люкс, нежный, минимализм, поп-арт, глянцевый 3D, жидкий хром, сюрреализм, ретро, арт-эдиториал, кибер-гламур, Y2K и другие.\n\nПройдите квиз — подберу 4 постера под ваше настроение за 30 секунд 🔮`,
+  difference: () => `📦 <b>Чем отличаются форматы</b>\n• <b>Постер</b> (990 ₽) — одна яркая реклама для соцсетей и печати\n• <b>Комбо</b> (1 490 ₽) — постер + визитка, сертификат или прайс в одном стиле\n• <b>Пакет из 4</b> (2 590 ₽) — постер, визитка, сертификат и прайс: вся реклама в одном стиле. Выгоднее всего — отдельно это стоило бы 3 560 ₽`,
+};
+function smart(raw, user) {
+  const t = " " + raw.toLowerCase().replace(/ё/g, "е") + " ";
+  const out = [];
+  const isRev = /(правк|правок|исправ|передел|изменени|поменять|внести)/.test(t);
+  const isPrice = /(цен[аыу]|стоит|стоимост|по чем|почем|прайс(?![а-яa-z])|расценк|бюджет)/.test(t) || (/сколько/.test(t) && !/(правк|правок|дней|времени|ждать|срок|делает|займ|готов)/.test(t));
+  const isTime = /(срок|сколько дней|как быстро|когда будет|когда готов|долго|по времени|делается|займет|займёт)/.test(t);
+  const isWant = /(хочу|нужн|заказать|закажу|оформ|сделайте|сделать)/.test(t);
+  let item = null; for (const [k, re] of ITEM_RE) if (re.test(t)) { item = k; break; }
+  if (/(привет|здравств|добрый (день|вечер|утро)|доброе утро|hello|(?<![а-яa-z])hi(?![а-яa-z])|салют)/.test(t) && raw.length < 40) return [{ route: "menu" }];
+  if (/(спасибо|благодар|(?<![а-яa-z])спс(?![а-яa-z]))/.test(t) && raw.length < 60) return [{ text: A.thanks(), kb: MAIN_KB }];
+  if (/(срочн|сегодня|до завтра|за сутки|24 час|горит)/.test(t)) out.push({ text: A.urgent(), kb: kb([BACK]) });
+  if (/(чем отлича|разниц|что выбрать|что лучше|посоветуй)/.test(t) && (!item || ["poster", "combo", "pack"].includes(item))) return [{ text: A.difference(), kb: kb([BACK, [{ text: "🔮 Подобрать стиль — квиз", callback_data: "quiz" }]]) }];
+  if (item && (isPrice || isTime || /что входит|чем отлич|включено/.test(t))) out.push({ text: A.itemPrice(item), kb: kb([[{ text: "🛒 Заказать: " + SERVICES[item].n.split(" (")[0].split(":")[0], callback_data: "svc0:" + item }], [{ text: "⬅️ Меню", callback_data: "menu" }]]) });
+  else if (item && isWant) out.push({ startSvc: item });
+  if (/(чем отлича|разниц|что выбрать|что лучше|посоветуй)/.test(t) && !item) out.push({ text: A.difference(), kb: kb([BACK, [{ text: "🔮 Подобрать стиль — квиз", callback_data: "quiz" }]]) });
+  if (!out.length && isPrice && !isRev) out.push({ route: "prices" });
+  if (!out.length && isTime) out.push({ route: "terms" });
+  if (isRev) out.push({ route: "terms" });
+  if (/(вернете|вернуть|возврат|гарант|не понрав)/.test(t)) out.push({ text: A.refund(), kb: kb([BACK]) });
+  if (/((?<![а-яa-z])чек(?![а-яa-z])|самозанят|налог)/.test(t)) out.push({ text: A.receipt(), kb: kb([BACK]) });
+  else if (/(оплат|оплач|перевод|карт[ауоы]|сбп|реквизит|заплат|предоплат|наличн|сбер)/.test(t)) out.push({ route: "pay" });
+  if (/(формат|размер|pdf|пдф|печат|типограф|разрешени|исходник|макет)/.test(t) && !item) out.push({ text: A.formats(), kb: kb([BACK]) });
+  if (/(сво[еий]\S* фото|мои фото|моих фото|по фото|из фото|фото работ|фотографи[июй] (работ|товар|торт|моих|своих)|свою картинк)/.test(t)) out.push({ text: A.photos(), kb: kb([BACK]) });
+  if (/(не из каталога|сво[йя] (дизайн|иде)|уникальн|индивидуальн|по моему эскизу|по референс)/.test(t)) out.push({ text: A.custom(), kb: kb([[{ text: "🛒 Заявка «Свой дизайн»", callback_data: "svc0:custom" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]) });
+  if (/(скидк|промо|акци|бонус|дешевле|купон|подешевле)/.test(t)) out.push({ route: "disc" });
+  if (/(друг|подруг|пригла|реферал|посоветовал)/.test(t) && !/(как у друг|для друг)/.test(t)) out.push({ route: "invite" });
+  if (/(отзыв)/.test(t)) out.push(/(оставить|написать|хочу).{0,15}отзыв/.test(t) ? { route: "review" } : { text: A.reviewsAsk(), kb: kb([[{ text: "🔥 Примеры работ", callback_data: "ex" }], BACK]) });
+  if (/(что прислать|что нужно от меня|что нужно для|какие материалы|что подготовить|что от меня)/.test(t)) out.push({ route: "how" });
+  if (/(как заказ|как оформ|с чего начать|как начать|как работа)/.test(t) && !out.length) out.push({ route: "how" });
+  if (/(где вы|какой город|в каком городе|москв|офис|адрес|приехать|встрет|онлайн|удаленн|другой город|регион)/.test(t)) out.push({ text: A.online(), kb: kb([BACK]) });
+  if (/(часы работы|когда работаете|во сколько|выходны|ночью|круглосуточ|когда ответ)/.test(t)) out.push({ text: A.hours(), kb: kb([BACK]) });
+  if (/(телефон|позвон|контакт|связат|номер|whatsapp|ватсап|вацап|почт)/.test(t) && !/(оплат|сбп)/.test(t)) out.push({ text: A.contacts(), kb: kb([[{ text: "Написать @sveta_muzyka", url: "https://t.me/sveta_muzyka" }], BACK]) });
+  if (/(кто (вы|делает|ты)|о вас|о себе|светлан|опыт|портфолио)/.test(t)) out.push({ route: "about" });
+  if (/(какие стили|стили есть|какой стиль|стиль подобрать|подобрать стиль)/.test(t)) out.push({ text: A.styles(), kb: kb([[{ text: "🔮 Пройти квиз", callback_data: "quiz" }, { text: "🔥 Примеры", callback_data: "ex" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]) });
+  if (/(логотип|лого(?![а-я]))/.test(t)) out.push({ text: "✨ Если логотип уже есть — пришлите его, Светлана использует его в дизайне. Про разработку нового логотипа ответит сама Светлана — я передал ей вопрос.", forward: true });
+  if (/(договор|оферт|счет на оплату|счёт на оплату|юрлиц|безнал|закрывающ)/.test(t)) out.push({ text: "📄 Про договор и оплату для компании уточнит Светлана — я уже передал ей ваш вопрос, она ответит здесь же. Чек самозанятой выдаётся всегда.", forward: true });
+  if (!out.length && item) out.push({ text: A.itemPrice(item), kb: kb([[{ text: "🛒 Заказать", callback_data: "svc0:" + item }], [{ text: "⬅️ Меню", callback_data: "menu" }]]) });
+  if (!out.length && /(пример|работ|каталог|покажи|посмотреть|галере)/.test(t)) { const f = findItem(t); out.push(f ? { item: f } : { route: "ex" }); }
+  if (!out.length) { const f = findItem(t); if (f) out.push({ item: f }); }
+  if (!out.length) { for (const [k, re] of SPH_WORDS) if (re.test(t)) { out.push({ sphere: k }); break; } }
+  if (!out.length && isWant) out.push({ route: "order" });
+  out.forEach((o) => { if (o.forward) o.raw = raw; });
+  const fw = out.find((o) => o.forward), rest = out.filter((o) => !o.forward);
+  return fw ? [...rest.slice(0, 1), fw] : out.slice(0, 2);
+}
+async function runSmart(env, chat, user, res) {
+  for (const r of res) {
+    if (r.route) await route(env, chat, r.route, user);
+    else if (r.text) { await send(env, chat, r.text, r.kb); if (r.forward) await forwardToAdmin(env, user, r.raw || ""); }
+    else if (r.item) await showItem(env, chat, r.item[0], r.item[1]);
+    else if (r.sphere) await showSphere(env, chat, r.sphere);
+    else if (r.startSvc) { const s = await getS(env, user.id); s.o = { disc: s.ref && !s.refDone ? "friend" : "promo" }; s.step = "svc"; await setS(env, user.id, s); await markStarted(env, user.id, chat);
+      await onCallback(env, { id: "auto", from: user, data: "svc:" + r.startSvc, message: { chat: { id: chat }, message_id: 0 } }); }
+  }
+}
 
 async function forwardToAdmin(env, user, text) {
   const admin = await getAdmin(env); if (!admin) return false;
@@ -355,7 +450,7 @@ async function route(env, chat, key, user, msgId) {
 // ---------- обработчики ----------
 async function onCallback(env, q) {
   const chat = q.message.chat.id, user = q.from, d = q.data || "";
-  await tg(env, "answerCallbackQuery", { callback_query_id: q.id });
+  if (q.id !== "auto") await tg(env, "answerCallbackQuery", { callback_query_id: q.id });
   if (d.startsWith("st:") && isAdmin(user)) {
     const [, uid, code] = d.split(":"); const cs = await getS(env, uid); const o = cs.last || null;
     await send(env, uid, STATUS[code][1](o), code === "done" ? kb([[{ text: "⭐ Оставить отзыв (−15%)", callback_data: "review" }], [{ text: "🤝 Пригласить друга", callback_data: "invite" }]]) : code === "cancel" ? MAIN_KB : undefined);
@@ -376,7 +471,9 @@ async function onCallback(env, q) {
     if (a === "svc") s.c.svc = b;
     if (a === "urg") s.c.urgent = !s.c.urgent;
     if (a === "disc") s.c.disc = s.c.disc === b ? "no" : b;
-    if (a === "order") { s.o = { ...s.c }; s.step = "sph"; await setS(env, user.id, s); await markStarted(env, user.id, chat); return askSphere(env, chat); }
+    if (a === "order") { s.o = { ...s.c }; s.step = "sph"; await setS(env, user.id, s); await markStarted(env, user.id, chat);
+      if (s.o.svc === "combo") return send(env, chat, "✨ Какой второй формат в комбо?", kb([[{ text: "Визитка", callback_data: "fmt:визитка" }, { text: "Сертификат", callback_data: "fmt:сертификат" }, { text: "Прайс", callback_data: "fmt:прайс" }]]));
+      return askSphere(env, chat); }
     await setS(env, user.id, s); return showCalc(env, chat, s.c, q.message.message_id);
   }
   if (d.startsWith("cat:")) return showSphere(env, chat, d.slice(4));
@@ -386,7 +483,13 @@ async function onCallback(env, q) {
     if (ref) await media(env, chat, "photo", ref[0], `💛 Отличный выбор: <b>${esc(it.n)}</b>, стиль «${esc(ref[1])}».
 Сделаю такой же — с вашим названием, ценами и контактами.`);
     return askService(env, chat); }
+  if (d.startsWith("svc0:")) { s.o = { disc: s.ref && !s.refDone ? "friend" : "promo" }; s.step = "svc"; await setS(env, user.id, s); await markStarted(env, user.id, chat);
+    return onCallback(env, { id: "auto", from: user, data: "svc:" + d.slice(5), message: q.message }); }
+  if (d.startsWith("fmt:")) { s.o = s.o || {}; s.o.fmt = d.slice(4);
+    if (s.o.sphere) { s.step = "biz"; await setS(env, user.id, s); return askBiz(env, chat); }
+    s.step = "sph"; await setS(env, user.id, s); return askSphere(env, chat); }
   if (d.startsWith("svc:")) { s.o = { ...(s.o || {}), svc: d.slice(4) };
+    if (s.o.svc === "combo" && !s.o.fmt) { await setS(env, user.id, s); return send(env, chat, "✨ Комбо — постер + ещё один формат в том же стиле. Какой второй формат?", kb([[{ text: "Визитка", callback_data: "fmt:визитка" }, { text: "Сертификат", callback_data: "fmt:сертификат" }, { text: "Прайс", callback_data: "fmt:прайс" }]])); }
     if (s.o.sphere) { s.step = "biz"; await setS(env, user.id, s); return askBiz(env, chat); }
     s.step = "sph"; await setS(env, user.id, s); return askSphere(env, chat); }
   if (d.startsWith("sph:")) { s.o = s.o || {}; s.o.sphere = d.slice(4); s.step = "biz"; await setS(env, user.id, s); return askBiz(env, chat); }
@@ -474,6 +577,13 @@ async function onMessage(env, m) {
     return send(env, chat, "💛 Спасибо за отзыв! Светлана закрепит за вами скидку −15% на следующий заказ.", MAIN_KB);
   }
   // фото/файлы/вопросы — Светлане
+  const smartRes = text && !m.photo && !m.document && !m.video && s.step !== "ask" ? smart(text, user) : [];
+  const looksLikeQuestion = /\?|сколько|как |можно|есть ли|когда|где|какой|какие|почему|зачем/i.test(text) && text.length < 220;
+  if (smartRes.length && (!s.last || looksLikeQuestion)) {
+    await runSmart(env, chat, user, smartRes);
+    if (s.last && text.length > 60) await forwardToAdmin(env, user, text);
+    return;
+  }
   if (m.photo || m.document || m.video || s.step === "ask" || s.last) {
     const admin = await getAdmin(env);
     if (admin) {
@@ -487,9 +597,8 @@ async function onMessage(env, m) {
     return send(env, chat, "Напишите, пожалуйста, Светлане напрямую: @sveta_muzyka", kb([[{ text: "Написать @sveta_muzyka", url: "https://t.me/sveta_muzyka" }]]));
   }
   if (text) {
-    for (const [re, key] of KW) if (re.test(text)) return route(env, chat, key, user);
     const ok = await forwardToAdmin(env, user, text);
-    return send(env, chat, ok ? "Хороший вопрос! Передал его Светлане — она ответит здесь же. А пока можно посмотреть меню 👇" : "Напишите, пожалуйста, Светлане напрямую: @sveta_muzyka", MAIN_KB);
+    return send(env, chat, ok ? "Хороший вопрос! На такой лучше ответит сама Светлана — я уже передал ей, она напишет здесь же. А пока можно посмотреть меню 👇" : "Напишите, пожалуйста, Светлане напрямую: @sveta_muzyka", MAIN_KB);
   }
 }
 
