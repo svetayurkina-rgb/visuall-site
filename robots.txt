@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://svetayurkina-rgb.github.io/visuall-site/sitemap.xml
