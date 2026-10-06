@@ -253,6 +253,11 @@ function summary(o, forAdmin = false, user = null) {
   if (o.sphere) L.push(`🏷 Сфера: ${esc(SPHERES[o.sphere] || o.sphere)}`);
   if (o.biz) L.push(`🏪 Бизнес: ${esc(o.biz)}`);
   if (o.style) L.push(`🎨 Стиль / идея: ${esc(o.style)}`);
+  if (o.content) L.push(`📝 Текст на рекламе: ${esc(forAdmin ? o.content : (o.content.length > 160 ? o.content.slice(0, 160) + "…" : o.content))}`);
+  if (o.task) L.push(`🧩 Задача: ${esc(forAdmin ? o.task : (o.task.length > 160 ? o.task.slice(0, 160) + "…" : o.task))}`);
+  if (o.contacts) L.push(`📍 Контакты на рекламе: ${esc(o.contacts)}`);
+  if (o.files) L.push(`📎 Файлы: ${o.files.length ? o.files.length + " шт." : "нет"}`);
+  if (o.wishes) L.push(`💭 Пожелания: ${esc(o.wishes)}`);
   if (s.design) L.push(`⚡ Срочно: ${o.urgent ? "да, +50% (" + rub(c.urg) + ")" : "нет"}`);
   if (c.pct) L.push(`🎟 Скидка: ${esc(DISC[o.disc][0])} −${c.pct}% (−${rub(c.disc)})`);
   if (s.p) L.push(`💰 Итого: <b>${s.from ? "от " : ""}${rub(c.total)}${s.month ? "/мес" : ""}</b>${s.from ? " (точную цену Светлана назовёт после брифа)" : ""}`);
@@ -267,22 +272,22 @@ async function askService(env, chat) {
   const rows = [["poster", "combo"], ["pack"], ["card", "cert"], ["price", "text"], ["video", "bot"], ["site", "insta"], ["all", "custom"]]
     .map((r) => r.map((k) => ({ text: `${SERVICES[k].n} · ${priceStr(SERVICES[k])}`, callback_data: "svc:" + k })));
   rows.push([{ text: "⬅️ Меню", callback_data: "menu" }]);
-  return send(env, chat, "🛒 <b>Шаг 1 из 5.</b> Что нужно сделать?", kb(rows));
+  return send(env, chat, "🛒 <b>Шаг 1.</b> Что нужно сделать?", kb(rows));
 }
 async function askSphere(env, chat) {
   const ks = Object.keys(SPHERES), rows = [];
   for (let i = 0; i < ks.length; i += 2) rows.push(ks.slice(i, i + 2).map((k) => ({ text: SPHERES[k], callback_data: "sph:" + k })));
-  return send(env, chat, "🏷 <b>Шаг 2 из 5.</b> Какая у вас сфера?", kb(rows));
+  return send(env, chat, "🏷 <b>Шаг 2.</b> Какая у вас сфера?", kb(rows));
 }
-const askBiz = (env, chat) => send(env, chat, "🏪 <b>Шаг 3 из 5.</b> Как называется ваш бизнес или как вас зовут как мастера?\n\n<i>Напишите ответ сообщением.</i>");
-const askStyle = (env, chat) => send(env, chat, `🎨 <b>Шаг 4 из 5.</b> Какой стиль понравился в каталоге? Напишите название или опишите идею.\n\nКаталог: ${SITE}`, kb([[{ text: "Пока не выбрал(а) — помогите подобрать", callback_data: "style:help" }]]));
+const askBiz = (env, chat) => send(env, chat, "🏪 <b>Шаг 3.</b> Как называется ваш бизнес или как вас зовут как мастера?\n\n<i>Напишите ответ сообщением.</i>");
+const askStyle = (env, chat) => send(env, chat, `🎨 <b>Шаг 4.</b> Какой стиль понравился в каталоге? Напишите название или опишите идею.\n\nКаталог: ${SITE}`, kb([[{ text: "Пока не выбрал(а) — помогите подобрать", callback_data: "style:help" }]]));
 async function askOptions(env, chat, o) {
   const s = SERVICES[o.svc];
   if (!s.design) return askPhone(env, chat);
   const rows = Object.entries(DISC).map(([k, [n, p]]) => [{ text: `${o.disc === k ? "✅ " : ""}${n}${p ? " −" + p + "%" : ""}`, callback_data: "disc:" + k }]);
   rows.unshift([{ text: `${o.urgent ? "✅" : "⬜️"} Срочно за 24 часа (+50%)`, callback_data: "urg" }]);
   rows.push([{ text: "Дальше ➡️", callback_data: "opt:done" }]);
-  return send(env, chat, `⚙️ <b>Шаг 5 из 5.</b> Срочность и скидка\n\n${summary(o)}`, kb(rows));
+  return send(env, chat, `⚙️ <b>Почти готово.</b> Срочность и скидка\n\n${summary(o)}`, kb(rows));
 }
 const askPhone = (env, chat) => send(env, chat, "📞 Последнее: оставьте телефон для связи — нажмите кнопку ниже или напишите номер.", {
   keyboard: [[{ text: "📱 Отправить мой номер", request_contact: true }], [{ text: "Пропустить" }]], resize_keyboard: true, one_time_keyboard: true,
@@ -291,6 +296,49 @@ async function showConfirm(env, chat, o) {
   await send(env, chat, "Готово ✨", { remove_keyboard: true });
   return send(env, chat, summary(o) + "\n\nВсё верно?", kb([[{ text: "✅ Отправить Светлане", callback_data: "confirm" }], [{ text: "✏️ Заново", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
 }
+
+
+// ---------- бриф: собираем всё, что нужно для работы ----------
+const TASK_Q = {
+  video: "🎬 <b>Расскажите о ролике.</b> Что оживляем — ваш постер, фото работы, товар? Для чего ролик: Reels, сторис, реклама? Есть ли пример, который нравится?",
+  bot: "🤖 <b>Расскажите о боте.</b> Что он должен уметь: показывать услуги и цены, принимать заявки, записывать на время, отвечать на вопросы? Куда присылать заявки?",
+  site: "💻 <b>Расскажите о сайте.</b> Какие разделы нужны (услуги, цены, примеры, отзывы, контакты)? Есть ли домен? Есть ли сайт, который нравится?",
+  insta: "📱 <b>Расскажите об Instagram.</b> Пришлите ссылку на профиль (если есть), что продаёте и какая цель: больше заявок, узнаваемость, запуск?",
+  all: "✨ <b>Расскажите о задаче.</b> Что уже есть (логотип, сайт, Instagram) и что нужно сделать в первую очередь?",
+  custom: "🎨 <b>Опишите идею.</b> Что за реклама, где будет размещаться, какое настроение? Если есть пример — пришлите на следующем шаге.",
+};
+const askContent = (env, chat, o) => send(env, chat, `📝 <b>Шаг 5. Что написать на рекламе?</b>\nПришлите одним сообщением: заголовок или главную мысль, список услуг с ценами, акцию — всё, что должно быть на ${o.svc === "card" ? "визитке" : o.svc === "cert" ? "сертификате (номинал, на что можно потратить, срок)" : o.svc === "price" ? "прайсе" : o.svc === "text" ? "тексте (о чём рассказать, что предлагаете)" : "рекламе"}.\n\n<i>Например: «Маникюр с покрытием — 1 800 ₽, наращивание — 2 500 ₽, дизайн в подарок при первой записи».</i>`, kb([[{ text: "🎰 Нет слогана? Взять с сайта", url: SITE + "#slogan" }], [{ text: "Пришлю позже", callback_data: "br:content:skip" }]]));
+const askContacts = (env, chat) => send(env, chat, "📍 <b>Шаг 6. Какие контакты разместить?</b>\nТелефон, адрес, Instagram, Telegram, сайт — как будет на рекламе. QR-код сделаем на любой из них.", kb([[{ text: "Такие же, как телефон для связи", callback_data: "br:contacts:same" }], [{ text: "Пришлю позже", callback_data: "br:contacts:skip" }]]));
+const askTask = (env, chat, o) => send(env, chat, (TASK_Q[o.svc] || TASK_Q.custom) + "\n\n<i>Напишите ответ одним сообщением.</i>", kb([[{ text: "Обсудим со Светланой", callback_data: "br:task:skip" }]]));
+const askFiles = (env, chat, o) => send(env, chat, `📎 <b>Логотип и фото.</b>\nЕсли есть логотип, фото работ, товара, интерьера или пример, который нравится, — пришлите сюда (можно несколько). ${o.files && o.files.length ? `\n\nПолучено файлов: <b>${o.files.length}</b>` : ""}\n\nКогда всё отправите — нажмите «Готово».`, kb([[{ text: o.files && o.files.length ? "✅ Готово" : "Нет логотипа и фото", callback_data: "br:files:done" }]]));
+const askWishes = (env, chat) => send(env, chat, "💭 <b>Пожелания.</b> Цвета, настроение, что точно должно быть или чего не нужно? Напишите или пропустите.", kb([[{ text: "Без пожеланий — доверяю", callback_data: "br:wishes:skip" }]]));
+async function askStep(env, chat, s) {
+  const o = s.o || {};
+  switch (s.step) {
+    case "svc": return askService(env, chat);
+    case "sph": return askSphere(env, chat);
+    case "biz": return askBiz(env, chat);
+    case "style": return askStyle(env, chat);
+    case "content": return askContent(env, chat, o);
+    case "contacts": return askContacts(env, chat);
+    case "task": return askTask(env, chat, o);
+    case "files": return askFiles(env, chat, o);
+    case "wishes": return askWishes(env, chat);
+    case "opt": return askOptions(env, chat, o);
+    case "phone": return askPhone(env, chat);
+    case "confirm": return showConfirm(env, chat, o);
+  }
+  return null;
+}
+async function nextStep(env, chat, user, s, from) {
+  const design = SERVICES[s.o.svc]?.design;
+  const order = design ? ["content", "contacts", "files", "wishes", "opt", "phone", "confirm"] : ["task", "files", "phone", "confirm"];
+  const i = order.indexOf(from);
+  s.step = i < 0 ? order[0] : order[i + 1];
+  await setS(env, user.id, s);
+  return askStep(env, chat, s);
+}
+const STEP_TEXT = new Set(["biz", "style", "content", "contacts", "task", "wishes"]);
 
 // ---------- калькулятор ----------
 async function showCalc(env, chat, o, msgId) {
@@ -367,7 +415,7 @@ function smart(raw, user) {
   if (/(срочн|сегодня|до завтра|за сутки|24 час|горит)/.test(t)) out.push({ text: A.urgent(), kb: kb([BACK]) });
   if (/(чем отлича|разниц|что выбрать|что лучше|посоветуй)/.test(t) && (!item || ["poster", "combo", "pack"].includes(item))) return [{ text: A.difference(), kb: kb([BACK, [{ text: "🔮 Подобрать стиль — квиз", callback_data: "quiz" }]]) }];
   if (item && (isPrice || isTime || /что входит|чем отлич|включено/.test(t))) out.push({ text: A.itemPrice(item), kb: kb([[{ text: "🛒 Заказать: " + SERVICES[item].n.split(" (")[0].split(":")[0], callback_data: "svc0:" + item }], [{ text: "⬅️ Меню", callback_data: "menu" }]]) });
-  else if (item && isWant) out.push({ startSvc: item });
+  else if (item && isWant) { let sph = null; for (const [k, re] of SPH_WORDS) if (re.test(t)) { sph = k; break; } out.push({ startSvc: item, sphere0: sph }); }
   if (/(чем отлича|разниц|что выбрать|что лучше|посоветуй)/.test(t) && !item) out.push({ text: A.difference(), kb: kb([BACK, [{ text: "🔮 Подобрать стиль — квиз", callback_data: "quiz" }]]) });
   if (!out.length && isPrice && !isRev) out.push({ route: "prices" });
   if (!out.length && isTime) out.push({ route: "terms" });
@@ -405,7 +453,7 @@ async function runSmart(env, chat, user, res) {
     else if (r.text) { await send(env, chat, r.text, r.kb); if (r.forward) await forwardToAdmin(env, user, r.raw || ""); }
     else if (r.item) await showItem(env, chat, r.item[0], r.item[1]);
     else if (r.sphere) await showSphere(env, chat, r.sphere);
-    else if (r.startSvc) { const s = await getS(env, user.id); s.o = { disc: s.ref && !s.refDone ? "friend" : "promo" }; s.step = "svc"; await setS(env, user.id, s); await markStarted(env, user.id, chat);
+    else if (r.startSvc) { const s = await getS(env, user.id); s.o = { disc: s.ref && !s.refDone ? "friend" : "promo" }; if (r.sphere0) s.o.sphere = r.sphere0; s.step = "svc"; await setS(env, user.id, s); await markStarted(env, user.id, chat);
       await onCallback(env, { id: "auto", from: user, data: "svc:" + r.startSvc, message: { chat: { id: chat }, message_id: 0 } }); }
   }
 }
@@ -423,9 +471,7 @@ async function route(env, chat, key, user, msgId) {
     case "quiz": { const s = await getS(env, user.id); s.q = {}; await setS(env, user.id, s); return quizStep(env, chat, s, 1); }
     case "invite": return showInvite(env, chat, user);
     case "resume": { const s = await getS(env, user.id);
-      if (s.o && s.o.svc && s.step === "confirm") return showConfirm(env, chat, s.o);
-      if (s.o && s.o.svc && s.step === "phone") return askPhone(env, chat);
-      if (s.o && s.o.svc && s.step === "opt") return askOptions(env, chat, s.o);
+      if (s.o && s.o.svc && s.step) return askStep(env, chat, s);
       return route(env, chat, "order", user); }
     case "unsub": await env.KV.delete("u:" + user.id); { const s = await getS(env, user.id); s.unsub = 1; await setS(env, user.id, s); }
       return send(env, chat, "🔕 Готово, новости больше не присылаю. Меню всегда здесь: /start");
@@ -496,16 +542,20 @@ async function onCallback(env, q) {
   if (d === "style:help") { s.o = s.o || {}; s.o.style = "нужна помощь с выбором стиля"; return afterStyle(env, chat, user, s); }
   if (d === "urg") { s.o.urgent = !s.o.urgent; await setS(env, user.id, s); return askOptions(env, chat, s.o); }
   if (d.startsWith("disc:")) { s.o.disc = d.slice(5); await setS(env, user.id, s); return askOptions(env, chat, s.o); }
-  if (d === "opt:done") { s.step = "phone"; await setS(env, user.id, s); return askPhone(env, chat); }
+  if (d === "opt:done") return nextStep(env, chat, user, s, "opt");
+  if (d.startsWith("br:") && s.o) { const [, f, v] = d.split(":");
+    if (f === "content") s.o.content = "пришлю позже";
+    if (f === "contacts") s.o.contacts = v === "same" ? "как телефон для связи" : "пришлю позже";
+    if (f === "task") s.o.task = "обсудим лично";
+    if (f === "wishes") s.o.wishes = "на усмотрение Светланы";
+    if (f === "files") s.o.files = s.o.files || [];
+    return nextStep(env, chat, user, s, f); }
   if (d === "confirm") return confirmOrder(env, chat, user, s);
   if (d.startsWith("rate:")) { s.rate = +d.slice(5); s.step = "reviewtext"; await setS(env, user.id, s); return send(env, chat, `Спасибо! ${"★".repeat(s.rate)}\nНапишите пару слов о работе — что понравилось, как реклама помогла бизнесу. За отзыв — <b>−15%</b> на следующий заказ.`); }
   return route(env, chat, d, user, q.message.message_id);
 }
 
-async function afterStyle(env, chat, user, s) {
-  if (SERVICES[s.o.svc]?.design) { s.step = "opt"; await setS(env, user.id, s); return askOptions(env, chat, s.o); }
-  s.step = "phone"; await setS(env, user.id, s); return askPhone(env, chat);
-}
+async function afterStyle(env, chat, user, s) { return nextStep(env, chat, user, s, "style"); }
 
 async function confirmOrder(env, chat, user, s) {
   if (!s.o || !s.o.svc) return route(env, chat, "order", user);
@@ -513,11 +563,12 @@ async function confirmOrder(env, chat, user, s) {
   const refNote = s.ref && !s.refDone ? `\n🤝 Пришёл(а) по приглашению клиента #ref${s.ref}` : "";
   if (admin) { const k2 = statusKb(user.id); if (user.username) k2.inline_keyboard.push([{ text: "💬 Написать клиенту", url: "https://t.me/" + user.username }]);
     await send(env, admin, summary(s.o, true, user) + refNote + "\n\n<i>Кнопки ниже — статус для клиента. Ответьте на сообщение — я перешлю ответ.</i>", k2); }
+  if (admin && s.o.files && s.o.files.length) { for (const mid of s.o.files.slice(0, 15)) await tg(env, "copyMessage", { chat_id: admin, from_chat_id: chat, message_id: mid }); await send(env, admin, `📎 Выше — файлы клиента к заявке\n#id${user.id}`); }
   if (s.ref && !s.refDone) { s.refDone = 1;
     await send(env, s.ref, `🎁 <b>Ваш друг оформил заказ по вашей ссылке!</b>\n\nЗа вами закреплена скидка <b>−15%</b> на следующий заказ. Спасибо, что рекомендуете VISUALL 💛`, kb([[{ text: "🛒 Оформить заказ", callback_data: "order" }]])); }
   s.step = null; s.last = s.o; s.o = null; await setS(env, user.id, s); await clearStarted(env, user.id);
   await env.KV.put("orders", String(+(await env.KV.get("orders") || 0) + 1));
-  return media(env, chat, "anim", "kit.mp4", `🎉 <b>Заявка отправлена Светлане!</b>\n\nОна ответит в ближайшее время и согласует детали. А пока подготовьте:\n• текст для рекламы: услуги и цены\n• телефон и соцсети\n• логотип и фото, если есть\n\nМожно прислать всё сюда прямо сейчас — я передам.\n\n💳 Предоплата 50% — только после согласования со Светланой (СБП, Сбербанк, ${PHONE}). 🧾 Выдаётся чек самозанятой.`, MAIN_KB);
+  return media(env, chat, "anim", "kit.mp4", `🎉 <b>Заявка со всеми деталями отправлена Светлане!</b>\n\nОна посмотрит бриф и ответит здесь же: подтвердит стоимость и срок. Если что-то забыли — просто пришлите сюда, я передам.\n\n💳 Предоплата 50% — только после согласования со Светланой (СБП, Сбербанк, ${PHONE}). 🧾 Выдаётся чек самозанятой.`, MAIN_KB);
 }
 
 async function onMessage(env, m) {
@@ -561,9 +612,22 @@ async function onMessage(env, m) {
   if (text === "/help") return route(env, chat, "faq", user);
   if (text === "/quiz") return route(env, chat, "quiz", user);
 
-  // шаги заказа
+  // шаги заказа: если клиент посреди заказа задаёт вопрос — отвечаем и продолжаем с того же шага
+  if (s.step && s.o && text && /\?\s*$/.test(text) && text.length < 200 && (STEP_TEXT.has(s.step) || s.step === "files" || s.step === "phone")) {
+    const r = smart(text, user).filter((x) => !x.startSvc && x.route !== "order" && x.route !== "menu");
+    if (r.length) { await runSmart(env, chat, user, r.slice(0, 1)); await send(env, chat, "↩️ Продолжим оформление заказа:"); return askStep(env, chat, s); }
+  }
   if (s.step === "biz" && text) { s.o.biz = text.slice(0, 120); if (s.o.style) return afterStyle(env, chat, user, s); s.step = "style"; await setS(env, user.id, s); return askStyle(env, chat); }
   if (s.step === "style" && text) { s.o.style = text.slice(0, 300); return afterStyle(env, chat, user, s); }
+  if (s.step === "content" && text) { s.o.content = text.slice(0, 1500); return nextStep(env, chat, user, s, "content"); }
+  if (s.step === "contacts" && text) { s.o.contacts = text.slice(0, 400); return nextStep(env, chat, user, s, "contacts"); }
+  if (s.step === "task" && text) { s.o.task = text.slice(0, 1500); return nextStep(env, chat, user, s, "task"); }
+  if (s.step === "wishes" && text) { s.o.wishes = text.slice(0, 600); return nextStep(env, chat, user, s, "wishes"); }
+  if (s.step === "files") {
+    if (m.photo || m.document || m.video) { s.o.files = s.o.files || []; if (s.o.files.length < 15) s.o.files.push(m.message_id); await setS(env, user.id, s);
+      if (s.o.files.length === 1 || s.o.files.length % 3 === 0) return askFiles(env, chat, s.o); return; }
+    if (text) { s.o.wishes = (s.o.wishes ? s.o.wishes + "\n" : "") + text.slice(0, 600); await setS(env, user.id, s); return askFiles(env, chat, s.o); }
+  }
   if (s.step === "phone") {
     if (m.contact) s.o.phone = m.contact.phone_number;
     else if (text && text !== "Пропустить") s.o.phone = text.slice(0, 40);
