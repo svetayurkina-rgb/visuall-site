@@ -47,12 +47,14 @@ const T = {
 
 const MAIN_KB = { inline_keyboard: [
   [{ text: "🛒 Оформить заказ — 1 минута", callback_data: "order" }],
-  [{ text: "🔥 Примеры работ", callback_data: "ex" }, { text: "🎲 Удиви меня", callback_data: "rnd" }],
-  [{ text: "💰 Цены", callback_data: "prices" }, { text: "🧮 Калькулятор", callback_data: "calc" }],
-  [{ text: "🎟 Скидки до −20%", callback_data: "disc" }, { text: "💳 Оплата", callback_data: "pay" }],
-  [{ text: "⏱ Сроки и правки", callback_data: "terms" }, { text: "📝 Как заказать", callback_data: "how" }],
-  [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "❓ Вопросы", callback_data: "faq" }],
-  [{ text: "🌐 Сайт VISUALL", url: SITE }, { text: "💬 Позвать Светлану", callback_data: "human" }],
+  [{ text: "📱 Каталог-приложение", web_app: { url: SITE } }],
+  [{ text: "🔮 Какой стиль ваш? Квиз", callback_data: "quiz" }, { text: "🎲 Удиви меня", callback_data: "rnd" }],
+  [{ text: "🔥 Примеры работ", callback_data: "ex" }, { text: "💰 Цены", callback_data: "prices" }],
+  [{ text: "🧮 Калькулятор", callback_data: "calc" }, { text: "🎟 Скидки до −20%", callback_data: "disc" }],
+  [{ text: "💳 Оплата", callback_data: "pay" }, { text: "⏱ Сроки и правки", callback_data: "terms" }],
+  [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
+  [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
+  [{ text: "💬 Позвать Светлану", callback_data: "human" }],
 ] };
 const BACK = [{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }];
 const kb = (rows) => ({ inline_keyboard: rows });
@@ -119,6 +121,111 @@ async function showRandom(env, chat) {
 ${SPH_EMOJI[k] || ""} ${esc(SPHERES[k])}
 
 Такой же — с вашим названием и ценами — от 990 ₽.`, kb([[{ text: "💛 Хочу такой же", callback_data: `w:${k}:${idx}:${ri}` }], [{ text: "🎲 Ещё", callback_data: "rnd" }, { text: "🔥 Все примеры", callback_data: "ex" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+}
+
+// ---------- квиз ----------
+const MOODS = [
+  ["🌸 Нежно и спокойно", "Нежная эстетика", ["Нежный", "Нежный бьюти", "Шёлк и сатин", "Минимализм", "Эко", "Вязаный"]],
+  ["⚡ Ярко и смело", "Смелый поп", ["Поп-арт", "Кибер-гламур", "Y2K", "Глянцевый 3D"]],
+  ["💎 Дорого и премиально", "Тихая роскошь", ["Люкс", "Тёмный люкс", "Премиум", "Жидкий хром", "Арт-эдиториал"]],
+  ["🦄 Сказочно и необычно", "Арт-сказка", ["Сюрреализм", "Детский", "Глянцевый 3D", "Ретро"]],
+];
+const WHERE = [["📱 В соцсети и мессенджеры", "poster"], ["🖨 Для печати: визитки, сертификаты", "combo"], ["🔥 Везде и сразу", "pack"]];
+async function quizStep(env, chat, s, step) {
+  if (step === 1) { const ks = Object.keys(CAT).filter((k) => CAT[k].length), rows = [];
+    for (let i = 0; i < ks.length; i += 2) rows.push(ks.slice(i, i + 2).map((k) => ({ text: `${SPH_EMOJI[k]} ${SPHERES[k]}`, callback_data: "q1:" + k })));
+    return send(env, chat, "🔮 <b>Квиз «Какой стиль ваш?»</b>\n3 вопроса — и я подберу постеры именно под ваш бизнес.\n\n<b>Вопрос 1 из 3.</b> Чем вы занимаетесь?", kb(rows)); }
+  if (step === 2) return send(env, chat, "<b>Вопрос 2 из 3.</b> Какое настроение должно быть у рекламы?", kb(MOODS.map(([n], i) => [{ text: n, callback_data: "q2:" + i }])));
+  if (step === 3) return send(env, chat, "<b>Вопрос 3 из 3.</b> Где будет жить ваша реклама?", kb(WHERE.map(([n], i) => [{ text: n, callback_data: "q3:" + i }])));
+}
+async function quizResult(env, chat, s) {
+  const k = s.q.k, mood = MOODS[s.q.m], rec = SERVICES[WHERE[s.q.w][1]];
+  let pool = [];
+  (CAT[k] || []).forEach((it, i) => it.r.forEach((r, ri) => { if ((r[2] || "").split("|").some((x) => mood[2].includes(x))) pool.push([i, ri]); }));
+  if (pool.length < 4) (CAT[k] || []).forEach((it, i) => it.r.forEach((r, ri) => { if (!pool.some(([a, b]) => a === i && b === ri)) pool.push([i, ri]); }));
+  pool = pool.sort(() => Math.random() - 0.5).slice(0, 4);
+  if (pool.length) await tg(env, "sendMediaGroup", { chat_id: chat, protect_content: true, media: pool.map(([i, ri], x) => ({ type: "photo", media: IMG + CAT[k][i].r[ri][0], caption: x === 0 ? `✨ Ваш стиль — «${mood[1]}»` : "", parse_mode: "HTML" })) });
+  const rows = pool.map(([i, ri]) => [{ text: `💛 Хочу «${CAT[k][i].r[ri][1]}» (${CAT[k][i].n})`, callback_data: `w:${k}:${i}:${ri}` }]);
+  rows.push([{ text: "🔄 Пройти ещё раз", callback_data: "quiz" }, { text: "⬅️ Меню", callback_data: "menu" }]);
+  return send(env, chat, `🔮 <b>Ваш результат: «${mood[1]}»</b>
+${SPH_EMOJI[k]} ${esc(SPHERES[k])} · ${mood[0]}
+
+Вот 4 постера под ваше настроение. Выберите любимый — сделаю такой же с вашим названием и ценами.
+
+💡 Вам подойдёт: <b>${esc(rec.n)}</b> — ${priceStr(rec)}
+🎟 −10% по промокоду <code>${PROMO}</code> до ${promoUntil()}`, kb(rows));
+}
+
+// ---------- статусы заказа ----------
+const STATUS = {
+  work: ["🛠 В работе", (o) => `🛠 <b>Светлана взяла ваш заказ в работу!</b>
+
+${o ? "Срок: " + (o.urgent && SERVICES[o.svc]?.design ? "24 часа" : SERVICES[o.svc]?.d || "по договорённости") + ".\n" : ""}Если что-то понадобится — она напишет здесь. Можно присылать материалы прямо в этот чат 📎`],
+  pay: ["💳 Жду предоплату", () => `💳 <b>Заказ согласован!</b>
+
+Предоплата 50% — СБП на <b>Сбербанк</b> по номеру <code>${PHONE}</code>.
+После оплаты пришлите сюда скриншот — и работа начнётся. 🧾 Чек самозанятой пришлём сразу.`],
+  draft: ["🎨 Эскиз готов", () => `🎨 <b>Первый вариант готов!</b>
+
+Светлана присылает его сюда. Посмотрите и напишите правки, если нужны — 2 круга правок бесплатно ✏️`],
+  done: ["✅ Готово", () => `✅ <b>Ваш заказ готов!</b> 🎉
+
+Спасибо, что выбрали VISUALL 💛
+Оставьте отзыв — и получите <b>−15%</b> на следующий заказ. А если приведёте друга — скидка −15% вам обоим.`],
+  cancel: ["❌ Отменён", () => `Заказ отменён. Если передумаете — нажмите «Оформить заказ», будем рады помочь 💛`],
+};
+const statusKb = (uid, cur) => kb([
+  ["work", "pay"].map((c) => ({ text: (cur === c ? "• " : "") + STATUS[c][0], callback_data: `st:${uid}:${c}` })),
+  ["draft", "done"].map((c) => ({ text: (cur === c ? "• " : "") + STATUS[c][0], callback_data: `st:${uid}:${c}` })),
+  [{ text: (cur === "cancel" ? "• " : "") + STATUS.cancel[0], callback_data: `st:${uid}:cancel` }],
+]);
+const isAdmin = (u) => u && u.username && u.username.toLowerCase() === ADMIN_USERNAME;
+
+// ---------- друзья ----------
+const refLink = (uid) => `https://t.me/${"visuall_sveta_bot"}?start=ref_${uid}`;
+async function showInvite(env, chat, user) {
+  const link = refLink(user.id);
+  const share = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Нашла классную рекламу для бизнеса — VISUALL 🎨 По моей ссылке тебе −15% на первый заказ 🎁")}`;
+  return send(env, chat, `🤝 <b>Приведите друга — получите −15% оба</b>
+
+Ваша личная ссылка:
+${link}
+
+Отправьте её друзьям с бизнесом. Когда друг оформит заказ по ссылке, ему — скидка 15%, а вам — 15% на следующий заказ. Я сама сообщу вам, когда это случится 🎁`, kb([[{ text: "📤 Отправить другу", url: share }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+}
+
+// ---------- напоминания и рассылка (cron) ----------
+const markStarted = (env, uid, chat) => env.KV.put("ab:" + uid, "1", { expirationTtl: 86400 * 3, metadata: { t: Date.now(), chat } }).catch(() => {});
+const clearStarted = (env, uid) => env.KV.delete("ab:" + uid).catch(() => {});
+async function cronTick(env) {
+  // напоминания о брошенных заявках (через 20 часов)
+  const ab = await env.KV.list({ prefix: "ab:", limit: 100 });
+  let n = 0;
+  for (const k of ab.keys) {
+    if (n >= 15) break;
+    const t = k.metadata?.t || 0; if (Date.now() - t < 20 * 3600e3) continue;
+    await send(env, k.metadata.chat, `👋 Вы начали оформлять заказ в VISUALL, но не закончили.
+
+Ваш промокод <code>${PROMO}</code> (−10%) действует до ${promoUntil()} 🔥
+Продолжим? Это займёт минуту.`, kb([[{ text: "🛒 Продолжить заказ", callback_data: "resume" }], [{ text: "🔥 Посмотреть примеры", callback_data: "ex" }]]));
+    await env.KV.delete(k.name); n++;
+  }
+  // рассылка порциями
+  const job = JSON.parse((await env.KV.get("bc")) || "null");
+  if (job && job.go) await runBroadcast(env, job, 35);
+}
+async function runBroadcast(env, job, limit) {
+  const l = await env.KV.list({ prefix: "u:", limit, cursor: job.cursor || undefined });
+  const unsub = kb([[{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }], [{ text: "🔕 Не присылать новости", callback_data: "unsub" }]]);
+  for (const k of l.keys) {
+    const id = k.name.slice(2);
+    const r = job.photo ? await tg(env, "sendPhoto", { chat_id: id, photo: job.photo, caption: job.text, parse_mode: "HTML", reply_markup: unsub })
+                        : await send(env, id, job.text, unsub);
+    if (r && r.ok) job.sent = (job.sent || 0) + 1;
+    else if (r && r.error_code === 403) await env.KV.delete(k.name);
+  }
+  if (l.list_complete) { await env.KV.delete("bc"); const admin = await getAdmin(env); if (admin) await send(env, admin, `📣 Рассылка завершена: доставлено ${job.sent || 0}.`); }
+  else { job.cursor = l.cursor; await env.KV.put("bc", JSON.stringify(job)); }
 }
 
 // ---------- состояние ----------
@@ -218,6 +325,15 @@ async function route(env, chat, key, user, msgId) {
   switch (key) {
     case "menu": return media(env, chat, "video", "hero.mp4", T.hello(user?.first_name), MAIN_KB);
     case "ex": return showSpheres(env, chat);
+    case "quiz": { const s = await getS(env, user.id); s.q = {}; await setS(env, user.id, s); return quizStep(env, chat, s, 1); }
+    case "invite": return showInvite(env, chat, user);
+    case "resume": { const s = await getS(env, user.id);
+      if (s.o && s.o.svc && s.step === "confirm") return showConfirm(env, chat, s.o);
+      if (s.o && s.o.svc && s.step === "phone") return askPhone(env, chat);
+      if (s.o && s.o.svc && s.step === "opt") return askOptions(env, chat, s.o);
+      return route(env, chat, "order", user); }
+    case "unsub": await env.KV.delete("u:" + user.id); { const s = await getS(env, user.id); s.unsub = 1; await setS(env, user.id, s); }
+      return send(env, chat, "🔕 Готово, новости больше не присылаю. Меню всегда здесь: /start");
     case "rnd": return showRandom(env, chat);
     case "prices": return media(env, chat, "photo", "price-v.jpg", T.prices(), kb([BACK, [{ text: "🧮 Рассчитать заказ", callback_data: "calc" }]]));
     case "terms": return send(env, chat, T.terms(), kb([BACK]));
@@ -228,7 +344,7 @@ async function route(env, chat, key, user, msgId) {
     case "about": return media(env, chat, "video", "about.mp4", T.about(), kb([[{ text: "🔥 Примеры работ", callback_data: "ex" }], BACK]));
     case "catalog": return send(env, chat, `🎨 Каталог стилей и примеры — на сайте:\n${SITE}\n\nВыберите стиль, а потом оформите заказ здесь.`, kb([[{ text: "🎨 Открыть каталог", url: SITE }], BACK]));
     case "calc": { const s = await getS(env, user.id); s.c = { svc: "pack", disc: "promo" }; await setS(env, user.id, s); return showCalc(env, chat, s.c); }
-    case "order": { const s = await getS(env, user.id); s.o = { disc: "promo" }; s.step = "svc"; await setS(env, user.id, s); return askService(env, chat); }
+    case "order": { const s = await getS(env, user.id); s.o = { disc: s.ref && !s.refDone ? "friend" : "promo" }; s.step = "svc"; await setS(env, user.id, s); await markStarted(env, user.id, chat); return askService(env, chat); }
     case "human": { const s = await getS(env, user.id); s.step = "ask"; await setS(env, user.id, s);
       return send(env, chat, "👩‍🎨 Напишите ваш вопрос одним сообщением — я сразу передам его Светлане, она ответит здесь же.\n\nИли напишите ей напрямую: @sveta_muzyka", kb([[{ text: "Написать @sveta_muzyka", url: "https://t.me/sveta_muzyka" }], [{ text: "⬅️ Меню", callback_data: "menu" }]])); }
     case "review": { const s = await getS(env, user.id); s.step = "review"; await setS(env, user.id, s);
@@ -240,20 +356,33 @@ async function route(env, chat, key, user, msgId) {
 async function onCallback(env, q) {
   const chat = q.message.chat.id, user = q.from, d = q.data || "";
   await tg(env, "answerCallbackQuery", { callback_query_id: q.id });
+  if (d.startsWith("st:") && isAdmin(user)) {
+    const [, uid, code] = d.split(":"); const cs = await getS(env, uid); const o = cs.last || null;
+    await send(env, uid, STATUS[code][1](o), code === "done" ? kb([[{ text: "⭐ Оставить отзыв (−15%)", callback_data: "review" }], [{ text: "🤝 Пригласить друга", callback_data: "invite" }]]) : code === "cancel" ? MAIN_KB : undefined);
+    await tg(env, "editMessageReplyMarkup", { chat_id: chat, message_id: q.message.message_id, reply_markup: statusKb(uid, code) });
+    return send(env, chat, `✅ Клиенту отправлен статус: ${STATUS[code][0]}`);
+  }
+  if (d === "bc:go" && isAdmin(user)) { const job = JSON.parse((await env.KV.get("bc")) || "null"); if (!job) return send(env, chat, "Рассылка не найдена.");
+    job.go = 1; await env.KV.put("bc", JSON.stringify(job)); await send(env, chat, "📣 Рассылка запущена! Отправляю порциями, в конце пришлю отчёт."); return runBroadcast(env, job, 30); }
+  if (d === "bc:no" && isAdmin(user)) { await env.KV.delete("bc"); return send(env, chat, "Рассылка отменена."); }
   const s = await getS(env, user.id);
+  if (!s.reg && !s.unsub) { s.reg = 1; await env.KV.put("u:" + user.id, "1"); await setS(env, user.id, s); }
+  if (d.startsWith("q1:")) { s.q = { k: d.slice(3) }; await setS(env, user.id, s); return quizStep(env, chat, s, 2); }
+  if (d.startsWith("q2:")) { s.q = { ...(s.q || {}), m: +d.slice(3) }; await setS(env, user.id, s); return quizStep(env, chat, s, 3); }
+  if (d.startsWith("q3:")) { s.q = { ...(s.q || {}), w: +d.slice(3) }; await setS(env, user.id, s); if (s.q.k == null || s.q.m == null) return quizStep(env, chat, s, 1); return quizResult(env, chat, s); }
   if (d.startsWith("c:")) {
     s.c = s.c || { svc: "pack", disc: "promo" };
     const [, a, b] = d.split(":");
     if (a === "svc") s.c.svc = b;
     if (a === "urg") s.c.urgent = !s.c.urgent;
     if (a === "disc") s.c.disc = s.c.disc === b ? "no" : b;
-    if (a === "order") { s.o = { ...s.c }; s.step = "sph"; await setS(env, user.id, s); return askSphere(env, chat); }
+    if (a === "order") { s.o = { ...s.c }; s.step = "sph"; await setS(env, user.id, s); await markStarted(env, user.id, chat); return askSphere(env, chat); }
     await setS(env, user.id, s); return showCalc(env, chat, s.c, q.message.message_id);
   }
   if (d.startsWith("cat:")) return showSphere(env, chat, d.slice(4));
   if (d.startsWith("it:")) { const [, k, i] = d.split(":"); return showItem(env, chat, k, +i); }
   if (d.startsWith("w:")) { const [, k, i, r] = d.split(":"); const it = CAT[k]?.[+i]; const ref = it?.r[+r];
-    s.o = { disc: "promo", sphere: k, style: it ? `${it.n} — «${ref ? ref[1] : ""}»` : "" }; s.step = "svc"; await setS(env, user.id, s);
+    s.o = { disc: s.ref && !s.refDone ? "friend" : "promo", sphere: k, style: it ? `${it.n} — «${ref ? ref[1] : ""}»` : "" }; s.step = "svc"; await setS(env, user.id, s); await markStarted(env, user.id, chat);
     if (ref) await media(env, chat, "photo", ref[0], `💛 Отличный выбор: <b>${esc(it.n)}</b>, стиль «${esc(ref[1])}».
 Сделаю такой же — с вашим названием, ценами и контактами.`);
     return askService(env, chat); }
@@ -278,8 +407,12 @@ async function afterStyle(env, chat, user, s) {
 async function confirmOrder(env, chat, user, s) {
   if (!s.o || !s.o.svc) return route(env, chat, "order", user);
   const admin = await getAdmin(env);
-  if (admin) await send(env, admin, summary(s.o, true, user) + "\n\n<i>Ответьте на это сообщение — я перешлю ответ клиенту.</i>", user.username ? kb([[{ text: "Написать клиенту", url: "https://t.me/" + user.username }]]) : undefined);
-  s.step = null; s.last = s.o; s.o = null; await setS(env, user.id, s);
+  const refNote = s.ref && !s.refDone ? `\n🤝 Пришёл(а) по приглашению клиента #ref${s.ref}` : "";
+  if (admin) { const k2 = statusKb(user.id); if (user.username) k2.inline_keyboard.push([{ text: "💬 Написать клиенту", url: "https://t.me/" + user.username }]);
+    await send(env, admin, summary(s.o, true, user) + refNote + "\n\n<i>Кнопки ниже — статус для клиента. Ответьте на сообщение — я перешлю ответ.</i>", k2); }
+  if (s.ref && !s.refDone) { s.refDone = 1;
+    await send(env, s.ref, `🎁 <b>Ваш друг оформил заказ по вашей ссылке!</b>\n\nЗа вами закреплена скидка <b>−15%</b> на следующий заказ. Спасибо, что рекомендуете VISUALL 💛`, kb([[{ text: "🛒 Оформить заказ", callback_data: "order" }]])); }
+  s.step = null; s.last = s.o; s.o = null; await setS(env, user.id, s); await clearStarted(env, user.id);
   await env.KV.put("orders", String(+(await env.KV.get("orders") || 0) + 1));
   return media(env, chat, "anim", "kit.mp4", `🎉 <b>Заявка отправлена Светлане!</b>\n\nОна ответит в ближайшее время и согласует детали. А пока подготовьте:\n• текст для рекламы: услуги и цены\n• телефон и соцсети\n• логотип и фото, если есть\n\nМожно прислать всё сюда прямо сейчас — я передам.\n\n💳 Предоплата 50% — только после согласования со Светланой (СБП, Сбербанк, ${PHONE}). 🧾 Выдаётся чек самозанятой.`, MAIN_KB);
 }
@@ -290,7 +423,7 @@ async function onMessage(env, m) {
   // администратор
   if (user.username && user.username.toLowerCase() === ADMIN_USERNAME) {
     const cur = await getAdmin(env);
-    if (cur !== String(chat)) { await env.KV.put("admin", String(chat)); await send(env, chat, "✅ Вы подключены как администратор. Сюда будут приходить заявки и вопросы клиентов. Чтобы ответить клиенту — ответьте (свайп → «Ответить») на его сообщение.\n\nКоманды: /stats — число заявок, /menu — посмотреть бота глазами клиента."); }
+    if (cur !== String(chat)) { await env.KV.put("admin", String(chat)); await send(env, chat, "✅ Вы подключены как администратор. Сюда будут приходить заявки и вопросы клиентов. Чтобы ответить клиенту — ответьте (свайп → «Ответить») на его сообщение.\n\nКоманды:\n/stats — заявки и пользователи\n/рассылка текст — новость всем клиентам (можно с фото)\n/menu — посмотреть бота глазами клиента\n\nПод каждой заявкой — кнопки статуса: клиент сразу получит уведомление."); }
     const r = m.reply_to_message;
     const mid = r && (r.text || r.caption || "").match(/#id(\d+)/);
     if (mid) {
@@ -299,16 +432,31 @@ async function onMessage(env, m) {
       else await tg(env, "copyMessage", { chat_id: to, from_chat_id: chat, message_id: m.message_id });
       return send(env, chat, "✅ Отправлено клиенту.");
     }
+    if (/^\/(рассылка|broadcast)(\s|$)/i.test(text)) {
+      const body = text.replace(/^\/(рассылка|broadcast)\s*/i, "").trim();
+      if (!body) return send(env, chat, "📣 Напишите текст после команды, например:\n<code>/рассылка 🎄 Новогодние сертификаты −20% до 15 декабря!</code>\n\nМожно отправить фото с такой подписью — разошлю с картинкой.");
+      const job = { text: body, photo: m.photo ? m.photo[m.photo.length - 1].file_id : null, sent: 0 };
+      await env.KV.put("bc", JSON.stringify(job));
+      if (job.photo) await tg(env, "sendPhoto", { chat_id: chat, photo: job.photo, caption: body, parse_mode: "HTML" }); else await send(env, chat, body);
+      return send(env, chat, `👆 Так увидят рассылку клиенты (примерно ${+(await env.KV.get("users") || 0)} чел.). Отправляем?`, kb([[{ text: "✅ Отправить всем", callback_data: "bc:go" }, { text: "❌ Отмена", callback_data: "bc:no" }]]));
+    }
     if (text === "/stats") { const n = +(await env.KV.get("orders") || 0), u = +(await env.KV.get("users") || 0); return send(env, chat, `📊 Заявок: ${n}\nПользователей: ${u}`); }
-    if (text !== "/menu" && text !== "/start") return send(env, chat, "Чтобы ответить клиенту, ответьте на его сообщение (свайп → «Ответить»). /menu — меню клиента.");
+    if (text !== "/menu" && !text.startsWith("/start")) return send(env, chat, "Чтобы ответить клиенту, ответьте на его сообщение (свайп → «Ответить»).\n/рассылка текст — новость всем клиентам\n/stats — статистика\n/menu — меню клиента.");
   }
   const s = await getS(env, user.id);
-  if (!s.seen) { s.seen = 1; await env.KV.put("users", String(+(await env.KV.get("users") || 0) + 1)); await setS(env, user.id, s); }
+  let dirty = false;
+  if (!s.seen) { s.seen = 1; dirty = true; await env.KV.put("users", String(+(await env.KV.get("users") || 0) + 1)); }
+  if (!s.reg && !s.unsub) { s.reg = 1; dirty = true; await env.KV.put("u:" + user.id, "1"); }
+  const refm = text.match(/^\/start\s+ref_(\d+)/);
+  if (refm && refm[1] !== String(user.id) && !s.ref && !s.last) { s.ref = refm[1]; dirty = true;
+    await send(env, chat, "🎁 Вас пригласил друг — на первый заказ действует скидка <b>−15%</b>! Она подставится автоматически."); }
+  if (dirty) await setS(env, user.id, s);
 
   if (text.startsWith("/start") || text === "/menu") { s.step = null; await setS(env, user.id, s); return route(env, chat, "menu", user); }
   if (text === "/price" || text === "/prices") return route(env, chat, "prices", user);
   if (text === "/order") return route(env, chat, "order", user);
   if (text === "/help") return route(env, chat, "faq", user);
+  if (text === "/quiz") return route(env, chat, "quiz", user);
 
   // шаги заказа
   if (s.step === "biz" && text) { s.o.biz = text.slice(0, 120); if (s.o.style) return afterStyle(env, chat, user, s); s.step = "style"; await setS(env, user.id, s); return askStyle(env, chat); }
@@ -346,6 +494,7 @@ async function onMessage(env, m) {
 }
 
 export default {
+  async scheduled(event, env, ctx) { try { await cronTick(env); } catch (e) { console.log("cron", e && e.stack || e); } },
   async fetch(req, env) {
     const url = new URL(req.url);
     if (req.method === "GET") return new Response("VISUALL bot is running ✨");

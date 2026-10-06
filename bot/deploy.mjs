@@ -31,7 +31,8 @@ await new Promise((r) => setTimeout(r, 5000));
 await tg("setWebhook", { url, secret_token: secret, allowed_updates: ["message", "callback_query"], drop_pending_updates: false });
 await tg("setMyCommands", { commands: [
   { command: "start", description: "Главное меню" }, { command: "order", description: "Оформить заказ" },
-  { command: "price", description: "Цены" }, { command: "help", description: "Частые вопросы" } ] });
+  { command: "price", description: "Цены" }, { command: "quiz", description: "Квиз: какой стиль ваш?" }, { command: "help", description: "Частые вопросы" } ] });
+await tg("setChatMenuButton", { menu_button: { type: "web_app", text: "Каталог", web_app: { url: "https://svetayurkina-rgb.github.io/visuall-site/" } } });
 await tg("setMyShortDescription", { short_description: "Реклама для бизнеса от 990 ₽: постеры, визитки, видео, сайты. Промокод VISUALL10 — −10%." });
 await tg("setMyDescription", { description: "Привет! Я бот VISUALL — помощник Светланы Музыки.\n\nПокажу цены и сроки, посчитаю заказ со скидкой и оформлю заявку за минуту. Светлана ответит здесь же.\n\nНажмите «Старт» 👇" });
 const me = await tg("getMe", {});
