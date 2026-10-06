@@ -2,7 +2,9 @@
 // Секреты: BOT_TOKEN, WEBHOOK_SECRET. Хранилище: KV (binding KV).
 // Администратор определяется по username ADMIN_USERNAME (без @).
 
+import { CAT } from "./catalog.js";
 const SITE = "https://svetayurkina-rgb.github.io/visuall-site/";
+const IMG = SITE + "img/";
 const ADMIN_USERNAME = "sveta_muzyka";
 const PHONE = "+7 (925) 062-00-01";
 const PROMO = "VISUALL10";
@@ -44,12 +46,13 @@ const T = {
 };
 
 const MAIN_KB = { inline_keyboard: [
-  [{ text: "🛒 Оформить заказ", callback_data: "order" }],
-  [{ text: "💰 Цены", callback_data: "prices" }, { text: "🧮 Рассчитать", callback_data: "calc" }],
-  [{ text: "🎨 Каталог стилей", url: SITE }, { text: "🎟 Скидки", callback_data: "disc" }],
-  [{ text: "⏱ Сроки и правки", callback_data: "terms" }, { text: "💳 Оплата", callback_data: "pay" }],
-  [{ text: "📝 Как проходит заказ", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
-  [{ text: "👩‍🎨 Позвать Светлану", callback_data: "human" }],
+  [{ text: "🛒 Оформить заказ — 1 минута", callback_data: "order" }],
+  [{ text: "🔥 Примеры работ", callback_data: "ex" }, { text: "🎲 Удиви меня", callback_data: "rnd" }],
+  [{ text: "💰 Цены", callback_data: "prices" }, { text: "🧮 Калькулятор", callback_data: "calc" }],
+  [{ text: "🎟 Скидки до −20%", callback_data: "disc" }, { text: "💳 Оплата", callback_data: "pay" }],
+  [{ text: "⏱ Сроки и правки", callback_data: "terms" }, { text: "📝 Как заказать", callback_data: "how" }],
+  [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "❓ Вопросы", callback_data: "faq" }],
+  [{ text: "🌐 Сайт VISUALL", url: SITE }, { text: "💬 Позвать Светлану", callback_data: "human" }],
 ] };
 const BACK = [{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }];
 const kb = (rows) => ({ inline_keyboard: rows });
@@ -63,6 +66,59 @@ async function tg(env, method, body) {
 }
 const send = (env, chat_id, text, reply_markup, extra = {}) =>
   tg(env, "sendMessage", { chat_id, text, parse_mode: "HTML", disable_web_page_preview: true, reply_markup, ...extra });
+
+// медиа с запасным вариантом текстом
+async function media(env, chat, kind, file, caption, reply_markup) {
+  const method = { photo: "sendPhoto", video: "sendVideo", anim: "sendAnimation" }[kind];
+  const field = kind === "anim" ? "animation" : kind;
+  const body = { chat_id: chat, [field]: file.startsWith("http") ? file : IMG + file, caption, parse_mode: "HTML", reply_markup };
+  if (kind !== "photo") body.supports_streaming = true;
+  const r = await tg(env, method, body);
+  if (!r || r.ok === false) return send(env, chat, caption, reply_markup);
+  return r;
+}
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+
+// ---------- примеры работ ----------
+const SPH_EMOJI = { beauty: "💅", food: "🍰", kids: "🧸", consult: "🧠", house: "🏠", auto: "🚗", pets: "🐾", fit: "💪", other: "✨" };
+async function showSpheres(env, chat) {
+  const ks = Object.keys(CAT).filter((k) => CAT[k].length), rows = [];
+  for (let i = 0; i < ks.length; i += 2) rows.push(ks.slice(i, i + 2).map((k) => ({ text: `${SPH_EMOJI[k] || ""} ${SPHERES[k]}`, callback_data: "cat:" + k })));
+  rows.push([{ text: "🎲 Удиви меня", callback_data: "rnd" }, { text: "⬅️ Меню", callback_data: "menu" }]);
+  const total = Object.values(CAT).flat().reduce((n, i) => n + i.r.length, 0);
+  return media(env, chat, "anim", "kit.mp4", `🔥 <b>Примеры работ</b> — ${total}+ постеров в разных стилях.
+
+Выберите сферу — покажу работы, а понравившийся стиль сделаю для вашего бизнеса 👇`, kb(rows));
+}
+async function showSphere(env, chat, k) {
+  const items = CAT[k] || []; const rows = [];
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2).map((it, x) => ({ text: `${it.n} · ${it.r.length}`, callback_data: `it:${k}:${i + x}` })));
+  rows.push([{ text: "⬅️ Все сферы", callback_data: "ex" }, { text: "⬅️ Меню", callback_data: "menu" }]);
+  return media(env, chat, "anim", `sphv-${k}.mp4`, `${SPH_EMOJI[k] || ""} <b>${esc(SPHERES[k])}</b>
+
+Выберите услугу — пришлю примеры постеров 👇`, kb(rows));
+}
+async function showItem(env, chat, k, idx) {
+  const it = (CAT[k] || [])[idx]; if (!it) return showSpheres(env, chat);
+  const refs = it.r.slice(0, 10);
+  const r = await tg(env, "sendMediaGroup", { chat_id: chat, media: refs.map(([f, t], i) => ({ type: "photo", media: IMG + f, caption: i === 0 ? `<b>${esc(it.n)}</b> · стиль «${esc(t)}»` : `«${esc(t)}»`, parse_mode: "HTML" })) });
+  if (!r || r.ok === false) for (const [f, t] of refs.slice(0, 3)) await media(env, chat, "photo", f, `<b>${esc(it.n)}</b> · «${esc(t)}»`);
+  const rows = [];
+  for (let i = 0; i < refs.length; i += 2) rows.push(refs.slice(i, i + 2).map(([, t], x) => ({ text: `💛 Хочу «${t}»`, callback_data: `w:${k}:${idx}:${i + x}` })));
+  rows.push([{ text: "⬅️ Другие услуги", callback_data: "cat:" + k }, { text: "⬅️ Меню", callback_data: "menu" }]);
+  return send(env, chat, `✨ <b>${esc(it.n)}</b> — какой стиль нравится?
+Нажмите — и я оформлю заявку: такой же дизайн, но с вашим названием, ценами и контактами.
+
+Постер — 990 ₽ · пакет из 4 форматов — 2 590 ₽
+🎟 −10% по промокоду <code>${PROMO}</code>`, kb(rows));
+}
+async function showRandom(env, chat) {
+  const k = pick(Object.keys(CAT).filter((x) => CAT[x].length)), idx = Math.floor(Math.random() * CAT[k].length), it = CAT[k][idx], ri = Math.floor(Math.random() * it.r.length), [f, t] = it.r[ri];
+  return media(env, chat, "photo", f, `🎲 <b>${esc(it.n)}</b> · стиль «${esc(t)}»
+${SPH_EMOJI[k] || ""} ${esc(SPHERES[k])}
+
+Такой же — с вашим названием и ценами — от 990 ₽.`, kb([[{ text: "💛 Хочу такой же", callback_data: `w:${k}:${idx}:${ri}` }], [{ text: "🎲 Ещё", callback_data: "rnd" }, { text: "🔥 Все примеры", callback_data: "ex" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+}
 
 // ---------- состояние ----------
 const getS = async (env, id) => JSON.parse((await env.KV.get("s:" + id)) || "null") || {};
@@ -159,14 +215,16 @@ async function forwardToAdmin(env, user, text) {
 
 async function route(env, chat, key, user, msgId) {
   switch (key) {
-    case "menu": return send(env, chat, T.hello(user?.first_name), MAIN_KB);
-    case "prices": return send(env, chat, T.prices(), kb([BACK, [{ text: "🧮 Рассчитать заказ", callback_data: "calc" }]]));
+    case "menu": return media(env, chat, "video", "hero.mp4", T.hello(user?.first_name), MAIN_KB);
+    case "ex": return showSpheres(env, chat);
+    case "rnd": return showRandom(env, chat);
+    case "prices": return media(env, chat, "photo", "price-v.jpg", T.prices(), kb([BACK, [{ text: "🧮 Рассчитать заказ", callback_data: "calc" }]]));
     case "terms": return send(env, chat, T.terms(), kb([BACK]));
     case "pay": return send(env, chat, T.pay(), kb([BACK]));
-    case "disc": return send(env, chat, T.disc(), kb([BACK, [{ text: "⭐ Оставить отзыв", callback_data: "review" }]]));
-    case "how": return send(env, chat, T.how(), kb([BACK]));
+    case "disc": return media(env, chat, "anim", "banner.mp4", T.disc(), kb([BACK, [{ text: "⭐ Оставить отзыв", callback_data: "review" }]]));
+    case "how": return media(env, chat, "anim", "price.mp4", T.how(), kb([BACK]));
     case "faq": return send(env, chat, T.faq(), kb([BACK]));
-    case "about": return send(env, chat, T.about(), kb([BACK]));
+    case "about": return media(env, chat, "video", "about.mp4", T.about(), kb([[{ text: "🔥 Примеры работ", callback_data: "ex" }], BACK]));
     case "catalog": return send(env, chat, `🎨 Каталог стилей и примеры — на сайте:\n${SITE}\n\nВыберите стиль, а потом оформите заказ здесь.`, kb([[{ text: "🎨 Открыть каталог", url: SITE }], BACK]));
     case "calc": { const s = await getS(env, user.id); s.c = { svc: "pack", disc: "promo" }; await setS(env, user.id, s); return showCalc(env, chat, s.c); }
     case "order": { const s = await getS(env, user.id); s.o = { disc: "promo" }; s.step = "svc"; await setS(env, user.id, s); return askService(env, chat); }
@@ -191,7 +249,16 @@ async function onCallback(env, q) {
     if (a === "order") { s.o = { ...s.c }; s.step = "sph"; await setS(env, user.id, s); return askSphere(env, chat); }
     await setS(env, user.id, s); return showCalc(env, chat, s.c, q.message.message_id);
   }
-  if (d.startsWith("svc:")) { s.o = { ...(s.o || {}), svc: d.slice(4) }; s.step = "sph"; await setS(env, user.id, s); return askSphere(env, chat); }
+  if (d.startsWith("cat:")) return showSphere(env, chat, d.slice(4));
+  if (d.startsWith("it:")) { const [, k, i] = d.split(":"); return showItem(env, chat, k, +i); }
+  if (d.startsWith("w:")) { const [, k, i, r] = d.split(":"); const it = CAT[k]?.[+i]; const ref = it?.r[+r];
+    s.o = { disc: "promo", sphere: k, style: it ? `${it.n} — «${ref ? ref[1] : ""}»` : "" }; s.step = "svc"; await setS(env, user.id, s);
+    if (ref) await media(env, chat, "photo", ref[0], `💛 Отличный выбор: <b>${esc(it.n)}</b>, стиль «${esc(ref[1])}».
+Сделаю такой же — с вашим названием, ценами и контактами.`);
+    return askService(env, chat); }
+  if (d.startsWith("svc:")) { s.o = { ...(s.o || {}), svc: d.slice(4) };
+    if (s.o.sphere) { s.step = "biz"; await setS(env, user.id, s); return askBiz(env, chat); }
+    s.step = "sph"; await setS(env, user.id, s); return askSphere(env, chat); }
   if (d.startsWith("sph:")) { s.o = s.o || {}; s.o.sphere = d.slice(4); s.step = "biz"; await setS(env, user.id, s); return askBiz(env, chat); }
   if (d === "style:help") { s.o = s.o || {}; s.o.style = "нужна помощь с выбором стиля"; return afterStyle(env, chat, user, s); }
   if (d === "urg") { s.o.urgent = !s.o.urgent; await setS(env, user.id, s); return askOptions(env, chat, s.o); }
@@ -213,7 +280,7 @@ async function confirmOrder(env, chat, user, s) {
   if (admin) await send(env, admin, summary(s.o, true, user) + "\n\n<i>Ответьте на это сообщение — я перешлю ответ клиенту.</i>", user.username ? kb([[{ text: "Написать клиенту", url: "https://t.me/" + user.username }]]) : undefined);
   s.step = null; s.last = s.o; s.o = null; await setS(env, user.id, s);
   await env.KV.put("orders", String(+(await env.KV.get("orders") || 0) + 1));
-  return send(env, chat, `🎉 <b>Заявка отправлена Светлане!</b>\n\nОна ответит в ближайшее время и согласует детали. А пока подготовьте:\n• текст для рекламы: услуги и цены\n• телефон и соцсети\n• логотип и фото, если есть\n\nМожно прислать всё сюда прямо сейчас — я передам.\n\n💳 Предоплата 50% — только после согласования со Светланой (СБП, Сбербанк, ${PHONE}). 🧾 Выдаётся чек самозанятой.`, MAIN_KB);
+  return media(env, chat, "anim", "kit.mp4", `🎉 <b>Заявка отправлена Светлане!</b>\n\nОна ответит в ближайшее время и согласует детали. А пока подготовьте:\n• текст для рекламы: услуги и цены\n• телефон и соцсети\n• логотип и фото, если есть\n\nМожно прислать всё сюда прямо сейчас — я передам.\n\n💳 Предоплата 50% — только после согласования со Светланой (СБП, Сбербанк, ${PHONE}). 🧾 Выдаётся чек самозанятой.`, MAIN_KB);
 }
 
 async function onMessage(env, m) {
@@ -243,7 +310,7 @@ async function onMessage(env, m) {
   if (text === "/help") return route(env, chat, "faq", user);
 
   // шаги заказа
-  if (s.step === "biz" && text) { s.o.biz = text.slice(0, 120); s.step = "style"; await setS(env, user.id, s); return askStyle(env, chat); }
+  if (s.step === "biz" && text) { s.o.biz = text.slice(0, 120); if (s.o.style) return afterStyle(env, chat, user, s); s.step = "style"; await setS(env, user.id, s); return askStyle(env, chat); }
   if (s.step === "style" && text) { s.o.style = text.slice(0, 300); return afterStyle(env, chat, user, s); }
   if (s.step === "phone") {
     if (m.contact) s.o.phone = m.contact.phone_number;
