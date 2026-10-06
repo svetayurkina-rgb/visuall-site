@@ -606,6 +606,17 @@ async function onMessage(env, m) {
     await send(env, chat, "🎁 Вас пригласил друг — на первый заказ действует скидка <b>−15%</b>! Она подставится автоматически."); }
   if (dirty) await setS(env, user.id, s);
 
+  const om = text.match(/^\/start\s+o_([a-z]+)(?:-([a-z0-9]+))?(?:-([a-z]+))?/i);
+  if (om && SERVICES[om[1]]) {
+    const svc = om[1], sid = om[2] && om[2] !== "x" ? om[2] : null, fl = om[3];
+    s.o = { disc: fl === "ba" ? "ba" : fl === "fr" || (s.ref && !s.refDone) ? "friend" : "promo" }; s.step = "svc";
+    let found = null; if (sid) for (const [k, items] of Object.entries(CAT)) items.forEach((it, i) => { if (it.id === sid) found = [k, i]; });
+    if (found) { const it = CAT[found[0]][found[1]]; s.o.sphere = found[0]; s.o.style = `как в каталоге: ${it.n}`; }
+    if (fl === "ph") s.o.style = (s.o.style ? s.o.style + "; " : "") + "постер из моего фото";
+    await setS(env, user.id, s); await markStarted(env, user.id, chat);
+    await send(env, chat, `👋 Здравствуйте${user.first_name ? ", " + esc(user.first_name) : ""}! Вы пришли с сайта VISUALL.\nОформим заказ «${esc(SERVICES[svc].n)}» — это займёт пару минут. Я задам несколько вопросов, чтобы Светлана сразу получила всё нужное.${found ? `\n\n🎨 Стиль и сфера уже отмечены: ${esc(CAT[found[0]][found[1]].n)}.` : ""}${!SERVICES[svc].design ? "" : s.o.disc === "ba" ? "\n\n🎟 Скидка −20% за «было — стало» подставлена автоматически." : s.o.disc === "friend" ? "\n\n🎟 Скидка −15% по приглашению друга подставлена автоматически." : `\n\n🎟 Промокод <code>${PROMO}</code> (−10%) подставлен автоматически.`}`);
+    return onCallback(env, { id: "auto", from: user, data: "svc:" + svc, message: { chat: { id: chat }, message_id: 0 } });
+  }
   if (text.startsWith("/start") || text === "/menu") { s.step = null; await setS(env, user.id, s); return route(env, chat, "menu", user); }
   if (text === "/price" || text === "/prices") return route(env, chat, "prices", user);
   if (text === "/order") return route(env, chat, "order", user);

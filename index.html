@@ -1038,7 +1038,7 @@ main,footer{position:relative;z-index:1}
         <div class="calc-old" id="cOld"></div>
         <div class="calc-sum" id="cSum">0 ₽</div>
         <div class="calc-days" id="cDays"></div>
-        <button class="btn gold" type="button" id="cSend">Отправить заказ в Telegram</button>
+        <button class="btn gold" type="button" id="cSend">Оформить в боте за 1 минуту</button>
         <div class="dl-cap" style="text-align:left">Итог предварительный: для видео, бота и сайта указана цена «от» — точную назову после брифа. Оплата — СБП на Сбербанк по номеру +7 (925) 062-00-01, предоплата 50%. Выдаю чек самозанятой.</div>
       </div>
     </div>
@@ -1321,6 +1321,7 @@ const close=()=>{document.getElementById("kit").hidden=true;document.body.style.
 document.getElementById("kitClose").onclick=close;
 document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
 document.getElementById("kitWantBtn").onclick=()=>{
+  if(window.toBot){const h=location.hash.slice(1);window.toBot("pack",/^[a-z0-9]+$/i.test(h)?h:"");return;}
   const t=document.getElementById("kitMsg");
   t.value=`Здравствуйте! Мне понравилась коллекция для «${last.service}». Хочу заказать пакет из 4 форматов (постер, визитка, сертификат, прайс на 3 страницы) — 2 590 ₽. Стиль: ${last.title}.`;
   document.getElementById("kitWant").hidden=false;
@@ -3267,7 +3268,7 @@ window.renderPrompts=function(cur){
     const im=new Image();im.onload=()=>{try{const c=document.createElement("canvas");c.width=20;c.height=20;const x=c.getContext("2d");x.drawImage(im,0,0,20,20);const d=x.getImageData(0,0,20,20).data;let r=0,g=0,bb=0;for(let k=0;k<d.length;k+=4){r+=d[k];g+=d[k+1];bb+=d[k+2];}const n=d.length/4;$("tryCard").style.setProperty("--tc",`rgb(${r/n*.35|0},${g/n*.35|0},${bb/n*.35|0})`);}catch(e){}};im.src=`img/${TRY[tryI][0]}.jpg`;});
   ["tryName","tryPhone"].forEach(id=>$(id).addEventListener("input",tryUpd));
   $("tryOrder").onclick=()=>{const m=`Здравствуйте! Хочу пакет из 4 форматов (постер, визитка, сертификат, прайс) — 2 590 ₽.\nСтиль как в примере: ${SERVICES[TRY[tryI][1]].name}.\nНазвание: ${$("tryName").value.trim()||"—"}\nТелефон: ${$("tryPhone").value.trim()||"—"}`;try{navigator.clipboard.writeText(m+"\n🎟 Промокод: VISUALL10").catch(()=>{});$("tryNote").hidden=false;}catch(e){}};
-  $("tryOrder").href="https://t.me/sveta_muzyka";$("tryOrder").addEventListener("click",()=>{$("tryOrder").href="https://t.me/sveta_muzyka?text="+encodeURIComponent(`Здравствуйте! Хочу пакет из 4 форматов (постер, визитка, сертификат, прайс) — 2 590 ₽.\nСтиль как в примере: ${SERVICES[TRY[tryI][1]].name}.\nНазвание: ${$("tryName").value.trim()||"—"}\nТелефон: ${$("tryPhone").value.trim()||"—"}\n🎟 Промокод: VISUALL10`);},true);
+  $("tryOrder").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();toBot("pack",TRY[tryI][1]);},true);
   tryUpd();
   /* quiz */
   const MOODS=[["Нежно и спокойно",["Нежный","Нежный бьюти","Шёлк и сатин","Минимализм","Эко","Вязаный"]],["Ярко и смело",["Поп-арт","Кибер-гламур","Y2K","Глянцевый 3D"]],["Дорого и премиально",["Люкс","Тёмный люкс","Премиум","Жидкий хром","Арт-эдиториал"]],["Сказочно и необычно",["Сюрреализм","Детский","Глянцевый 3D","Ретро"]]];
@@ -3332,14 +3333,21 @@ window.renderPrompts=function(cur){
     $("mExtra").querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{mS.fmt=b.dataset.f;mRender();});
     $("mText").value=mTxt();$("mNote").hidden=true;
   };
-  window.openMsg=(k,o={})=>{if(k)mS.k=k;if(o.style!==undefined)mS.style=o.style;if(o.biz)mS.biz=o.biz;mRender();openM("msgModal");};
+  /* все заказы с сайта — в бота: он соберёт полный бриф */
+  const BOT="https://t.me/visuall_sveta_bot";
+  const BOTMAP={poster:"poster",combo:"combo",pack:"pack",custom:"custom",photo:"poster-ph",video:"video",insta:"insta",bot:"bot",site:"site",all:"all",ba:"poster-ba",friend:"poster-fr",ny:"combo",card:"card",cert:"cert",price:"price",text:"text"};
+  window.toBot=(k,sid)=>{const m=BOTMAP[k];let p=m?"o_"+m.split("-")[0]:"";
+    if(m){const fl=m.split("-")[1];if(sid&&/^[a-z0-9]+$/i.test(sid))p+="-"+sid;else if(fl)p+="-x";if(fl)p+="-"+fl;}
+    document.querySelectorAll(".fx-modal").forEach(x=>x.hidden=true);document.body.style.overflow="";
+    window.open(BOT+(p?"?start="+p.slice(0,64):""),"_blank","noopener");};
+  window.openMsg=(k,o={})=>{const sid=o.sid||((!$("view-collection").hidden&&cur)?cur:"");toBot(k==="question"?"":k,sid);};
   const mCopy=()=>{const t=$("mText").value;const fb=()=>{const ta=$("mText");ta.select();try{document.execCommand("copy")}catch(_){}};try{navigator.clipboard.writeText(t).catch(fb)}catch(e){fb()}$("mNote").hidden=false;};
   $("mCopy").onclick=mCopy;
   $("mSend").onclick=()=>{mCopy();window.open("https://t.me/sveta_muzyka?text="+encodeURIComponent($("mText").value),"_blank","noopener");};
   document.addEventListener("click",e=>{const a=e.target.closest('a[href^="https://t.me/sveta_muzyka"]');if(!a||a.hasAttribute("data-direct"))return;
     e.preventDefault();document.querySelectorAll(".fx-modal").forEach(m=>{if(m.id!=="msgModal")m.hidden=true;});
     let style="";if(!$("view-collection").hidden&&cur)style=SERVICES[cur].name;
-    openMsg(a.dataset.pick||(a.classList.contains("tg-float")||/Связаться|Начать|Написать/.test(a.textContent)?"question":null)||"pack",{style});},true);
+    openMsg(a.dataset.pick||(a.classList.contains("tg-float")||/Связаться|Начать|Написать|@sveta/.test(a.textContent)?"question":null)||"pack",{style});},true);
   /* reveal + count-up + hero tilt */
   const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(!RM&&"IntersectionObserver" in window){
@@ -3430,7 +3438,8 @@ requestAnimationFrame(f);})();</script>
     $("cSend").disabled=!rows.length;
   }
   document.querySelector(".calc").addEventListener("change",calc);calc();
-  $("cSend").onclick=()=>{if(!last)return;window.openMsg("question");$("mText").value=last;};
+  $("cSend").onclick=()=>{if(!last)return;const b=document.querySelector('[name=cb]:checked').value;const ex=[...$("cExtra").querySelectorAll("input:checked")].map(i=>i.value).filter(v=>v!=="urgent");
+    toBot(b!=="none"?b:(ex[0]||"poster"));};
   /* exit intent */
   let shown=false;try{shown=sessionStorage.getItem("vx")==="1"}catch(e){}
   const t0=Date.now();
