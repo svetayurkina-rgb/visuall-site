@@ -26,6 +26,7 @@ const secret = createHash("sha256").update("visuall:" + BOT).digest("hex").slice
 sh("npx --yes wrangler@4 secret put BOT_TOKEN", BOT);
 sh("npx --yes wrangler@4 secret put WEBHOOK_SECRET", secret);
 const url = `https://visuall-bot.${subdomain}.workers.dev/`;
+console.log(`::notice title=WORKER_URL::${url}`);
 const tg = async (m, b) => { const r = await (await fetch(`https://api.telegram.org/bot${BOT}/${m}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(b) })).json(); console.log(m, r.ok ? "ok" : JSON.stringify(r)); return r; };
 await new Promise((r) => setTimeout(r, 5000));
 await tg("setWebhook", { url, secret_token: secret, allowed_updates: ["message", "callback_query"], drop_pending_updates: false });

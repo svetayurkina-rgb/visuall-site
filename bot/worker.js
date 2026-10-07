@@ -198,10 +198,120 @@ ${link}
 Отправьте её друзьям с бизнесом. Когда друг оформит заказ по ссылке, ему — скидка 15%, а вам — 15% на следующий заказ. Я сама сообщу вам, когда это случится 🎁`, kb([[{ text: "📤 Отправить другу", url: share }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
 }
 
+// ---------- аналитика: кто и сколько был в боте и на сайте ----------
+const MSKD = (t = Date.now()) => new Date(t + 3 * 3600e3);
+const dayKey = (t = Date.now()) => MSKD(t).toISOString().slice(0, 10);
+const hm = (t) => MSKD(t).toISOString().slice(11, 16);
+const dur = (s) => { s = Math.round(s || 0); if (s < 60) return s + " с"; const m = Math.floor(s / 60), h = Math.floor(m / 60); return h ? `${h} ч ${m % 60} мин` : `${m} мин${s % 60 && m < 10 ? " " + (s % 60) + " с" : ""}`; };
+const DAYNAMES = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+const dayTitle = (d) => { const [, mo, dd] = d.split("-"); return `${+dd} ${DAYNAMES[+mo - 1]}`; };
+const ACT = { menu: "меню", ex: "примеры", cat: "примеры", it: "примеры", w: "примеры", prices: "цены", quiz: "квиз", q1: "квиз", q2: "квиз", q3: "квиз",
+  order: "заказ", svc: "заказ", fmt: "заказ", sph: "заказ", style: "заказ", br: "заказ", opt: "заказ", urg: "заказ", resume: "заказ", confirm: "✅ отправил(а) заявку",
+  calc: "калькулятор", c: "калькулятор", rnd: "«удиви меня»", faq: "вопросы", terms: "условия", pay: "оплата", how: "как заказать", about: "о Светлане",
+  invite: "пригласить друга", review: "отзыв", rate: "отзыв", human: "позвать Светлану", disc: "скидки", catalog: "каталог", unsub: "отписка" };
+async function trackBot(env, user, what, src) {
+  if (!user || isAdmin(user)) return;
+  const k = `a:${dayKey()}:${user.id}`, now = Date.now();
+  const { metadata: m0 } = await env.KV.getWithMetadata(k);
+  const m = m0 || { n: ((user.first_name || "") + (user.last_name ? " " + user.last_name : "")).slice(0, 40), u: (user.username || "").slice(0, 32), f: now, l: now, c: 0, s: 0, ss: 1, a: "" };
+  const gap = (now - m.l) / 1000;
+  if (!m.c) m.s = 15; else if (gap < 300) m.s += Math.round(gap); else { m.s += 15; if (gap > 1800) m.ss++; }
+  m.l = now; m.c++;
+  if (what && !m.a.split("|").includes(what) && m.a.length < 300) m.a = m.a ? m.a + "|" + what : what;
+  if (src && !m.src) m.src = src;
+  await env.KV.put(k, "1", { metadata: m, expirationTtl: 86400 * 62 });
+}
+const SEC = { catalog: "каталог", examples: "примеры", beforeafter: "до/после", try: "примерка", slogan: "слоганы", price: "цены", bonus: "скидки", newyear: "Новый год", calc: "калькулятор", terms: "условия", reviews: "отзывы", about: "о Светлане", services: "услуги", faq: "вопросы", "view-collection": "стиль", "view-sphere": "сфера", "view-all": "все стили", "view-prompts": "промпты", "view-texts": "тексты" };
+const EVN = { poster: "постер", combo: "комбо", pack: "пакет", card: "визитка", cert: "сертификат", price: "прайс", text: "текст", video: "видео", insta: "ведение Instagram", bot: "чат-бот", site: "сайт", all: "всё под ключ", custom: "своё", photo: "постер из фото", ba: "было/стало", friend: "от друга", ny: "Новый год", question: "вопрос", calc: "калькулятор" };
+const clip = (v, n) => String(v == null ? "" : v).slice(0, n);
+async function tgUserFromInitData(env, initData) {
+  try {
+    const p = new URLSearchParams(initData), hash = p.get("hash"); if (!hash || !env.BOT_TOKEN) return null; p.delete("hash");
+    const dcs = [...p.entries()].sort(([a], [b]) => a < b ? -1 : 1).map(([k, v]) => `${k}=${v}`).join("\n");
+    const enc = new TextEncoder(), hmac = async (key, msg) => new Uint8Array(await crypto.subtle.sign("HMAC", await crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]), enc.encode(msg)));
+    const secret = await hmac(enc.encode("WebAppData"), env.BOT_TOKEN);
+    const h = [...await hmac(secret, dcs)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    if (h !== hash) return null;
+    return JSON.parse(p.get("user") || "null");
+  } catch { return null; }
+}
+async function trackSite(req, env) {
+  let b; try { b = JSON.parse(await req.text()); } catch { return; }
+  const sid = clip(b.s, 16).replace(/[^a-z0-9]/gi, ""); if (sid.length < 6) return;
+  const k = `w:${dayKey()}:${sid}`, now = Date.now();
+  const { metadata: m0 } = await env.KV.getWithMetadata(k);
+  const cf = req.cf || {}, ua = req.headers.get("user-agent") || "";
+  const m = m0 || { v: clip(b.v, 12).replace(/[^a-z0-9]/gi, ""), f: now, t: 0, p: "", e: "",
+    c: clip(cf.city || "", 24), co: clip(cf.country || "", 3),
+    d: /iPad/.test(ua) ? "iPad" : /iPhone/.test(ua) ? "iPhone" : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : "другое",
+    r: clip(b.r, 40) };
+  if (/Instagram/.test(ua)) m.r = "Instagram"; else if (/Telegram/i.test(ua) && !m.r) m.r = "Telegram";
+  m.l = now; m.t = Math.max(m.t, Math.min(+b.t || 0, 6 * 3600));
+  const add = (field, arr, max) => { for (const x of (Array.isArray(arr) ? arr : []).slice(0, 30)) { const w = clip(x, 30); if (w && !m[field].split("|").includes(w) && m[field].length + w.length < max) m[field] = m[field] ? m[field] + "|" + w : w; } };
+  add("p", b.p, 220); add("e", b.e, 160);
+  if (b.tg && !m.n) { const u = await tgUserFromInitData(env, clip(b.tg, 2048)); if (u) { m.n = clip((u.first_name || "") + (u.last_name ? " " + u.last_name : ""), 40); m.u = clip(u.username || "", 32); m.r = "приложение в боте"; } }
+  await env.KV.put(k, "1", { metadata: m, expirationTtl: 86400 * 62 });
+}
+async function listAll(env, prefix) {
+  const out = []; let cursor;
+  for (let i = 0; i < 20; i++) { const l = await env.KV.list({ prefix, cursor, limit: 1000 }); out.push(...l.keys); if (l.list_complete) break; cursor = l.cursor; }
+  return out;
+}
+const who = (n, u) => `${esc(n || "Без имени")}${u ? " (@" + esc(u) + ")" : ""}`;
+async function buildReport(env, days, offset = 0) {
+  const ds = []; for (let i = offset; i < offset + days; i++) ds.push(dayKey(Date.now() - i * 86400e3));
+  const title = days === 1 ? (offset === 0 ? `сегодня, ${dayTitle(ds[0])}` : `вчера, ${dayTitle(ds[0])}`) : `${days} дней (${dayTitle(ds[ds.length - 1])} — ${dayTitle(ds[0])})`;
+  const vidMap = {}; for (const k of await listAll(env, "vid:")) if (k.metadata) vidMap[k.name.slice(4)] = k.metadata;
+  // бот
+  const users = {};
+  for (const d of ds) for (const k of await listAll(env, `a:${d}:`)) {
+    const m = k.metadata; if (!m) continue; const id = k.name.split(":")[2];
+    const u = users[id] || (users[id] = { n: m.n, u: m.u, s: 0, c: 0, days: 0, f: m.f, l: m.l, a: new Set(), src: m.src });
+    u.s += m.s; u.c += m.c; u.days++; u.f = Math.min(u.f, m.f); u.l = Math.max(u.l, m.l); (m.a || "").split("|").filter(Boolean).forEach((x) => u.a.add(x)); if (m.src) u.src = m.src;
+  }
+  const ul = Object.values(users).sort((a, b) => b.s - a.s);
+  const lines = [`📊 <b>Отчёт за ${title}</b> (время московское)`, ""];
+  lines.push(`🤖 <b>БОТ — ${ul.length} чел.</b>${ul.length ? `, всего ${dur(ul.reduce((a, x) => a + x.s, 0))}` : ""}`);
+  if (!ul.length) lines.push("Пока никого.");
+  ul.slice(0, 40).forEach((u, i) => {
+    const when = days === 1 ? `${hm(u.f)}–${hm(u.l)}` : `${u.days} дн., последний раз ${dayTitle(dayKey(u.l))} в ${hm(u.l)}`;
+    lines.push(`${i + 1}. ${who(u.n, u.u)} — <b>${dur(u.s)}</b>, ${u.c} действ., ${when}`);
+    const a = [...u.a]; if (a.length) lines.push(`    смотрел(а): ${a.join(", ")}`);
+    if (u.src) lines.push(`    откуда: ${esc(u.src)}`);
+  });
+  if (ul.length > 40) lines.push(`…и ещё ${ul.length - 40}`);
+  // сайт
+  const ss = [];
+  for (const d of ds) for (const k of await listAll(env, `w:${d}:`)) if (k.metadata) ss.push(k.metadata);
+  ss.sort((a, b) => b.f - a.f);
+  const uniq = new Set(ss.map((x) => x.v || Math.random())).size, tot = ss.reduce((a, x) => a + (x.t || 0), 0);
+  lines.push("", `🌐 <b>САЙТ — ${ss.length} посещ., ${uniq} чел.</b>${ss.length ? `, всего ${dur(tot)}, в среднем ${dur(tot / ss.length)}` : ""}`);
+  if (!ss.length) lines.push("Пока никого.");
+  ss.slice(0, 40).forEach((x) => {
+    const link = vidMap[x.v]; const name = x.n ? who(x.n, x.u) : link ? who(link.n, link.u) : "";
+    const place = [x.c, x.co && x.co !== "RU" ? x.co : ""].filter(Boolean).join(", ");
+    lines.push(`• ${days === 1 ? "" : dayTitle(dayKey(x.f)) + " "}${hm(x.f)} — <b>${dur(x.t)}</b>${name ? " · " + name : ""} · ${esc(place || "город неизвестен")} · ${x.d}${x.r ? " · из: " + esc(x.r) : ""}`);
+    const p = (x.p || "").split("|").filter(Boolean).map((s) => SEC[s] || s);
+    if (p.length) lines.push(`    смотрел(а): ${esc(p.join(", "))}`);
+    if (x.e) lines.push(`    🛒 нажал(а) «заказать»: ${esc(x.e.split("|").map((e) => EVN[e] || e).join(", "))}${link && !x.n ? " → перешёл в бота" : ""}`);
+  });
+  if (ss.length > 40) lines.push(`…и ещё ${ss.length - 40}`);
+  lines.push("", "Команды: /отчет — сегодня · /отчет вчера · /отчет 7 — неделя · /отчет 30 — месяц");
+  return lines;
+}
+async function sendReport(env, chat, days, offset) {
+  const lines = await buildReport(env, days, offset);
+  let buf = "";
+  for (const l of lines) { if ((buf + l).length > 3800) { await send(env, chat, buf); buf = ""; } buf += l + "\n"; }
+  if (buf.trim()) await send(env, chat, buf);
+}
+
 // ---------- напоминания и рассылка (cron) ----------
 const markStarted = (env, uid, chat) => env.KV.put("ab:" + uid, "1", { expirationTtl: 86400 * 3, metadata: { t: Date.now(), chat } }).catch(() => {});
 const clearStarted = (env, uid) => env.KV.delete("ab:" + uid).catch(() => {});
 async function cronTick(env) {
+  // утренний отчёт за вчера в 9:00 по Москве
+  if (MSKD().getUTCHours() === 9) { const f = "rep:" + dayKey(); if (!(await env.KV.get(f))) { const admin = await getAdmin(env); if (admin) { await env.KV.put(f, "1", { expirationTtl: 86400 * 2 }); await sendReport(env, admin, 1, 1); } } }
   // напоминания о брошенных заявках (через 20 часов)
   const ab = await env.KV.list({ prefix: "ab:", limit: 100 });
   let n = 0;
@@ -577,7 +687,7 @@ async function onMessage(env, m) {
   // администратор
   if (user.username && user.username.toLowerCase() === ADMIN_USERNAME) {
     const cur = await getAdmin(env);
-    if (cur !== String(chat)) { await env.KV.put("admin", String(chat)); await send(env, chat, "✅ Вы подключены как администратор. Сюда будут приходить заявки и вопросы клиентов. Чтобы ответить клиенту — ответьте (свайп → «Ответить») на его сообщение.\n\nКоманды:\n/stats — заявки и пользователи\n/рассылка текст — новость всем клиентам (можно с фото)\n/menu — посмотреть бота глазами клиента\n\nПод каждой заявкой — кнопки статуса: клиент сразу получит уведомление."); }
+    if (cur !== String(chat)) { await env.KV.put("admin", String(chat)); await send(env, chat, "✅ Вы подключены как администратор. Сюда будут приходить заявки и вопросы клиентов. Чтобы ответить клиенту — ответьте (свайп → «Ответить») на его сообщение.\n\nКоманды:\n/stats — заявки и пользователи\n/отчет — кто и сколько был в боте и на сайте (каждое утро в 9:00 пришлю сам)\n/рассылка текст — новость всем клиентам (можно с фото)\n/menu — посмотреть бота глазами клиента\n\nПод каждой заявкой — кнопки статуса: клиент сразу получит уведомление."); }
     const r = m.reply_to_message;
     const mid = r && (r.text || r.caption || "").match(/#id(\d+)/);
     if (mid) {
@@ -594,8 +704,14 @@ async function onMessage(env, m) {
       if (job.photo) await tg(env, "sendPhoto", { chat_id: chat, photo: job.photo, caption: body, parse_mode: "HTML" }); else await send(env, chat, body);
       return send(env, chat, `👆 Так увидят рассылку клиенты (примерно ${+(await env.KV.get("users") || 0)} чел.). Отправляем?`, kb([[{ text: "✅ Отправить всем", callback_data: "bc:go" }, { text: "❌ Отмена", callback_data: "bc:no" }]]));
     }
+    const rep = text.match(/^\/(отч[её]т|report)\s*(.*)$/i);
+    if (rep) { const a = rep[2].trim().toLowerCase(); const n = parseInt(a, 10);
+      if (/вчера/.test(a)) return sendReport(env, chat, 1, 1);
+      if (/недел/.test(a)) return sendReport(env, chat, 7, 0);
+      if (/месяц/.test(a)) return sendReport(env, chat, 30, 0);
+      return sendReport(env, chat, n > 0 ? Math.min(n, 60) : 1, 0); }
     if (text === "/stats") { const n = +(await env.KV.get("orders") || 0), u = +(await env.KV.get("users") || 0); return send(env, chat, `📊 Заявок: ${n}\nПользователей: ${u}`); }
-    if (text !== "/menu" && !text.startsWith("/start")) return send(env, chat, "Чтобы ответить клиенту, ответьте на его сообщение (свайп → «Ответить»).\n/рассылка текст — новость всем клиентам\n/stats — статистика\n/menu — меню клиента.");
+    if (text !== "/menu" && !text.startsWith("/start")) return send(env, chat, "Чтобы ответить клиенту, ответьте на его сообщение (свайп → «Ответить»).\n/рассылка текст — новость всем клиентам\n/stats — статистика\n/отчет — кто и сколько был в боте и на сайте\n/menu — меню клиента.");
   }
   const s = await getS(env, user.id);
   let dirty = false;
@@ -681,10 +797,24 @@ export default {
   async scheduled(event, env, ctx) { try { await cronTick(env); } catch (e) { console.log("cron", e && e.stack || e); } },
   async fetch(req, env) {
     const url = new URL(req.url);
+    if (url.pathname === "/t") {
+      const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type" };
+      if (req.method === "POST") { try { await trackSite(req, env); } catch (e) { console.log("track", e && e.stack || e); } }
+      return new Response("ok", { headers: cors });
+    }
     if (req.method === "GET") return new Response("VISUALL bot is running ✨");
     if (env.WEBHOOK_SECRET && req.headers.get("x-telegram-bot-api-secret-token") !== env.WEBHOOK_SECRET) return new Response("forbidden", { status: 403 });
     let u; try { u = await req.json(); } catch { return new Response("bad", { status: 400 }); }
     try {
+      const cq = u.callback_query, mm = u.message;
+      if (cq) await trackBot(env, cq.from, ACT[(cq.data || "").split(":")[0]]).catch(() => {});
+      else if (mm && mm.chat && mm.chat.type === "private") {
+        const tx = mm.text || "", st = tx.match(/^\/start\s*(\S*)/);
+        const src = st ? (/^o_|_v|^v_/.test(st[1]) ? "с сайта" : /^ref_/.test(st[1]) ? "по приглашению друга" : st[1] ? "ссылка: " + st[1].slice(0, 30) : "") : "";
+        await trackBot(env, mm.from, st ? (/^o_/.test(st[1]) ? "заказ с сайта" : "старт") : mm.photo || mm.document || mm.video ? "прислал(а) файл" : tx ? "писал(а) сообщения" : "", src).catch(() => {});
+        const vid = (tx.match(/(?:_v|^\/start\s+v_)([a-z0-9]{8})\b/i) || [])[1];
+        if (vid && mm.from && !isAdmin(mm.from)) await env.KV.put("vid:" + vid, "1", { metadata: { n: clip((mm.from.first_name || "") + (mm.from.last_name ? " " + mm.from.last_name : ""), 40), u: clip(mm.from.username || "", 32) }, expirationTtl: 86400 * 62 }).catch(() => {});
+      }
       if (u.callback_query) await onCallback(env, u.callback_query);
       else if (u.message) await onMessage(env, u.message);
     } catch (e) { console.log("err", e && e.stack || e); }
