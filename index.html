@@ -3339,7 +3339,7 @@ window.renderPrompts=function(cur){
   window.toBot=(k,sid)=>{const m=BOTMAP[k];let p=m?"o_"+m.split("-")[0]:"";
     if(m){const fl=m.split("-")[1];if(sid&&/^[a-z0-9]+$/i.test(sid))p+="-"+sid;else if(fl)p+="-x";if(fl)p+="-"+fl;}
     document.querySelectorAll(".fx-modal").forEach(x=>x.hidden=true);document.body.style.overflow="";
-    window.open(BOT+(p?"?start="+p.slice(0,64):""),"_blank","noopener");};
+    try{window.VTRACK&&VTRACK(k||"question")}catch(_){}const vv=window.VVID||"";window.open(BOT+"?start="+(p?p.slice(0,54)+(vv?"_v"+vv:""):(vv?"v_"+vv:"")),"_blank","noopener");};
   window.openMsg=(k,o={})=>{const sid=o.sid||((!$("view-collection").hidden&&cur)?cur:"");toBot(k==="question"?"":k,sid);};
   const mCopy=()=>{const t=$("mText").value;const fb=()=>{const ta=$("mText");ta.select();try{document.execCommand("copy")}catch(_){}};try{navigator.clipboard.writeText(t).catch(fb)}catch(e){fb()}$("mNote").hidden=false;};
   $("mCopy").onclick=mCopy;
@@ -3531,6 +3531,27 @@ requestAnimationFrame(f);})();</script>
       const s=document.createElement("i");s.className="spark-dot";s.style.left=e.clientX-3+"px";s.style.top=e.clientY-3+"px";
       s.style.setProperty("--dx",(Math.random()*30-15)+"px");s.style.setProperty("--dy",(Math.random()*24+6)+"px");document.body.appendChild(s);setTimeout(()=>s.remove(),820);},{passive:true});
   }
+})();
+</script>
+<script>
+/* статистика посещений: время на сайте, разделы, нажатия «заказать» → отчёт Светлане в боте */
+(function(){
+  const URL_T="https://visuall-bot.svetayurkina.workers.dev/t";if(URL_T.indexOf("http")!==0)return;
+  const rid=n=>{let a="";const c="abcdefghijklmnopqrstuvwxyz0123456789";for(let i=0;i<n;i++)a+=c[Math.floor(Math.random()*36)];return a;};
+  let vid="";try{vid=localStorage.getItem("visuall_vid")||"";if(!/^[a-z0-9]{8}$/.test(vid)){vid=rid(8);localStorage.setItem("visuall_vid",vid);}}catch(e){vid=rid(8);}
+  window.VVID=vid;const sid=rid(10);
+  let tg="";try{tg=new URLSearchParams(location.hash.slice(1)).get("tgWebAppData")||"";}catch(e){}
+  let ref="";try{const q=new URLSearchParams(location.search);ref=q.get("utm_source")||q.get("from")||(document.referrer?new URL(document.referrer).hostname.replace(/^www\./,""):"");if(ref.indexOf("github.io")>=0)ref="";}catch(e){}
+  let acc=0,since=document.visibilityState==="visible"?Date.now():0;const P=[],E=[];
+  const t=()=>Math.round((acc+(since?Date.now()-since:0))/1000);
+  const send=()=>{const b=JSON.stringify({v:vid,s:sid,t:t(),p:P,e:E,r:ref,tg:tg});try{if(navigator.sendBeacon&&navigator.sendBeacon(URL_T,new Blob([b],{type:"text/plain"})))return;}catch(e){}
+    try{fetch(URL_T,{method:"POST",body:b,keepalive:true,mode:"no-cors"});}catch(e){}};
+  window.VTRACK=k=>{if(k&&E.indexOf(k)<0)E.push(k);send();};
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){if(since){acc+=Date.now()-since;since=0;}send();}else since=Date.now();});
+  addEventListener("pagehide",()=>{if(since){acc+=Date.now()-since;since=0;}send();});
+  setTimeout(send,10000);setInterval(()=>{if(since)send();},90000);
+  if("IntersectionObserver"in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;if(id&&P.indexOf(id)<0)P.push(id);}}),{rootMargin:"-45% 0px -45% 0px"});
+    document.querySelectorAll("section[id],[id^='view-']").forEach(el=>{if(!/^pr\d/.test(el.id)&&el.id!=="view-home")io.observe(el);});}
 })();
 </script>
 
