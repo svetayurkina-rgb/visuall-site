@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Автопостер VISUALL — постер за 5 минут</title>
+<meta name="description" content="Соберите рекламный постер с вашим текстом, ценами и фото за 5 минут. Предпросмотр бесплатно, готовый файл 1080×1350 — 390 ₽.">
+<link rel="icon" href="favicon-32.png">
+<link rel="stylesheet" href="fonts.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#14111a;--card:#1f1a28;--ink:#f5efe6;--mut:#a79fb3;--acc:#e9c27a;--line:#352d42}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 120px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:32px;line-height:1.05;margin:6px 0 6px}
+h1 em{color:var(--acc)}
+.lead{color:var(--mut);font-size:14px;margin:0 0 14px}
+.steps{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
+.steps span{font-size:12px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:5px 10px;color:var(--mut)}
+.prev{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.45);background:#000;aspect-ratio:4/5}
+.prev canvas{width:100%;height:100%;display:block}
+.lbl{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin:18px 0 8px;font-weight:700}
+.tpls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tpl{border:2px solid transparent;border-radius:10px;overflow:hidden;padding:0;background:none;cursor:pointer;position:relative}
+.tpl[aria-pressed=true]{border-color:var(--acc)}
+.tpl canvas{width:100%;display:block;aspect-ratio:4/5}
+.tpl span{position:absolute;left:0;right:0;bottom:0;font-size:11px;background:rgba(0,0,0,.55);color:#fff;padding:3px 0;text-align:center}
+input,textarea{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px;outline:none}
+input:focus,textarea:focus{border-color:var(--acc)}
+textarea{min-height:104px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hint{font-size:12px;color:var(--mut);margin:5px 0 0}
+.photo{display:flex;gap:8px;align-items:center}
+.photo label{flex:1;text-align:center;background:var(--card);border:1px dashed var(--acc);border-radius:10px;padding:12px;color:var(--acc);font-weight:700;cursor:pointer}
+.photo button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:12px;font:inherit;cursor:pointer}
+.bar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(20,17,26,0),var(--bg) 30%);padding:18px 16px calc(14px + env(safe-area-inset-bottom))}
+.bar .in{max-width:560px;margin:0 auto}
+.buy{width:100%;border:0;border-radius:14px;padding:16px;font:inherit;font-weight:800;font-size:17px;color:#1c1626;background:linear-gradient(135deg,#f3d08c,#d9a35a);cursor:pointer;box-shadow:0 10px 30px rgba(217,163,90,.35)}
+.buy:disabled{opacity:.6}
+.note{font-size:12px;color:var(--mut);text-align:center;margin:7px 0 0}
+.ok{background:var(--card);border:1px solid var(--acc);border-radius:14px;padding:16px;margin:16px 0 0;display:none}
+.ok b{color:var(--acc)}
+.contacts{font-size:12px;color:var(--mut);text-align:center;margin:26px 0 0}
+.contacts a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Автопостер <em>за 5 минут</em></h1>
+  <p class="lead">Выберите стиль, впишите текст и цены, добавьте своё фото — постер соберётся сам. Предпросмотр бесплатный, файл без водяного знака 1080×1350 — <b>390 ₽</b>.</p>
+  <div class="steps"><span>1 · стиль</span><span>2 · текст и цены</span><span>3 · фото</span><span>4 · получить файл</span></div>
+
+  <div class="prev"><canvas id="cv" width="1080" height="1350"></canvas></div>
+
+  <span class="lbl">1 · Стиль</span>
+  <div class="tpls" id="tpls"></div>
+
+  <span class="lbl">2 · Текст</span>
+  <input id="title" maxlength="32" placeholder="Название услуги — например, Маникюр" value="Маникюр">
+  <div style="height:8px"></div>
+  <input id="sub" maxlength="48" placeholder="Подзаголовок — например, с покрытием и укреплением" value="с покрытием, который держится 4 недели">
+  <span class="lbl">Цены (каждая с новой строки: услуга — цена)</span>
+  <textarea id="prices">Маникюр + покрытие — 2 200 ₽
+Укрепление — 300 ₽
+Дизайн — от 100 ₽</textarea>
+  <p class="hint">До 5 строк. Можно без цен — тогда строки станут списком преимуществ.</p>
+  <div class="row" style="margin-top:8px">
+    <input id="contact" maxlength="40" placeholder="Контакт: @ник или телефон" value="@your_nick · +7 900 000-00-00">
+    <input id="badge" maxlength="10" placeholder="Бейдж: −10%" value="−10%">
+  </div>
+  <div style="height:8px"></div>
+  <input id="place" maxlength="40" placeholder="Город или адрес (необязательно)" value="Москва · запись в Telegram">
+
+  <span class="lbl">3 · Ваше фото (необязательно)</span>
+  <div class="photo"><label>📷 Загрузить фото работы<input type="file" id="file" accept="image/*" hidden></label><button type="button" id="nofoto">Без фото</button></div>
+  <p class="hint">Фото маникюра, торта, интерьера, себя за работой — оно станет главным на постере.</p>
+
+  <div class="ok" id="ok"><b>Готово!</b> Вернитесь в чат с ботом — там кнопка оплаты 390 ₽. Сразу после оплаты бот пришлёт постер в полном качестве.</div>
+  <p class="contacts">Хотите уникальный дизайн руками дизайнера? <a href="https://t.me/visuall_sveta_bot?start=o_poster">Заказать у Светланы от 990 ₽</a><br>VISUALL · Светлана Музыка · @sveta_muzyka · +7 (925) 062-00-01</p>
+</div>
+<div class="bar"><div class="in"><button class="buy" id="buy">Получить постер без водяного знака — 390 ₽</button><p class="note" id="note">Файл придёт в чат с ботом @visuall_sveta_bot после оплаты</p></div></div>
+
+<script>
+(function(){
+const W=1080,H=1350,$=id=>document.getElementById(id);
+const TG=window.Telegram&&Telegram.WebApp; if(TG){try{TG.ready();TG.expand();}catch(e){}}
+const API="https://visuall-bot.svetayurkina.workers.dev/poster";
+let photo=null,tpl=0;
+
+/* ---------- helpers ---------- */
+function rr(x,y,w,h,r){const c=this;c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+CanvasRenderingContext2D.prototype.rr=rr;
+function fit(c,text,font,size,maxW,min){let s=size;do{c.font=font.replace("$",s);if(c.measureText(text).width<=maxW)break;s-=2;}while(s>min);return s;}
+function wrap(c,text,maxW){const w=text.split(/\s+/);const out=[];let cur="";for(const x of w){const t=(cur+" "+x).trim();if(c.measureText(t).width<=maxW||!cur)cur=t;else{out.push(cur);cur=x;}}if(cur)out.push(cur);return out;}
+function title2(c,text,font,size,maxW,min,lh){ // up to 2 lines, shrink to fit
+  let s=size,lines;for(;;){c.font=font.replace("$",s);lines=wrap(c,text,maxW);if((lines.length<=2&&lines.every(l=>c.measureText(l).width<=maxW))||s<=min)break;s-=2;}
+  return{lines:lines.slice(0,2),size:s,lh:s*(lh||1.05)};}
+function cover(c,img,x,y,w,h){const r=Math.max(w/img.width,h/img.height);const iw=img.width*r,ih=img.height*r;c.drawImage(img,x+(w-iw)/2,y+(h-ih)/2,iw,ih);}
+function photoIn(c,shape,x,y,w,h,r,ph){c.save();if(shape==="circle"){c.beginPath();c.arc(x+w/2,y+h/2,Math.min(w,h)/2,0,7);}else if(shape==="arch"){c.beginPath();c.moveTo(x,y+h);c.lineTo(x,y+w/2);c.arc(x+w/2,y+w/2,w/2,Math.PI,0);c.lineTo(x+w,y+h);c.closePath();}else c.rr(x,y,w,h,r||0);c.clip();if(ph)cover(c,ph,x,y,w,h);c.restore();}
+function prices(){return $("prices").value.split("\n").map(s=>s.trim()).filter(Boolean).slice(0,5).map(s=>{const m=s.split(/\s+[—–-]\s+/);return m.length>1?[m.slice(0,-1).join(" — "),m[m.length-1]]:[s,""];});}
+function priceList(c,x,y,w,o){const L=prices();const fs=o.size||34,gap=o.gap||fs*1.75;c.textBaseline="alphabetic";
+  for(const [a,b] of L){c.font=`${o.w||500} ${fs}px ${o.font}`;c.fillStyle=o.col;let name=a;while(c.measureText(name).width>w*(b?0.66:0.98)&&name.length>3)name=name.slice(0,-2)+"…";
+    if(!b&&o.bullet){c.fillStyle=o.acc;c.fillText(o.bullet,x,y);c.fillStyle=o.col;c.fillText(name,x+fs*1.1,y);}else c.fillText(name,x,y);
+    if(b){c.font=`${o.pw||700} ${fs}px ${o.pfont||o.font}`;const bw=c.measureText(b).width;c.fillStyle=o.pcol||o.col;c.fillText(b,x+w-bw,y);
+      c.font=`500 ${fs}px ${o.font}`;const nw=c.measureText(name).width;if(o.dots){c.fillStyle=o.dots;for(let d=x+nw+12;d<x+w-bw-12;d+=12)c.fillRect(d,y-4,3,3);}}
+    y+=gap;}return y;}
+function txt(c,t,x,y,font,col,align){c.font=font;c.fillStyle=col;c.textAlign=align||"left";c.fillText(t,x,y);c.textAlign="left";}
+function badge(c,t,x,y,r,bg,fg,font){if(!t)return;c.save();c.fillStyle=bg;c.beginPath();c.arc(x,y,r,0,7);c.fill();const s=fit(c,t,font,r*.62,r*1.6,16);c.font=font.replace("$",s);c.fillStyle=fg;c.textAlign="center";c.textBaseline="middle";c.fillText(t,x,y+2);c.restore();c.textBaseline="alphabetic";}
+function v(id){return $(id).value.trim();}
+
+/* ---------- templates ---------- */
+const T=[
+{n:"Тёмный люкс",draw(c,ph){
+  const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#231b2e");g.addColorStop(1,"#0e0b12");c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.strokeStyle="#d6b068";c.lineWidth=3;c.strokeRect(36,36,W-72,H-72);c.lineWidth=1;c.strokeRect(50,50,W-100,H-100);
+  const px=290,py=110,pw=500,phh=560;
+  if(ph)photoIn(c,"arch",px,py,pw,phh,0,ph);else{c.save();c.strokeStyle="#d6b068";c.lineWidth=2;for(let i=0;i<14;i++){c.beginPath();c.arc(W/2,py+260,60+i*14,0,7);c.globalAlpha=.08+i*.02;c.stroke();}c.restore();}
+  c.strokeStyle="#d6b068";c.lineWidth=2;c.beginPath();c.moveTo(px-14,py+phh+14);c.lineTo(px-14,py+pw/2);c.arc(W/2,py+pw/2,pw/2+14,Math.PI,0);c.lineTo(px+pw+14,py+phh+14);c.stroke();
+  const t=title2(c,v("title")||"Ваша услуга","400 $px Oranienbaum",112,W-200,60);c.fillStyle="#f0d6a0";c.textAlign="center";let y=py+phh+60+t.size*.8;
+  for(const l of t.lines){c.font=`400 ${t.size}px Oranienbaum`;c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
+  if(v("sub"))txt(c,v("sub"),W/2,y+4-t.lh+t.size*.55,"italic 600 40px 'Cormorant Garamond'","#cbb48a","center");
+  priceList(c,150,y+80,W-300,{font:"Jost",size:34,col:"#efe6d6",pcol:"#e9c27a",dots:"rgba(214,176,104,.5)",bullet:"✦",acc:"#d6b068"});
+  txt(c,v("contact"),W/2,H-120,"500 36px Jost","#f0d6a0","center");if(v("place"))txt(c,v("place"),W/2,H-76,"400 26px Jost","#9e8f7a","center");
+  badge(c,v("badge"),W-170,190,86,"#d6b068","#1b1622","700 $px Jost");}},
+{n:"Нежный",draw(c,ph){
+  c.fillStyle="#fbe9ec";c.fillRect(0,0,W,H);
+  for(const [x,y,r,col] of [[160,180,330,"rgba(244,183,197,.55)"],[960,1150,420,"rgba(246,200,214,.6)"],[980,180,220,"rgba(255,221,228,.8)"]]){const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,col);g.addColorStop(1,"rgba(255,255,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);}
+  const cx=W/2,cy=360,r=250;c.fillStyle="#fff";c.beginPath();c.arc(cx,cy,r+16,0,7);c.fill();
+  if(ph)photoIn(c,"circle",cx-r,cy-r,r*2,r*2,0,ph);else{const g=c.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g.addColorStop(0,"#f6c7d2");g.addColorStop(1,"#fbe3e8");c.fillStyle=g;c.beginPath();c.arc(cx,cy,r,0,7);c.fill();}
+  const t=title2(c,v("title")||"Ваша услуга","400 $px 'Marck Script'",120,W-160,60,1);c.fillStyle="#9b3f5e";c.textAlign="center";let y=cy+r+60+t.size*.75;
+  for(const l of t.lines){c.font=`400 ${t.size}px 'Marck Script'`;c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
+  if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.5,"500 34px Jost","#b26a82","center");
+  c.fillStyle="rgba(255,255,255,.78)";c.rr(110,y+40,W-220,Math.max(1,prices().length)*62+44,30);c.fill();
+  priceList(c,150,y+102,W-300,{font:"Jost",size:33,gap:62,col:"#6d3047",pcol:"#b0456b",bullet:"♡",acc:"#d77d98"});
+  txt(c,v("contact"),W/2,H-110,"600 36px Jost","#9b3f5e","center");if(v("place"))txt(c,v("place"),W/2,H-66,"400 26px Jost","#b88596","center");
+  badge(c,v("badge"),cx+r-20,cy-r+40,76,"#e0718f","#fff","700 $px Jost");}},
+{n:"Поп-арт",draw(c,ph){
+  c.fillStyle="#ffe14d";c.fillRect(0,0,W,H);c.fillStyle="rgba(0,0,0,.07)";for(let y=0;y<H;y+=28)for(let x=(y/28)%2?14:0;x<W;x+=28){c.beginPath();c.arc(x,y,4,0,7);c.fill();}
+  const t=title2(c,(v("title")||"Ваша услуга").toUpperCase(),"400 $px 'Rubik Mono One'",104,W-120,48,1.02);let y=70+t.size;
+  for(const l of t.lines){c.font=`400 ${t.size}px 'Rubik Mono One'`;c.fillStyle="#111";c.fillText(l,64,y);y+=t.lh;}
+  if(v("sub")){c.font="800 36px Manrope";const sw=c.measureText(v("sub")).width;c.fillStyle="#111";c.fillRect(60,y-t.lh+30,sw+40,58);txt(c,v("sub"),80,y-t.lh+71,"800 36px Manrope","#ffe14d");}
+  const n=Math.max(1,prices().length),py=y-t.lh+120,pw=640,phh=Math.min(520,1010-py-n*64);c.save();c.translate(64+pw/2,py+phh/2);c.rotate(-.03);c.fillStyle="#111";c.fillRect(-pw/2+16,-phh/2+16,pw,phh);c.fillStyle="#ff4d8d";c.fillRect(-pw/2,-phh/2,pw,phh);
+  if(ph){c.save();c.beginPath();c.rect(-pw/2+14,-phh/2+14,pw-28,phh-28);c.clip();cover(c,ph,-pw/2+14,-phh/2+14,pw-28,phh-28);c.restore();}c.restore();
+  priceList(c,64,py+phh+86,W-128,{font:"Manrope",size:34,gap:64,w:800,col:"#111",pcol:"#e0004f",pw:800,bullet:"★",acc:"#e0004f"});
+  const by=Math.max(py+phh+60+n*64+30,1150);c.fillStyle="#111";c.fillRect(0,by,W,H-by);txt(c,v("contact"),64,by+86,"800 44px Manrope","#ffe14d");if(v("place"))txt(c,v("place"),64,by+140,"600 30px Manrope","#fff");
+  badge(c,v("badge"),W-150,by-10,100,"#ff4d8d","#fff","400 $px 'Rubik Mono One'");}},
+{n:"Минимализм",draw(c,ph){
+  c.fillStyle="#f4efe8";c.fillRect(0,0,W,H);const phh=650;
+  if(ph)photoIn(c,"rect",0,0,W,phh,0,ph);else{c.fillStyle="#e6ddd0";c.fillRect(0,0,W,phh);c.fillStyle="#d8ccbb";c.beginPath();c.arc(W*.7,phh*.45,180,0,7);c.fill();}
+  c.fillStyle="#1c1a17";c.fillRect(70,phh-34,120,8);
+  const t=title2(c,v("title")||"Ваша услуга","500 $px Unbounded",88,W-140,44,1.08);let y=phh+40+t.size;
+  for(const l of t.lines){c.font=`500 ${t.size}px Unbounded`;c.fillStyle="#1c1a17";c.fillText(l,70,y);y+=t.lh;}
+  if(v("sub"))txt(c,v("sub"),70,y-t.lh+t.size*.62+10,"400 34px Jost","#6e665b");
+  priceList(c,70,y+70,W-140,{font:"Jost",size:33,gap:58,col:"#1c1a17",pcol:"#1c1a17",dots:"rgba(28,26,23,.25)",bullet:"—",acc:"#1c1a17"});
+  c.fillStyle="#1c1a17";c.fillRect(0,H-130,W,130);txt(c,v("contact"),70,H-56,"500 36px Jost","#f4efe8");if(v("place"))txt(c,v("place"),W-70,H-56,"400 26px Jost","#b9b0a3","right");
+  badge(c,v("badge"),W-150,phh,84,"#1c1a17","#f4efe8","500 $px Unbounded");}},
+{n:"Неон",draw(c,ph){
+  const g=c.createLinearGradient(0,0,W,H);g.addColorStop(0,"#0b0b2a");g.addColorStop(1,"#1b0630");c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.strokeStyle="rgba(120,90,255,.18)";c.lineWidth=1;for(let x=0;x<W;x+=60){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}for(let y=0;y<H;y+=60){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+  const px=170,py=90,pw=740,phh=520;if(ph)photoIn(c,"rect",px,py,pw,phh,30,ph);
+  c.save();c.shadowColor="#ff3fd4";c.shadowBlur=30;c.strokeStyle="#ff6ee0";c.lineWidth=6;c.rr(px,py,pw,phh,30);c.stroke();c.restore();
+  const t=title2(c,v("title")||"Ваша услуга","500 $px Unbounded",96,W-140,44,1.08);let y=py+phh+70+t.size*.8;c.textAlign="center";
+  for(const l of t.lines){c.font=`500 ${t.size}px Unbounded`;c.save();c.shadowColor="#2ef2ff";c.shadowBlur=36;c.fillStyle="#bff9ff";c.fillText(l,W/2,y);c.restore();y+=t.lh;}c.textAlign="left";
+  if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.55,"500 34px Manrope","#d9b8ff","center");
+  priceList(c,150,y+80,W-300,{font:"Manrope",size:33,gap:60,col:"#efe8ff",pcol:"#ff8ae6",pw:800,dots:"rgba(255,110,224,.35)",bullet:"▸",acc:"#2ef2ff"});
+  c.save();c.shadowColor="#2ef2ff";c.shadowBlur=18;txt(c,v("contact"),W/2,H-104,"700 38px Manrope","#9ff6ff","center");c.restore();if(v("place"))txt(c,v("place"),W/2,H-60,"500 26px Manrope","#9c8bc4","center");
+  badge(c,v("badge"),px+pw-10,py+20,80,"#ff3fd4","#fff","800 $px Manrope");}},
+{n:"Эко",draw(c,ph){
+  c.fillStyle="#e7ece0";c.fillRect(0,0,W,H);c.fillStyle="#cfdbc4";
+  for(const [x,y,r,a] of [[90,120,120,.6],[1010,300,90,-.5],[980,1230,140,.4],[60,1180,90,-.3]]){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.ellipse(0,0,r,r*.42,0,0,7);c.fill();c.restore();}
+  const px=120,py=100,pw=W-240,phh=560;c.fillStyle="#fff";c.rr(px-14,py-14,pw+28,phh+28,46);c.fill();
+  if(ph)photoIn(c,"rect",px,py,pw,phh,36,ph);else{c.fillStyle="#d7e0cd";c.rr(px,py,pw,phh,36);c.fill();}
+  const t=title2(c,v("title")||"Ваша услуга","400 $px Prata",96,W-160,48,1.08);c.textAlign="center";let y=py+phh+70+t.size*.8;
+  for(const l of t.lines){c.font=`400 ${t.size}px Prata`;c.fillStyle="#2f4a35";c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
+  if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.55,"italic 600 40px 'Cormorant Garamond'","#5f7a62","center");
+  priceList(c,150,y+76,W-300,{font:"Jost",size:33,gap:58,col:"#2f4a35",pcol:"#2f4a35",dots:"rgba(47,74,53,.3)",bullet:"❀",acc:"#7f9c76"});
+  txt(c,v("contact"),W/2,H-110,"600 36px Jost","#2f4a35","center");if(v("place"))txt(c,v("place"),W/2,H-66,"400 26px Jost","#6f8670","center");
+  badge(c,v("badge"),px+pw-20,py+40,80,"#2f4a35","#e7ece0","600 $px Jost");}},
+];
+
+function watermark(c){c.save();c.globalAlpha=.2;c.fillStyle="#fff";c.strokeStyle="#000";c.lineWidth=2;c.font="700 46px Manrope";c.translate(W/2,H/2);c.rotate(-.5);
+  for(let y=-H;y<H;y+=190)for(let x=-W;x<W;x+=520){c.strokeText("VISUALL · ОБРАЗЕЦ",x,y);c.fillText("VISUALL · ОБРАЗЕЦ",x,y);}c.restore();}
+function render(cv,i,wm){const c=cv.getContext("2d");c.setTransform(cv.width/W,0,0,cv.height/H,0,0);c.clearRect(0,0,W,H);T[i].draw(c,photo);if(wm)watermark(c);}
+const cv=$("cv");
+function draw(){render(cv,tpl,true);}
+function thumbs(){const box=$("tpls");box.innerHTML="";T.forEach((t,i)=>{const b=document.createElement("button");b.className="tpl";b.type="button";b.setAttribute("aria-pressed",i===tpl);
+  const c=document.createElement("canvas");c.width=216;c.height=270;b.appendChild(c);const s=document.createElement("span");s.textContent=t.n;b.appendChild(s);
+  b.onclick=()=>{tpl=i;box.querySelectorAll(".tpl").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw();};box.appendChild(b);render(c,i,false);});}
+let tmr;["title","sub","prices","contact","badge","place"].forEach(id=>$(id).addEventListener("input",()=>{clearTimeout(tmr);tmr=setTimeout(()=>{draw();thumbs();},120);}));
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{photo=im;draw();thumbs();};im.src=r.result;};r.readAsDataURL(f);};
+$("nofoto").onclick=()=>{photo=null;$("file").value="";draw();thumbs();};
+
+const fonts=["400 40px Oranienbaum","400 40px 'Marck Script'","400 40px 'Rubik Mono One'","500 40px Unbounded","400 40px Prata","500 40px Jost","600 40px Jost","400 40px Jost","italic 600 40px 'Cormorant Garamond'","500 40px Manrope","700 40px Manrope","800 40px Manrope"];
+Promise.all(fonts.map(f=>document.fonts.load(f,"Абв"))).catch(()=>{}).then(()=>{draw();thumbs();});
+draw();
+
+const inTG=!!(TG&&TG.initData);
+if(!inTG){$("buy").textContent="Открыть в Telegram и получить постер — 390 ₽";$("note").textContent="Оплата и получение файла — через бота @visuall_sveta_bot";}
+$("buy").onclick=async()=>{
+  if(!inTG){location.href="https://t.me/visuall_sveta_bot?start=poster";return;}
+  if(!v("title")){alert("Впишите название услуги");$("title").focus();return;}
+  const b=$("buy");b.disabled=true;b.textContent="Готовлю файл…";
+  try{const full=document.createElement("canvas");full.width=W;full.height=H;render(full,tpl,false);
+    const img=full.toDataURL("image/jpeg",.92);
+    const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tg:TG.initData,img,title:v("title"),tpl:T[tpl].n})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.ok)throw new Error(j.err||r.status);
+    $("ok").style.display="block";b.textContent="✅ Отправлено в чат — оплатите там";
+    setTimeout(()=>{try{TG.close();}catch(e){}},1600);
+  }catch(e){b.disabled=false;b.textContent="Получить постер без водяного знака — 390 ₽";alert("Не получилось отправить. Проверьте интернет и попробуйте ещё раз.");}
+};
+})();
+</script>
+</body>
+</html>

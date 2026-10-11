@@ -58,6 +58,8 @@ const MAIN_KB = { inline_keyboard: [
   [{ text: "💳 Оплата", callback_data: "pay" }, { text: "⏱ Сроки и правки", callback_data: "terms" }],
   [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
   [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
+  [{ text: "🛍 Магазин готовых решений", callback_data: "shop" }, { text: "💎 Подписки", callback_data: "subs" }],
+  [{ text: "🎨 Автопостер за 5 минут — 390 ₽", web_app: { url: SITE + "poster.html" } }],
   [{ text: "💬 Позвать Светлану", callback_data: "human" }],
 ] };
 const BACK = [{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }];
@@ -208,7 +210,7 @@ const dayTitle = (d) => { const [, mo, dd] = d.split("-"); return `${+dd} ${DAYN
 const ACT = { menu: "меню", ex: "примеры", cat: "примеры", it: "примеры", w: "примеры", prices: "цены", quiz: "квиз", q1: "квиз", q2: "квиз", q3: "квиз",
   order: "заказ", svc: "заказ", fmt: "заказ", sph: "заказ", style: "заказ", br: "заказ", opt: "заказ", urg: "заказ", resume: "заказ", confirm: "✅ отправил(а) заявку",
   calc: "калькулятор", c: "калькулятор", rnd: "«удиви меня»", faq: "вопросы", terms: "условия", pay: "оплата", how: "как заказать", about: "о Светлане",
-  invite: "пригласить друга", review: "отзыв", rate: "отзыв", human: "позвать Светлану", disc: "скидки", catalog: "каталог", unsub: "отписка" };
+  invite: "пригласить друга", review: "отзыв", rate: "отзыв", human: "позвать Светлану", disc: "скидки", catalog: "каталог", unsub: "отписка", shop: "🛍 магазин", pr: "🛍 магазин", buy: "💳 покупка", subs: "💎 подписки", sb: "💳 подписка", pre: "💳 предоплата", pm: "💳 оплатил(а)", pchk: "💳 оплатил(а)" };
 async function trackBot(env, user, what, src) {
   if (!user || isAdmin(user)) return;
   const k = `a:${dayKey()}:${user.id}`, now = Date.now();
@@ -221,7 +223,7 @@ async function trackBot(env, user, what, src) {
   if (src && !m.src) m.src = src;
   await env.KV.put(k, "1", { metadata: m, expirationTtl: 86400 * 62 });
 }
-const SEC = { catalog: "каталог", examples: "примеры", beforeafter: "до/после", try: "примерка", slogan: "слоганы", price: "цены", bonus: "скидки", newyear: "Новый год", calc: "калькулятор", terms: "условия", reviews: "отзывы", about: "о Светлане", services: "услуги", faq: "вопросы", "view-collection": "стиль", "view-sphere": "сфера", "view-all": "все стили", "view-prompts": "промпты", "view-texts": "тексты" };
+const SEC = { catalog: "каталог", examples: "примеры", beforeafter: "до/после", try: "примерка", slogan: "слоганы", price: "цены", bonus: "скидки", newyear: "Новый год", calc: "калькулятор", terms: "условия", reviews: "отзывы", about: "о Светлане", services: "услуги", faq: "вопросы", shop: "готовые решения", "view-collection": "стиль", "view-sphere": "сфера", "view-all": "все стили", "view-prompts": "промпты", "view-texts": "тексты" };
 const EVN = { poster: "постер", combo: "комбо", pack: "пакет", card: "визитка", cert: "сертификат", price: "прайс", text: "текст", video: "видео", insta: "ведение Instagram", bot: "чат-бот", site: "сайт", all: "всё под ключ", custom: "своё", photo: "постер из фото", ba: "было/стало", friend: "от друга", ny: "Новый год", question: "вопрос", calc: "калькулятор" };
 const clip = (v, n) => String(v == null ? "" : v).slice(0, n);
 async function tgUserFromInitData(env, initData) {
@@ -306,6 +308,235 @@ async function sendReport(env, chat, days, offset) {
   if (buf.trim()) await send(env, chat, buf);
 }
 
+// ---------- магазин, оплата, подписки, автопостер ----------
+const PRODUCTS = {
+  guide: { e: "📘", n: "Гайд «Реклама своими руками с нейросетью» + 40 промптов", s: "Гайд + 40 промптов", p: 990, d: "PDF, 12 страниц: из чего состоит реклама, которую не пролистывают, формула текста и 7 формул заголовков, как писать промпт для картинки, 40 готовых промптов для 30 сфер, чек-лист перед публикацией и 8 мест, где разместить рекламу бесплатно." },
+  ny: { e: "🎄", n: "Новогодний пакет для бизнеса", s: "Новогодний пакет", p: 490, d: "PDF, 10 страниц: 30 готовых текстов акций, календарь акций с 1 декабря по 10 января, 6 идей подарочных сертификатов и 15 промптов для праздничных постеров." },
+  plan: { e: "🗓", n: "Контент-план на месяц для мастера", s: "Контент-план на месяц", p: 490, d: "PDF, 8 страниц: 30 тем постов по дням с подсказками, 30 идей для сторис и 20 шаблонов ответов клиентам, которые доводят до записи." },
+  certs: { e: "🎁", n: "5 шаблонов подарочных сертификатов", s: "5 шаблонов сертификатов", p: 390, d: "5 дизайнов 210×99 мм в высоком качестве (300 dpi): тёмный люкс, нежный розовый, мятный, новогодний, бежевый. PDF для печати + PNG. Поля «Для», «На сумму», «Действует до», «№» заполняются от руки." },
+  all: { e: "💎", n: "Всё вместе со скидкой", s: "Все 4 материала", p: 1490, d: "Гайд + новогодний пакет + контент-план + 5 шаблонов сертификатов. Вместо 2 360 ₽.", items: ["guide", "ny", "plan", "certs"] },
+};
+const SUBS = {
+  ads: { n: "Реклама на месяц", p: 2990, d: "4 постера + 4 рекламных текста к ним в одном стиле в течение 30 дней. Присылаете материалы, когда удобно, — каждый постер готов за 1 рабочий день, 1 круг правок." },
+  bot: { n: "Поддержка бота", p: 690, d: "Для тех, кому VISUALL сделал бота: правки цен, услуг и текстов, мелкие доработки и присмотр за работой бота в течение 30 дней." },
+};
+const POSTER_PRICE = 390;
+const POSTER_URL = SITE + "poster.html";
+
+const ykCfg = async (env) => JSON.parse((await env.KV.get("yk")) || "null");
+const newPid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const getPay = async (env, pid) => JSON.parse((await env.KV.get("pay:" + pid)) || "null");
+const putPay = (env, pid, r) => env.KV.put("pay:" + pid, JSON.stringify(r), { expirationTtl: 86400 * 120 });
+const who2 = (r) => `${esc(r.n || "клиент")}${r.un ? " (@" + esc(r.un) + ")" : ""}`;
+
+async function ykApi(cfg, path, body, idem) {
+  const h = { Authorization: "Basic " + btoa(cfg.shop + ":" + cfg.key), "content-type": "application/json" };
+  if (idem) h["Idempotence-Key"] = idem;
+  const r = await fetch("https://api.yookassa.ru/v3" + path, { method: body ? "POST" : "GET", headers: h, body: body ? JSON.stringify(body) : undefined });
+  const j = await r.json().catch(() => ({}));
+  return { ok: r.ok, j };
+}
+
+// Создаёт оплату и отправляет клиенту сообщение с кнопкой
+async function createPay(env, chat, user, { kind, ref, amount, title }) {
+  const pid = newPid();
+  const rec = { uid: String(user.id), chat: String(chat), kind, ref: ref || "", amount, title, st: "new", t: Date.now(), un: user.username || "", n: user.first_name || "" };
+  const cfg = await ykCfg(env);
+  if (cfg) {
+    const body = { amount: { value: amount.toFixed(2), currency: "RUB" }, capture: true, description: title.slice(0, 128),
+      confirmation: { type: "redirect", return_url: "https://t.me/visuall_sveta_bot?start=paid_" + pid }, metadata: { pid } };
+    if (cfg.email) body.receipt = { customer: { email: cfg.email }, items: [{ description: title.slice(0, 128), quantity: "1.00", amount: { value: amount.toFixed(2), currency: "RUB" }, vat_code: 1, payment_mode: "full_payment", payment_subject: "service" }] };
+    const { ok, j } = await ykApi(cfg, "/payments", body, pid).catch((e) => ({ ok: false, j: { description: String(e) } }));
+    if (ok && j.confirmation?.confirmation_url) {
+      rec.y = j.id; await putPay(env, pid, rec);
+      return send(env, chat, `💳 <b>${esc(title)}</b>\nК оплате: <b>${rub(amount)}</b>\n\nНажмите «Оплатить» — откроется защищённая страница ЮKassa (карта, СБП, SberPay). После оплаты вернитесь сюда — я пришлю всё автоматически.`,
+        kb([[{ text: `💳 Оплатить ${rub(amount)}`, url: j.confirmation.confirmation_url }], [{ text: "🔄 Я оплатил(а) — проверить", callback_data: "pchk:" + pid }]]));
+    }
+    const admin = await getAdmin(env);
+    if (admin) await send(env, admin, `⚠️ ЮKassa не создала платёж (${esc(j.description || j.code || "ошибка")}). Клиенту показан перевод по СБП.`);
+  }
+  await putPay(env, pid, rec);
+  return send(env, chat, `💳 <b>${esc(title)}</b>\nК оплате: <b>${rub(amount)}</b>\n\nПереведите по СБП на <b>Сбербанк</b> по номеру <code>${PHONE}</code> (получатель — Светлана М.).\nПосле перевода нажмите кнопку ниже — Светлана проверит поступление и я сразу пришлю всё сюда. 🧾 Чек самозанятой — после оплаты.`,
+    kb([[{ text: "✅ Я оплатил(а)", callback_data: "pm:" + pid }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+}
+
+async function sendFileTo(env, chat, fileId, caption) {
+  return tg(env, "sendDocument", { chat_id: chat, document: fileId, caption, parse_mode: "HTML" });
+}
+async function deliverProduct(env, chat, code) {
+  const codes = PRODUCTS[code]?.items || [code]; let missing = [];
+  for (const c of codes) {
+    const files = JSON.parse((await env.KV.get("pf:" + c)) || "[]");
+    if (!files.length) { missing.push(c); continue; }
+    for (let i = 0; i < files.length; i++) await sendFileTo(env, chat, files[i], i === 0 ? `${PRODUCTS[c].e} <b>${esc(PRODUCTS[c].n)}</b>` : undefined);
+  }
+  return missing;
+}
+
+async function fulfill(env, pid, how) {
+  const r = await getPay(env, pid); if (!r || r.st === "paid") return r;
+  r.st = "paid"; r.paidAt = Date.now(); r.how = how; await putPay(env, pid, r);
+  await env.KV.put("rev", String(+(await env.KV.get("rev") || 0) + r.amount));
+  const admin = await getAdmin(env);
+  const head = `💰 <b>Оплата ${rub(r.amount)}</b> — ${esc(r.title)}\n👤 ${who2(r)}\n#id${r.uid}`;
+  if (r.kind === "prod") {
+    await send(env, r.chat, `🎉 <b>Спасибо за покупку!</b> Ваши материалы 👇`);
+    const miss = await deliverProduct(env, r.chat, r.ref);
+    if (miss.length) { await send(env, r.chat, "Часть файлов Светлана пришлёт сюда лично в ближайшее время 💛");
+      if (admin) await send(env, admin, head + `\n\n⚠️ Не загружены файлы: ${miss.join(", ")}. Отправьте файл боту с подписью <code>/товар ${miss[0]}</code>, а клиенту — ответом на это сообщение.`); }
+    else if (admin) await send(env, admin, head + "\n✅ Файлы отправлены автоматически.");
+    return send(env, r.chat, `Если захотите, чтобы рекламу сделали за вас, — для покупателей материалов <b>−10%</b> на первый заказ 💛`, kb([[{ text: "🛒 Заказать рекламу", callback_data: "order" }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
+  }
+  if (r.kind === "sub") {
+    const plan = SUBS[r.ref] || SUBS.ads; const key = "sub:" + r.uid + ":" + r.ref;
+    const cur = JSON.parse((await env.KV.get(key)) || "null"); const base = cur && cur.until > Date.now() ? cur.until : Date.now();
+    const meta = { uid: r.uid, chat: r.chat, plan: r.ref, until: base + 30 * 86400e3, n: r.n, un: r.un, rem: 0 };
+    await env.KV.put(key, JSON.stringify(meta), { metadata: meta });
+    const till = MSKD(meta.until).toISOString().slice(0, 10).split("-").reverse().join(".");
+    if (admin) await send(env, admin, head + `\n💎 Подписка «${esc(plan.n)}» активна до ${till}.`);
+    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}\n\n${r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает."}\nЗа 3 дня до окончания я напомню о продлении.`);
+  }
+  if (r.kind === "poster") {
+    const b64 = await env.KV.get("pp:" + r.ref);
+    if (b64) {
+      const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+      const fd = new FormData(); fd.append("chat_id", r.chat); fd.append("caption", "🎨 Ваш постер готов! Файл в полном качестве 1080×1350 — для соцсетей и печати.");
+      fd.append("document", new Blob([bin], { type: "image/jpeg" }), "poster-visuall.jpg");
+      await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/sendDocument`, { method: "POST", body: fd });
+      await env.KV.delete("pp:" + r.ref);
+      if (admin) await send(env, admin, head + "\n🎨 Автопостер отправлен клиенту.");
+    } else if (admin) await send(env, admin, head + "\n⚠️ Файл автопостера не найден — свяжитесь с клиентом.");
+    return send(env, r.chat, "Хотите постер, сделанный вручную, в уникальном стиле, или весь комплект — визитку, сертификат и прайс? Для вас −10% 💛", kb([[{ text: "🛒 Заказать у Светланы", callback_data: "order" }], [{ text: "🎨 Ещё один постер", web_app: { url: POSTER_URL } }]]));
+  }
+  // предоплата и счета
+  const s = await getS(env, r.uid); if (r.kind === "pre" && s.last) { s.last.prepaid = r.amount; await setS(env, r.uid, s); }
+  if (admin) await send(env, admin, head + (r.kind === "pre" ? "\n✅ Предоплата получена — можно начинать." : ""), statusKb(r.uid, "pay"));
+  return send(env, r.chat, `✅ <b>Оплата ${rub(r.amount)} получена!</b> Спасибо 💛\n\n${r.kind === "pre" ? "Светлана начинает работу и напишет здесь, когда будет первый вариант." : "Светлана получила уведомление."}`);
+}
+
+async function showShop(env, chat) {
+  const rows = Object.entries(PRODUCTS).map(([k, p]) => [{ text: `${p.e} ${p.s} — ${rub(p.p)}`, callback_data: "pr:" + k }]);
+  rows.push([{ text: "🎨 Автопостер за 5 минут — " + rub(POSTER_PRICE), web_app: { url: POSTER_URL } }]);
+  rows.push([{ text: "💎 Подписки", callback_data: "subs" }, { text: "⬅️ Меню", callback_data: "menu" }]);
+  return send(env, chat, `🛍 <b>Магазин готовых решений</b>\n\nМатериалы, с которыми рекламу можно сделать самостоятельно. Оплата — прямо здесь, файлы приходят сразу после оплаты.\n\n${Object.values(PRODUCTS).map((p) => `${p.e} <b>${esc(p.s)}</b> — ${rub(p.p)}`).join("\n")}\n🎨 <b>Автопостер</b> — ${rub(POSTER_PRICE)}: соберите постер с вашим текстом и фото за 5 минут`, kb(rows));
+}
+async function showProduct(env, chat, k) {
+  const p = PRODUCTS[k]; if (!p) return showShop(env, chat);
+  return send(env, chat, `${p.e} <b>${esc(p.n)}</b>\n\n${esc(p.d)}\n\nЦена: <b>${rub(p.p)}</b>\nФайлы придут сюда сразу после оплаты.`, kb([[{ text: `💳 Купить за ${rub(p.p)}`, callback_data: "buy:" + k }], [{ text: "⬅️ Все товары", callback_data: "shop" }]]));
+}
+async function showSubs(env, chat) {
+  return send(env, chat, `💎 <b>Подписки</b>\n\n<b>${SUBS.ads.n}</b> — ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> — ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> — от 9 900 ₽\nКак этот: меню услуг и цен, приём заявок, уведомления вам. Поддержка — 690 ₽/мес.\n\nПродлевать не обязательно: за 3 дня до конца я пришлю ссылку на продление, а вы решите сами.`,
+    kb([[{ text: `💎 ${SUBS.ads.n} — ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `🤖 ${SUBS.bot.n} — ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "🤖 Заказать бота", callback_data: "svc0:bot" }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
+}
+
+async function subsTick(env) {
+  const l = await env.KV.list({ prefix: "sub:", limit: 200 }); const admin = await getAdmin(env); let n = 0;
+  for (const k of l.keys) {
+    const m = k.metadata; if (!m || n > 10) continue; const left = m.until - Date.now(); const plan = SUBS[m.plan] || SUBS.ads;
+    if (left < 0) { await env.KV.delete(k.name); n++;
+      await send(env, m.chat, `Подписка «${esc(plan.n)}» закончилась. Спасибо, что были с VISUALL! 💛 Продлить можно в любой момент.`, kb([[{ text: "💎 Продлить", callback_data: "sb:" + m.plan }]]));
+      if (admin) await send(env, admin, `⌛ Закончилась подписка «${esc(plan.n)}»: ${who2(m)} #id${m.uid}`); continue; }
+    if (left < 3 * 86400e3 && !m.rem) { m.rem = 1; await env.KV.put(k.name, JSON.stringify(m), { metadata: m }); n++;
+      await send(env, m.chat, `⏰ Подписка «${esc(plan.n)}» заканчивается через ${Math.max(1, Math.ceil(left / 86400e3))} дн. Продлим ещё на 30 дней?`, kb([[{ text: `💎 Продлить — ${rub(plan.p)}`, callback_data: "sb:" + m.plan }]])); }
+  }
+}
+
+// автопостер: веб-приложение присылает готовую картинку
+async function posterUpload(req, env) {
+  const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type", "content-type": "application/json" };
+  if (req.method === "OPTIONS") return new Response("", { headers: cors });
+  let b; try { b = await req.json(); } catch { return new Response('{"ok":false}', { status: 400, headers: cors }); }
+  const u = await tgUserFromInitData(env, String(b.tg || "").slice(0, 4096));
+  if (!u) return new Response('{"ok":false,"err":"open_in_bot"}', { status: 403, headers: cors });
+  const img = String(b.img || ""); const m = img.match(/^data:image\/jpeg;base64,(.+)$/);
+  if (!m || m[1].length > 6e6) return new Response('{"ok":false,"err":"bad_image"}', { status: 400, headers: cors });
+  const ref = newPid(); await env.KV.put("pp:" + ref, m[1], { expirationTtl: 86400 * 7 });
+  await trackBot(env, u, "автопостер").catch(() => {});
+  await createPay(env, u.id, u, { kind: "poster", ref, amount: POSTER_PRICE, title: "Автопостер VISUALL" + (b.title ? ` «${String(b.title).slice(0, 40)}»` : "") });
+  return new Response('{"ok":true}', { headers: cors });
+}
+
+// уведомления ЮKassa
+async function ykWebhook(req, env) {
+  let b; try { b = await req.json(); } catch { return new Response("bad", { status: 400 }); }
+  const id = b?.object?.id, pid = b?.object?.metadata?.pid; const cfg = await ykCfg(env);
+  if (id && pid && cfg) { const { ok, j } = await ykApi(cfg, "/payments/" + id).catch(() => ({}));
+    if (ok && j.status === "succeeded" && j.metadata?.pid === pid) await fulfill(env, pid, "yookassa"); }
+  return new Response("ok");
+}
+
+// кнопки покупок (возвращает true, если обработал)
+async function commerceCallback(env, chat, user, d, s) {
+  if (d === "shop") { await showShop(env, chat); return true; }
+  if (d === "subs") { await showSubs(env, chat); return true; }
+  if (d.startsWith("pr:")) { await showProduct(env, chat, d.slice(3)); return true; }
+  if (d.startsWith("buy:")) { const p = PRODUCTS[d.slice(4)]; if (!p) return false;
+    await createPay(env, chat, user, { kind: "prod", ref: d.slice(4), amount: p.p, title: p.n }); return true; }
+  if (d.startsWith("sb:")) { const p = SUBS[d.slice(3)]; if (!p) return false;
+    await createPay(env, chat, user, { kind: "sub", ref: d.slice(3), amount: p.p, title: `Подписка «${p.n}» на 30 дней` }); return true; }
+  if (d === "pre") { const o = s.last; const c = o && calc(o);
+    if (!c || !c.total || c.s.from) { await send(env, chat, "Светлана пришлёт сумму предоплаты сюда, как только согласует заказ 💛"); return true; }
+    if (o.prepaid) { await send(env, chat, "✅ Предоплата по этому заказу уже получена. Спасибо!"); return true; }
+    await createPay(env, chat, user, { kind: "pre", ref: o.svc, amount: Math.round(c.total / 2), title: `Предоплата 50%: ${c.s.n}` }); return true; }
+  if (d.startsWith("pm:")) { const pid = d.slice(3); const r = await getPay(env, pid); if (!r) return true;
+    if (r.st === "paid") { await send(env, chat, "✅ Эта оплата уже подтверждена."); return true; }
+    r.st = "claimed"; await putPay(env, pid, r); const admin = await getAdmin(env);
+    if (admin) await send(env, admin, `💳 <b>Клиент сообщил об оплате ${rub(r.amount)}</b>\n${esc(r.title)}\n👤 ${who2(r)}\n\nПроверьте поступление в Сбербанке и нажмите кнопку — клиент сразу получит ${r.kind === "prod" ? "файлы" : r.kind === "poster" ? "постер" : "подтверждение"}.\n#id${r.uid}`,
+      kb([[{ text: "✅ Оплата пришла", callback_data: "pok:" + pid }, { text: "❌ Нет оплаты", callback_data: "pno:" + pid }]]));
+    await send(env, chat, "🙏 Спасибо! Светлана проверит поступление и я сразу пришлю всё сюда. Обычно это занимает до часа (ночью — утром).\n\nЕсли удобно, пришлите сюда скриншот перевода."); return true; }
+  if (d.startsWith("pchk:")) { const pid = d.slice(5); const r = await getPay(env, pid); const cfg = await ykCfg(env);
+    if (!r) return true; if (r.st === "paid") { await send(env, chat, "✅ Оплата уже получена, всё отправлено выше."); return true; }
+    if (cfg && r.y) { const { ok, j } = await ykApi(cfg, "/payments/" + r.y).catch(() => ({}));
+      if (ok && j.status === "succeeded") { await fulfill(env, pid, "yookassa"); return true; } }
+    await send(env, chat, "Оплата пока не поступила. Если вы оплатили только что — подождите минуту и нажмите ещё раз 🙏"); return true; }
+  if ((d.startsWith("pok:") || d.startsWith("pno:")) && isAdmin(user)) { const pid = d.slice(4); const r = await getPay(env, pid); if (!r) return true;
+    if (d.startsWith("pok:")) { await fulfill(env, pid, "sbp"); await send(env, chat, "✅ Подтверждено, клиент получил всё автоматически."); }
+    else { r.st = "new"; await putPay(env, pid, r); await send(env, r.chat, "Светлана пока не видит ваш перевод 🙏 Проверьте, пожалуйста, номер и сумму или пришлите сюда скриншот — разберёмся.", kb([[{ text: "✅ Я оплатил(а)", callback_data: "pm:" + pid }]])); await send(env, chat, "Клиенту отправлено, что оплата не найдена."); }
+    return true; }
+  return false;
+}
+
+// команды администратора для продаж (возвращает true, если обработал)
+async function commerceAdmin(env, chat, m, text) {
+  let mm;
+  if ((mm = text.match(/^\/касса(?:\s+(.*))?$/i))) {
+    const a = (mm[1] || "").trim().split(/\s+/).filter(Boolean);
+    if (!a.length) { const c = await ykCfg(env); return send(env, chat, c ? `✅ ЮKassa подключена (магазин ${esc(c.shop)}${c.email ? ", чеки на " + esc(c.email) : ""}).\n\nАдрес для уведомлений в кабинете ЮKassa:\n<code>https://visuall-bot.svetayurkina.workers.dev/yk</code>\n\n<code>/касса выкл</code> — отключить.` : "ЮKassa не подключена — сейчас клиенты платят по СБП, а вы подтверждаете оплату кнопкой.\n\nЧтобы подключить: <code>/касса shopId секретный_ключ</code>"); }
+    if (a[0] === "выкл") { await env.KV.delete("yk"); return send(env, chat, "ЮKassa отключена. Оплата — по СБП с подтверждением."); }
+    if (a.length < 2) return send(env, chat, "Формат: <code>/касса shopId секретный_ключ</code> (и по желанию email для чеков)");
+    const cfg = { shop: a[0], key: a[1], email: a[2] || "" };
+    const test = await ykApi(cfg, "/payments?limit=1").catch(() => ({ ok: false, j: {} }));
+    if (!test.ok) return send(env, chat, `❌ ЮKassa не приняла ключи: ${esc(test.j.description || test.j.code || "проверьте shopId и секретный ключ")}`);
+    await env.KV.put("yk", JSON.stringify(cfg)); await tg(env, "deleteMessage", { chat_id: chat, message_id: m.message_id });
+    return send(env, chat, "✅ ЮKassa подключена! Сообщение с ключом я удалила.\n\nПоследний шаг: в кабинете ЮKassa → Интеграция → HTTP-уведомления вставьте адрес\n<code>https://visuall-bot.svetayurkina.workers.dev/yk</code>\nи отметьте событие <b>payment.succeeded</b>.");
+  }
+  if ((mm = text.match(/^\/товар\s+([a-z]+)(\s+сброс)?/i))) {
+    const code = mm[1].toLowerCase(); if (!PRODUCTS[code] || PRODUCTS[code].items) return send(env, chat, `Коды товаров: ${Object.keys(PRODUCTS).filter((k) => !PRODUCTS[k].items).join(", ")}`);
+    if (mm[2]) { await env.KV.delete("pf:" + code); return send(env, chat, `Файлы товара «${esc(PRODUCTS[code].s)}» удалены.`); }
+    const fid = m.document?.file_id || (m.photo && m.photo[m.photo.length - 1].file_id);
+    if (!fid) return send(env, chat, "Прикрепите файл и в подписи напишите <code>/товар " + code + "</code>");
+    const files = JSON.parse((await env.KV.get("pf:" + code)) || "[]"); files.push(fid); await env.KV.put("pf:" + code, JSON.stringify(files));
+    return send(env, chat, `✅ Файл добавлен в «${esc(PRODUCTS[code].s)}» (файлов: ${files.length}). Покупатели получат его автоматически.`);
+  }
+  if (/^\/товары$/i.test(text)) {
+    const lines = []; for (const [k, p] of Object.entries(PRODUCTS)) { if (p.items) continue; const f = JSON.parse((await env.KV.get("pf:" + k)) || "[]"); lines.push(`${f.length ? "✅" : "⚠️"} <code>${k}</code> — ${esc(p.s)} (${rub(p.p)}): файлов ${f.length}`); }
+    return send(env, chat, "🛍 <b>Товары</b>\n\n" + lines.join("\n") + "\n\nЗагрузить: отправьте файл с подписью <code>/товар код</code>.");
+  }
+  if ((mm = text.match(/^\/сч[её]т\s+(\d[\d\s]*)\s*(.*)$/i))) {
+    const r = m.reply_to_message; const to = r && (r.text || r.caption || "").match(/#id(\d+)/);
+    if (!to) return send(env, chat, "Ответьте этой командой на сообщение клиента (где есть #id), например:\n<code>/счет 4950 Сайт — предоплата 20%</code>");
+    const amount = +mm[1].replace(/\s/g, ""); const title = mm[2].trim() || "Оплата заказа VISUALL";
+    await createPay(env, to[1], { id: to[1] }, { kind: "inv", ref: "", amount, title });
+    return send(env, chat, `✅ Клиенту отправлен счёт на ${rub(amount)}. Когда оплатит — я пришлю уведомление.`);
+  }
+  if (/^\/подписки$/i.test(text)) {
+    const l = await env.KV.list({ prefix: "sub:", limit: 200 });
+    const lines = l.keys.filter((k) => k.metadata).map((k) => `• ${(SUBS[k.metadata.plan] || {}).n}: ${who2(k.metadata)} — до ${MSKD(k.metadata.until).toISOString().slice(0, 10).split("-").reverse().join(".")}`);
+    return send(env, chat, "💎 <b>Активные подписки</b>\n\n" + (lines.join("\n") || "Пока нет."));
+  }
+  return null;
+}
+
 // ---------- напоминания и рассылка (cron) ----------
 const markStarted = (env, uid, chat) => env.KV.put("ab:" + uid, "1", { expirationTtl: 86400 * 3, metadata: { t: Date.now(), chat } }).catch(() => {});
 const clearStarted = (env, uid) => env.KV.delete("ab:" + uid).catch(() => {});
@@ -324,6 +555,7 @@ async function cronTick(env) {
 Продолжим? Это займёт минуту.`, kb([[{ text: "🛒 Продолжить заказ", callback_data: "resume" }], [{ text: "🔥 Посмотреть примеры", callback_data: "ex" }]]));
     await env.KV.delete(k.name); n++;
   }
+  await subsTick(env).catch((e) => console.log("subs", e));
   // рассылка порциями
   const job = JSON.parse((await env.KV.get("bc")) || "null");
   if (job && job.go) await runBroadcast(env, job, 35);
@@ -609,6 +841,10 @@ async function onCallback(env, q) {
   if (q.id !== "auto") await tg(env, "answerCallbackQuery", { callback_query_id: q.id });
   if (d.startsWith("st:") && isAdmin(user)) {
     const [, uid, code] = d.split(":"); const cs = await getS(env, uid); const o = cs.last || null;
+    const pc = code === "pay" && o ? calc(o) : null;
+    if (pc && pc.total && !pc.s.from && !o.prepaid) { await send(env, uid, `💳 <b>Заказ согласован!</b>\n\nПредоплата 50% — <b>${rub(Math.round(pc.total / 2))}</b>. Оплатить можно прямо здесь — работа начнётся сразу после оплаты. 🧾 Чек самозанятой пришлём после оплаты.`, kb([[{ text: `💳 Внести предоплату ${rub(Math.round(pc.total / 2))}`, callback_data: "pre" }]]));
+      await tg(env, "editMessageReplyMarkup", { chat_id: chat, message_id: q.message.message_id, reply_markup: statusKb(uid, code) });
+      return send(env, chat, `✅ Клиенту отправлена кнопка предоплаты ${rub(Math.round(pc.total / 2))}. Когда оплатит — пришлю уведомление.`); }
     await send(env, uid, STATUS[code][1](o), code === "done" ? kb([[{ text: "⭐ Оставить отзыв (−15%)", callback_data: "review" }], [{ text: "🤝 Пригласить друга", callback_data: "invite" }]]) : code === "cancel" ? MAIN_KB : undefined);
     await tg(env, "editMessageReplyMarkup", { chat_id: chat, message_id: q.message.message_id, reply_markup: statusKb(uid, code) });
     return send(env, chat, `✅ Клиенту отправлен статус: ${STATUS[code][0]}`);
@@ -618,6 +854,7 @@ async function onCallback(env, q) {
   if (d === "bc:no" && isAdmin(user)) { await env.KV.delete("bc"); return send(env, chat, "Рассылка отменена."); }
   const s = await getS(env, user.id);
   if (!s.reg && !s.unsub) { s.reg = 1; await env.KV.put("u:" + user.id, "1"); await setS(env, user.id, s); }
+  if (await commerceCallback(env, chat, user, d, s)) return;
   if (d.startsWith("q1:")) { s.q = { k: d.slice(3) }; await setS(env, user.id, s); return quizStep(env, chat, s, 2); }
   if (d.startsWith("q2:")) { s.q = { ...(s.q || {}), m: +d.slice(3) }; await setS(env, user.id, s); return quizStep(env, chat, s, 3); }
   if (d.startsWith("q3:")) { s.q = { ...(s.q || {}), w: +d.slice(3) }; await setS(env, user.id, s); if (s.q.k == null || s.q.m == null) return quizStep(env, chat, s, 1); return quizResult(env, chat, s); }
@@ -687,7 +924,8 @@ async function onMessage(env, m) {
   // администратор
   if (user.username && user.username.toLowerCase() === ADMIN_USERNAME) {
     const cur = await getAdmin(env);
-    if (cur !== String(chat)) { await env.KV.put("admin", String(chat)); await send(env, chat, "✅ Вы подключены как администратор. Сюда будут приходить заявки и вопросы клиентов. Чтобы ответить клиенту — ответьте (свайп → «Ответить») на его сообщение.\n\nКоманды:\n/stats — заявки и пользователи\n/отчет — кто и сколько был в боте и на сайте (каждое утро в 9:00 пришлю сам)\n/рассылка текст — новость всем клиентам (можно с фото)\n/menu — посмотреть бота глазами клиента\n\nПод каждой заявкой — кнопки статуса: клиент сразу получит уведомление."); }
+    if (cur !== String(chat)) { await env.KV.put("admin", String(chat)); await send(env, chat, "✅ Вы подключены как администратор. Сюда будут приходить заявки и вопросы клиентов. Чтобы ответить клиенту — ответьте (свайп → «Ответить») на его сообщение.\n\nКоманды:\n/stats — заявки и пользователи\n/отчет — кто и сколько был в боте и на сайте (каждое утро в 9:00 пришлю сам)\n/рассылка текст — новость всем клиентам (можно с фото)\n/товары — файлы магазина · /товар код — загрузить файл\n/касса — подключить ЮKassa\n/счет сумма описание — ответом на сообщение клиента\n/подписки — активные подписки\n/menu — посмотреть бота глазами клиента\n\nПод каждой заявкой — кнопки статуса: клиент сразу получит уведомление."); }
+    { const cr = await commerceAdmin(env, chat, m, text); if (cr !== null) return cr; }
     const r = m.reply_to_message;
     const mid = r && (r.text || r.caption || "").match(/#id(\d+)/);
     if (mid) {
@@ -710,8 +948,8 @@ async function onMessage(env, m) {
       if (/недел/.test(a)) return sendReport(env, chat, 7, 0);
       if (/месяц/.test(a)) return sendReport(env, chat, 30, 0);
       return sendReport(env, chat, n > 0 ? Math.min(n, 60) : 1, 0); }
-    if (text === "/stats") { const n = +(await env.KV.get("orders") || 0), u = +(await env.KV.get("users") || 0); return send(env, chat, `📊 Заявок: ${n}\nПользователей: ${u}`); }
-    if (text !== "/menu" && !text.startsWith("/start")) return send(env, chat, "Чтобы ответить клиенту, ответьте на его сообщение (свайп → «Ответить»).\n/рассылка текст — новость всем клиентам\n/stats — статистика\n/отчет — кто и сколько был в боте и на сайте\n/menu — меню клиента.");
+    if (text === "/stats") { const n = +(await env.KV.get("orders") || 0), u = +(await env.KV.get("users") || 0); const rv = +(await env.KV.get("rev") || 0); return send(env, chat, `📊 Заявок: ${n}\nПользователей: ${u}\nОплачено через бота: ${rub(rv)}`); }
+    if (text !== "/menu" && !text.startsWith("/start")) return send(env, chat, "Чтобы ответить клиенту, ответьте на его сообщение (свайп → «Ответить»).\n/рассылка текст — новость всем клиентам\n/stats — статистика\n/отчет — кто и сколько был в боте и на сайте\n/товары · /касса · /счет · /подписки — продажи\n/menu — меню клиента.");
   }
   const s = await getS(env, user.id);
   let dirty = false;
@@ -733,6 +971,11 @@ async function onMessage(env, m) {
     await send(env, chat, `👋 Здравствуйте${user.first_name ? ", " + esc(user.first_name) : ""}! Вы пришли с сайта VISUALL.\nОформим заказ «${esc(SERVICES[svc].n)}» — это займёт пару минут. Я задам несколько вопросов, чтобы Светлана сразу получила всё нужное.${found ? `\n\n🎨 Стиль и сфера уже отмечены: ${esc(CAT[found[0]][found[1]].n)}.` : ""}${!SERVICES[svc].design ? "" : s.o.disc === "ba" ? "\n\n🎟 Скидка −20% за «было — стало» подставлена автоматически." : s.o.disc === "friend" ? "\n\n🎟 Скидка −15% по приглашению друга подставлена автоматически." : `\n\n🎟 Промокод <code>${PROMO}</code> (−10%) подставлен автоматически.`}`);
     return onCallback(env, { id: "auto", from: user, data: "svc:" + svc, message: { chat: { id: chat }, message_id: 0 } });
   }
+  const pd = text.match(/^\/start\s+paid_([a-z0-9]+)/i);
+  if (pd) { await commerceCallback(env, chat, user, "pchk:" + pd[1], s); return; }
+  const sd = text.match(/^\/start\s+(shop|subs|poster|pr_[a-z]+)$/i);
+  if (sd) { const k = sd[1].toLowerCase(); if (k === "poster") return send(env, chat, "🎨 <b>Автопостер за 5 минут</b>\n\nВыберите стиль, впишите название, цены и контакты, добавьте своё фото — и получите готовый постер 1080×1350. Предпросмотр бесплатный, файл без водяного знака — 390 ₽.", kb([[{ text: "🎨 Открыть конструктор", web_app: { url: POSTER_URL } }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+    await commerceCallback(env, chat, user, k.startsWith("pr_") ? "pr:" + k.slice(3) : k, s); return; }
   if (text.startsWith("/start") || text === "/menu") { s.step = null; await setS(env, user.id, s); return route(env, chat, "menu", user); }
   if (text === "/price" || text === "/prices") return route(env, chat, "prices", user);
   if (text === "/order") return route(env, chat, "order", user);
@@ -797,6 +1040,8 @@ export default {
   async scheduled(event, env, ctx) { try { await cronTick(env); } catch (e) { console.log("cron", e && e.stack || e); } },
   async fetch(req, env) {
     const url = new URL(req.url);
+    if (url.pathname === "/yk" && req.method === "POST") { try { return await ykWebhook(req, env); } catch (e) { console.log("yk", e && e.stack || e); return new Response("ok"); } }
+    if (url.pathname === "/poster") { try { return await posterUpload(req, env); } catch (e) { console.log("poster", e && e.stack || e); return new Response('{"ok":false}', { status: 500, headers: { "access-control-allow-origin": "*" } }); } }
     if (url.pathname === "/t") {
       const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type" };
       if (req.method === "POST") { try { await trackSite(req, env); } catch (e) { console.log("track", e && e.stack || e); } }
