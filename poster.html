@@ -66,6 +66,14 @@ h1 em{background:linear-gradient(90deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);backgrou
 .buy::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sweep 3.2s ease-in-out infinite}
 @keyframes sweep{0%,60%{left:-60%}100%{left:130%}}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.mini{position:fixed;right:12px;top:12px;width:96px;aspect-ratio:4/5;border-radius:10px;overflow:hidden;z-index:40;box-shadow:0 10px 30px rgba(0,0,0,.55);border:2px solid var(--acc);transform:translateY(-140%) scale(.8);opacity:0;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s;cursor:pointer;background:#000}
+.mini.show{transform:none;opacity:1}
+.mini canvas{width:100%;height:100%;display:block}
+.mini::after{content:"↑";position:absolute;right:4px;bottom:3px;font-size:12px;font-weight:800;color:#1c1626;background:var(--acc);border-radius:99px;width:18px;height:18px;display:grid;place-items:center}
+.tools{display:flex;gap:8px;margin:10px 0 0}
+.tools button{flex:1;border:1px solid var(--line);background:rgba(31,26,40,.8);color:var(--ink);border-radius:12px;padding:11px;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s}
+.tools button:active{transform:scale(.96)}
+.prev{transform-style:preserve-3d;will-change:transform}
 </style>
 </head>
 <body>
@@ -79,6 +87,8 @@ h1 em{background:linear-gradient(90deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);backgrou
   <div class="presets" id="presets"></div>
   <div style="height:8px"></div>
   <div class="prev" id="prevbox"><canvas id="cv" width="1080" height="1350"></canvas></div>
+  <div class="tools"><button type="button" id="shuffle">🎲 Удиви меня</button><button type="button" id="next">Следующий стиль →</button></div>
+  <div class="mini" id="mini" title="Наверх к предпросмотру"><canvas id="mcv" width="216" height="270"></canvas></div>
 
   <span class="lbl">1 · Стиль</span>
   <div class="tpls" id="tpls"></div>
@@ -211,7 +221,7 @@ function watermark(c){c.save();c.globalAlpha=.2;c.fillStyle="#fff";c.strokeStyle
   for(let y=-H;y<H;y+=190)for(let x=-W;x<W;x+=520){c.strokeText("VISUALL · ОБРАЗЕЦ",x,y);c.fillText("VISUALL · ОБРАЗЕЦ",x,y);}c.restore();}
 function render(cv,i,wm){const c=cv.getContext("2d");c.setTransform(cv.width/W,0,0,cv.height/H,0,0);c.clearRect(0,0,W,H);T[i].draw(c,photo);if(wm)watermark(c);}
 const cv=$("cv");
-function draw(){render(cv,tpl,true);const pb=$("prevbox");pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop");}
+function draw(){render(cv,tpl,true);try{render($("mcv"),tpl,false);}catch(e){}const pb=$("prevbox");pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop");}
 const haptic=t=>{try{TG&&TG.HapticFeedback&&TG.HapticFeedback.impactOccurred(t||"light");}catch(e){}};
 const PRE=[
  {e:"💅",n:"Маникюр",t:0,img:"img/demo-nails.jpg",title:"Маникюр",sub:"с покрытием, который держится 4 недели",prices:"Маникюр + покрытие — 2 200 ₽\nУкрепление — 300 ₽\nДизайн — от 100 ₽",badge:"−10%",place:"Москва · запись в Telegram"},
@@ -229,8 +239,15 @@ $("presets").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>applyPreset
 function confetti(){const c=$("confetti"),x=c.getContext("2d");c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);
   const cols=["#f3d08c","#ff8fd0","#9fd4ff","#ffffff","#ff5fb7"];const P=Array.from({length:140},()=>({x:innerWidth/2,y:innerHeight*.7,vx:(Math.random()-.5)*14,vy:-Math.random()*16-6,r:Math.random()*6+3,c:cols[Math.random()*5|0],a:Math.random()*6,s:(Math.random()-.5)*.3}));
   let f=0;(function step(){x.clearRect(0,0,innerWidth,innerHeight);for(const p of P){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();}if(++f<130)requestAnimationFrame(step);else x.clearRect(0,0,innerWidth,innerHeight);})();}
+const BADGES=["−10%","−15%","NEW","ХИТ","2+1","−20%",""];
+$("shuffle").onclick=()=>{let t;do{t=Math.random()*T.length|0;}while(t===tpl&&T.length>1);tpl=t;$("badge").value=BADGES[Math.random()*BADGES.length|0];haptic("medium");draw();thumbs();};
+$("next").onclick=()=>{tpl=(tpl+1)%T.length;haptic();draw();thumbs();};
+const mini=$("mini");mini.onclick=()=>{$("prevbox").scrollIntoView({behavior:"smooth",block:"center"});};
+if("IntersectionObserver"in window)new IntersectionObserver(es=>es.forEach(e=>mini.classList.toggle("show",!e.isIntersecting&&scrollY>200)),{threshold:.08}).observe($("prevbox"));
+const pb0=$("prevbox");if(matchMedia("(hover:hover)").matches){pb0.addEventListener("pointermove",e=>{const r=pb0.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;pb0.style.transform=`perspective(900px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;});pb0.addEventListener("pointerleave",()=>pb0.style.transform="");}
 if(location.hash==="#demo")window.__vp={render,T,W,H,loadImg,set:(im)=>{photo=im;},PRE};
-function thumbs(){const box=$("tpls");box.innerHTML="";T.forEach((t,i)=>{const b=document.createElement("button");b.className="tpl";b.type="button";b.setAttribute("aria-pressed",i===tpl);
+let thFirst=true;
+function thumbs(){const box=$("tpls");if(!thFirst&&box.children.length===T.length){T.forEach((t,i)=>{const b=box.children[i];b.setAttribute("aria-pressed",i===tpl);render(b.querySelector("canvas"),i,false);});return;}thFirst=false;box.innerHTML="";T.forEach((t,i)=>{const b=document.createElement("button");b.className="tpl";b.type="button";b.setAttribute("aria-pressed",i===tpl);
   const c=document.createElement("canvas");c.width=216;c.height=270;b.appendChild(c);const s=document.createElement("span");s.textContent=t.n;b.appendChild(s);
   b.onclick=()=>{tpl=i;haptic();box.querySelectorAll(".tpl").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw();};box.appendChild(b);render(c,i,false);});}
 let tmr;["title","sub","prices","contact","badge","place"].forEach(id=>$(id).addEventListener("input",()=>{clearTimeout(tmr);tmr=setTimeout(()=>{draw();thumbs();},120);}));
