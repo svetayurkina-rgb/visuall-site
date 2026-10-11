@@ -59,7 +59,7 @@ const MAIN_KB = { inline_keyboard: [
   [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
   [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
   [{ text: "🛍 Магазин готовых решений", callback_data: "shop" }, { text: "💎 Подписки", callback_data: "subs" }],
-  [{ text: "🎨 Автопостер за 5 минут — 390 ₽", web_app: { url: SITE + "poster.html" } }],
+  [{ text: "🎨 Автопостер за 5 минут — 390 ₽", callback_data: "ap" }],
   [{ text: "💬 Позвать Светлану", callback_data: "human" }],
 ] };
 const BACK = [{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }];
@@ -210,7 +210,7 @@ const dayTitle = (d) => { const [, mo, dd] = d.split("-"); return `${+dd} ${DAYN
 const ACT = { menu: "меню", ex: "примеры", cat: "примеры", it: "примеры", w: "примеры", prices: "цены", quiz: "квиз", q1: "квиз", q2: "квиз", q3: "квиз",
   order: "заказ", svc: "заказ", fmt: "заказ", sph: "заказ", style: "заказ", br: "заказ", opt: "заказ", urg: "заказ", resume: "заказ", confirm: "✅ отправил(а) заявку",
   calc: "калькулятор", c: "калькулятор", rnd: "«удиви меня»", faq: "вопросы", terms: "условия", pay: "оплата", how: "как заказать", about: "о Светлане",
-  invite: "пригласить друга", review: "отзыв", rate: "отзыв", human: "позвать Светлану", disc: "скидки", catalog: "каталог", unsub: "отписка", shop: "🛍 магазин", pr: "🛍 магазин", buy: "💳 покупка", subs: "💎 подписки", sb: "💳 подписка", pre: "💳 предоплата", pm: "💳 оплатил(а)", pchk: "💳 оплатил(а)" };
+  invite: "пригласить друга", review: "отзыв", rate: "отзыв", human: "позвать Светлану", disc: "скидки", catalog: "каталог", unsub: "отписка", shop: "🛍 магазин", pr: "🛍 магазин", buy: "💳 покупка", subs: "💎 подписки", sb: "💳 подписка", pre: "💳 предоплата", pm: "💳 оплатил(а)", pchk: "💳 оплатил(а)", ap: "🎨 автопостер" };
 async function trackBot(env, user, what, src) {
   if (!user || isAdmin(user)) return;
   const k = `a:${dayKey()}:${user.id}`, now = Date.now();
@@ -416,16 +416,19 @@ async function fulfill(env, pid, how) {
 
 async function showShop(env, chat) {
   const rows = Object.entries(PRODUCTS).map(([k, p]) => [{ text: `${p.e} ${p.s} — ${rub(p.p)}`, callback_data: "pr:" + k }]);
-  rows.push([{ text: "🎨 Автопостер за 5 минут — " + rub(POSTER_PRICE), web_app: { url: POSTER_URL } }]);
+  rows.push([{ text: "🎨 Автопостер за 5 минут — " + rub(POSTER_PRICE), callback_data: "ap" }]);
   rows.push([{ text: "💎 Подписки", callback_data: "subs" }, { text: "⬅️ Меню", callback_data: "menu" }]);
-  return send(env, chat, `🛍 <b>Магазин готовых решений</b>\n\nМатериалы, с которыми рекламу можно сделать самостоятельно. Оплата — прямо здесь, файлы приходят сразу после оплаты.\n\n${Object.values(PRODUCTS).map((p) => `${p.e} <b>${esc(p.s)}</b> — ${rub(p.p)}`).join("\n")}\n🎨 <b>Автопостер</b> — ${rub(POSTER_PRICE)}: соберите постер с вашим текстом и фото за 5 минут`, kb(rows));
+  return media(env, chat, "anim", "shop.mp4", `🛍 <b>Магазин готовых решений</b>\n\nМатериалы, с которыми рекламу можно сделать самостоятельно. Оплата — прямо здесь, файлы приходят сразу после оплаты.\n\n${Object.values(PRODUCTS).map((p) => `${p.e} <b>${esc(p.s)}</b> — ${rub(p.p)}`).join("\n")}\n🎨 <b>Автопостер</b> — ${rub(POSTER_PRICE)}: соберите постер с вашим текстом и фото за 5 минут`, kb(rows));
 }
 async function showProduct(env, chat, k) {
   const p = PRODUCTS[k]; if (!p) return showShop(env, chat);
-  return send(env, chat, `${p.e} <b>${esc(p.n)}</b>\n\n${esc(p.d)}\n\nЦена: <b>${rub(p.p)}</b>\nФайлы придут сюда сразу после оплаты.`, kb([[{ text: `💳 Купить за ${rub(p.p)}`, callback_data: "buy:" + k }], [{ text: "⬅️ Все товары", callback_data: "shop" }]]));
+  return media(env, chat, "photo", "shop/" + k + ".jpg", `${p.e} <b>${esc(p.n)}</b>\n\n${esc(p.d)}\n\nЦена: <b>${rub(p.p)}</b>\nФайлы придут сюда сразу после оплаты.`, kb([[{ text: `💳 Купить за ${rub(p.p)}`, callback_data: "buy:" + k }], [{ text: "⬅️ Все товары", callback_data: "shop" }]]));
+}
+async function showPosterOffer(env, chat) {
+  return media(env, chat, "photo", "shop/poster.jpg", `🎨 <b>Автопостер за 5 минут</b>\n\n1. Выберите пример или один из 6 стилей: тёмный люкс, нежный, поп-арт, минимализм, неон, эко\n2. Впишите название, цены и контакты\n3. Добавьте фото своей работы\n\nПредпросмотр — бесплатно. Файл 1080×1350 без водяного знака — <b>${rub(POSTER_PRICE)}</b>, придёт сюда сразу после оплаты.`, kb([[{ text: "🎨 Открыть конструктор", web_app: { url: POSTER_URL } }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
 }
 async function showSubs(env, chat) {
-  return send(env, chat, `💎 <b>Подписки</b>\n\n<b>${SUBS.ads.n}</b> — ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> — ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> — от 9 900 ₽\nКак этот: меню услуг и цен, приём заявок, уведомления вам. Поддержка — 690 ₽/мес.\n\nПродлевать не обязательно: за 3 дня до конца я пришлю ссылку на продление, а вы решите сами.`,
+  return media(env, chat, "photo", "shop/subs.jpg", `💎 <b>Подписки</b>\n\n<b>${SUBS.ads.n}</b> — ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> — ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> — от 9 900 ₽\nКак этот: меню услуг и цен, приём заявок, уведомления вам. Поддержка — 690 ₽/мес.\n\nПродлевать не обязательно: за 3 дня до конца я пришлю ссылку на продление, а вы решите сами.`,
     kb([[{ text: `💎 ${SUBS.ads.n} — ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `🤖 ${SUBS.bot.n} — ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "🤖 Заказать бота", callback_data: "svc0:bot" }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
 }
 
@@ -469,6 +472,7 @@ async function ykWebhook(req, env) {
 async function commerceCallback(env, chat, user, d, s) {
   if (d === "shop") { await showShop(env, chat); return true; }
   if (d === "subs") { await showSubs(env, chat); return true; }
+  if (d === "ap") { await showPosterOffer(env, chat); return true; }
   if (d.startsWith("pr:")) { await showProduct(env, chat, d.slice(3)); return true; }
   if (d.startsWith("buy:")) { const p = PRODUCTS[d.slice(4)]; if (!p) return false;
     await createPay(env, chat, user, { kind: "prod", ref: d.slice(4), amount: p.p, title: p.n }); return true; }
@@ -974,7 +978,7 @@ async function onMessage(env, m) {
   const pd = text.match(/^\/start\s+paid_([a-z0-9]+)/i);
   if (pd) { await commerceCallback(env, chat, user, "pchk:" + pd[1], s); return; }
   const sd = text.match(/^\/start\s+(shop|subs|poster|pr_[a-z]+)$/i);
-  if (sd) { const k = sd[1].toLowerCase(); if (k === "poster") return send(env, chat, "🎨 <b>Автопостер за 5 минут</b>\n\nВыберите стиль, впишите название, цены и контакты, добавьте своё фото — и получите готовый постер 1080×1350. Предпросмотр бесплатный, файл без водяного знака — 390 ₽.", kb([[{ text: "🎨 Открыть конструктор", web_app: { url: POSTER_URL } }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+  if (sd) { const k = sd[1].toLowerCase(); if (k === "poster") return showPosterOffer(env, chat);
     await commerceCallback(env, chat, user, k.startsWith("pr_") ? "pr:" + k.slice(3) : k, s); return; }
   if (text.startsWith("/start") || text === "/menu") { s.step = null; await setS(env, user.id, s); return route(env, chat, "menu", user); }
   if (text === "/price" || text === "/prices") return route(env, chat, "prices", user);

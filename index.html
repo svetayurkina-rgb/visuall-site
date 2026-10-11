@@ -1021,13 +1021,54 @@ main,footer{position:relative;z-index:1}
   </section>
 
   <section id="shop">
-    <div class="eyebrow">Готовые решения</div>
-    <div class="center"><h2>Сделайте рекламу сами — или по подписке</h2><p>Оплата и получение — сразу в Telegram-боте, без ожидания.</p></div>
-    <div class="bonus">
-      <div class="bcard"><div class="bp">390&nbsp;₽</div><h3>Автопостер за 5 минут</h3><p>Выберите стиль, впишите текст и цены, добавьте фото работы — постер 1080×1350 соберётся сам. Предпросмотр бесплатно.</p><a class="btn gold" href="poster.html">Собрать постер</a></div>
-      <div class="bcard"><div class="bp">от 390&nbsp;₽</div><h3>Магазин материалов</h3><p>Гайд «Реклама с нейросетью» + 40 промптов — 990&nbsp;₽, новогодний пакет — 490&nbsp;₽, контент-план на месяц — 490&nbsp;₽, 5 шаблонов сертификатов — 390&nbsp;₽. Всё вместе — 1 490&nbsp;₽.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=shop" target="_blank" rel="noopener">Открыть магазин</a></div>
-      <div class="bcard"><div class="bp">2 990&nbsp;₽/мес</div><h3>Реклама на месяц</h3><p>4 постера и 4 текста к ним в одном стиле в течение 30 дней. Поддержка бота для клиентов — 690&nbsp;₽/мес.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=subs" target="_blank" rel="noopener">Оформить подписку</a></div>
+    <style>
+    #shop .rs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+    #shop .rs-card{position:relative;border-radius:22px;overflow:hidden;background:#17131f;isolation:isolate;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+    #shop .rs-card::before{content:"";position:absolute;inset:0;border-radius:22px;padding:1.5px;background:linear-gradient(130deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);background-size:300% 300%;animation:rsGlow 8s linear infinite;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:2;pointer-events:none;opacity:.55}
+    #shop .rs-card.rs-in:hover{transform:translateY(-6px) rotate(-.4deg);box-shadow:0 22px 60px rgba(233,194,122,.18)}
+    #shop .rs-card:hover::before{opacity:1}
+    #shop .rs-img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+    #shop .rs-card:hover .rs-img{transform:scale(1.05)}
+    #shop .rs-body{padding:16px 18px 18px;background:linear-gradient(180deg,rgba(23,19,31,0),#17131f 30%);margin-top:-60px;position:relative}
+    #shop .rs-price{display:inline-block;font-weight:800;font-size:15px;color:#1c1626;background:linear-gradient(135deg,#f3d08c,#d9a35a);border-radius:99px;padding:5px 12px;margin-bottom:8px}
+    #shop .rs-body h3{margin:0 0 6px;font-size:20px}
+    #shop .rs-body p{margin:0 0 14px;font-size:14px;line-height:1.5;opacity:.82}
+    #shop .rs-tag{position:absolute;top:14px;right:14px;z-index:3;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(135deg,#ff5fb7,#ff9b5c);border-radius:99px;padding:6px 12px;animation:rsPulse 2.4s ease-in-out infinite}
+    #shop .rs-big{grid-column:span 2;grid-row:span 2}
+    #shop .rs-big .rs-img{aspect-ratio:auto;height:100%;min-height:520px;object-fit:contain;background:radial-gradient(circle at 70% 30%,#3a2048,#140f1c)}
+    #shop .rs-wide{grid-column:span 3;display:grid;grid-template-columns:minmax(220px,300px) 1fr;align-items:center}
+    #shop .rs-wide .rs-body{margin:0;background:none;padding:24px 28px}
+    #shop .rs-wide h3{font-size:26px}
+    #shop .rs-big .rs-body{position:absolute;left:0;right:0;bottom:0;margin:0;padding:80px 24px 24px;background:linear-gradient(180deg,rgba(23,19,31,0),rgba(15,12,20,.92) 40%)}
+    #shop .rs-big h3{font-size:30px}
+    #shop .rs-marq{overflow:hidden;margin:28px -16px 0;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+    #shop .rs-track{display:flex;gap:14px;width:max-content;animation:rsMarq 36s linear infinite}
+    #shop .rs-track img{height:230px;width:auto;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+    #shop .rs-marq:hover .rs-track{animation-play-state:paused}
+    #shop .rs-cap{text-align:center;font-size:13px;opacity:.7;margin-top:10px}
+    @keyframes rsGlow{to{background-position:300% 0}}
+    @keyframes rsPulse{50%{transform:scale(1.08);box-shadow:0 0 24px rgba(255,95,183,.5)}}
+    @keyframes rsMarq{to{transform:translateX(-50%)}}
+    #shop .rs-card{opacity:0;transform:translateY(24px)}
+    #shop .rs-card.rs-in{opacity:1;transform:none;transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
+    @media (max-width:820px){#shop .rs-grid{grid-template-columns:1fr 1fr;gap:12px}#shop .rs-wide{grid-column:span 2;grid-template-columns:42% 1fr}#shop .rs-wide .rs-body{padding:14px}#shop .rs-wide h3{font-size:18px}#shop .rs-big{grid-column:span 2;grid-row:auto}#shop .rs-big .rs-img{min-height:0;aspect-ratio:4/5}#shop .rs-body h3{font-size:16px}#shop .rs-body p{font-size:12.5px}#shop .rs-big h3{font-size:24px}}
+    @media (max-width:420px){#shop .rs-body{padding:12px 12px 14px}#shop .rs-body p{display:none}#shop .rs-big .rs-body p,#shop .rs-wide .rs-body p{display:block}}
+    @media (prefers-reduced-motion:reduce){#shop *{animation:none!important}#shop .rs-card{opacity:1;transform:none}}
+    </style>
+    <div class="eyebrow">Готовые решения · новое</div>
+    <div class="center"><h2>Сделайте рекламу сами — или по подписке</h2><p>Оплата и файлы — сразу в Telegram-боте, без ожидания.</p></div>
+    <div class="rs-grid">
+      <article class="rs-card rs-big"><span class="rs-tag">NEW</span><img class="rs-img" src="img/shop/poster.jpg" alt="Автопостер за 5 минут" loading="lazy"><div class="rs-body"><span class="rs-price">390&nbsp;₽</span><h3>Автопостер за 5 минут</h3><p>Выберите стиль, впишите текст и цены, добавьте фото работы — постер 1080×1350 соберётся сам. Предпросмотр бесплатно.</p><a class="btn gold" href="poster.html">Собрать постер</a></div></article>
+      <article class="rs-card"><img class="rs-img" src="img/shop/guide-s.jpg" alt="Гайд + 40 промптов" loading="lazy"><div class="rs-body"><span class="rs-price">990&nbsp;₽</span><h3>Гайд + 40 промптов</h3><p>Реклама своими руками с нейросетью: формулы текста и заголовков, промпты для 30 сфер, чек-лист.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_guide" target="_blank" rel="noopener">Купить в боте</a></div></article>
+      <article class="rs-card"><span class="rs-tag">🎄</span><img class="rs-img" src="img/shop/ny-s.jpg" alt="Новогодний пакет" loading="lazy"><div class="rs-body"><span class="rs-price">490&nbsp;₽</span><h3>Новогодний пакет</h3><p>30 текстов акций, календарь акций на декабрь и 15 промптов праздничных постеров.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_ny" target="_blank" rel="noopener">Купить в боте</a></div></article>
+      <article class="rs-card"><img class="rs-img" src="img/shop/plan-s.jpg" alt="Контент-план на месяц" loading="lazy"><div class="rs-body"><span class="rs-price">490&nbsp;₽</span><h3>Контент-план на месяц</h3><p>30 тем постов, 30 идей сторис и 20 ответов клиентам, которые доводят до записи.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_plan" target="_blank" rel="noopener">Купить в боте</a></div></article>
+      <article class="rs-card"><img class="rs-img" src="img/shop/certs-s.jpg" alt="5 шаблонов сертификатов" loading="lazy"><div class="rs-body"><span class="rs-price">390&nbsp;₽</span><h3>5 шаблонов сертификатов</h3><p>Печать 210×99 мм, PDF + PNG: тёмный люкс, нежный, мятный, новогодний, бежевый.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_certs" target="_blank" rel="noopener">Купить в боте</a></div></article>
+      <article class="rs-card"><span class="rs-tag">−37%</span><img class="rs-img" src="img/shop/all-s.jpg" alt="Всё вместе −37%" loading="lazy"><div class="rs-body"><span class="rs-price">1&nbsp;490&nbsp;₽</span><h3>Всё вместе −37%</h3><p>Гайд, новогодний пакет, контент-план и сертификаты. Вместо 2&nbsp;360&nbsp;₽.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_all" target="_blank" rel="noopener">Купить набор</a></div></article>
+      <article class="rs-card rs-wide"><img class="rs-img" src="img/shop/subs-s.jpg" alt="Реклама на месяц" loading="lazy"><div class="rs-body"><span class="rs-price">2&nbsp;990&nbsp;₽/мес</span><h3>Реклама на месяц</h3><p>4 постера и 4 текста в одном стиле за 30 дней. Поддержка бота — 690&nbsp;₽/мес.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=subs" target="_blank" rel="noopener">Оформить</a></div></article>
     </div>
+    <div class="rs-marq" aria-hidden="true"><div class="rs-track"><img src="img/shop/ap-0.jpg" alt="" loading="lazy"><img src="img/shop/ap-1.jpg" alt="" loading="lazy"><img src="img/shop/ap-2.jpg" alt="" loading="lazy"><img src="img/shop/ap-3.jpg" alt="" loading="lazy"><img src="img/shop/ap-4.jpg" alt="" loading="lazy"><img src="img/shop/ap-5.jpg" alt="" loading="lazy"><img src="img/shop/ap-0.jpg" alt="" loading="lazy"><img src="img/shop/ap-1.jpg" alt="" loading="lazy"><img src="img/shop/ap-2.jpg" alt="" loading="lazy"><img src="img/shop/ap-3.jpg" alt="" loading="lazy"><img src="img/shop/ap-4.jpg" alt="" loading="lazy"><img src="img/shop/ap-5.jpg" alt="" loading="lazy"></div></div>
+    <p class="rs-cap">Это всё сделал автопостер за пару минут — попробуйте сами</p>
+    <script>(function(){const cs=document.querySelectorAll("#shop .rs-card");if(!("IntersectionObserver"in window)){cs.forEach(c=>c.classList.add("rs-in"));return;}const io=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("rs-in"),80*[...cs].indexOf(e.target)%400);io.unobserve(e.target);}}),{threshold:.15});cs.forEach(c=>io.observe(c));})();</script>
   </section>
   <section id="calc">
     <div class="eyebrow">Калькулятор</div>

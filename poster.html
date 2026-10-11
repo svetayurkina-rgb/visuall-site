@@ -43,15 +43,42 @@ textarea{min-height:104px;resize:vertical}
 .ok b{color:var(--acc)}
 .contacts{font-size:12px;color:var(--mut);text-align:center;margin:26px 0 0}
 .contacts a{color:var(--acc)}
+
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 20% 20%,rgba(233,194,122,.18),transparent 70%),radial-gradient(35% 30% at 80% 30%,rgba(255,80,180,.14),transparent 70%),radial-gradient(40% 35% at 50% 85%,rgba(80,120,255,.14),transparent 70%);animation:aur 18s ease-in-out infinite alternate}
+@keyframes aur{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(4%,-3%) rotate(8deg)}100%{transform:translate(-3%,4%) rotate(-6deg)}}
+h1 em{background:linear-gradient(90deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:300% 0}}
+.badge-new{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;background:linear-gradient(135deg,#ff5fb7,#ffb35c);color:#1c1626;border-radius:99px;padding:4px 10px;margin-bottom:8px;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 0 22px rgba(255,95,183,.45)}}
+.prev{transition:transform .25s}.prev.pop{animation:pop .35s ease}
+@keyframes pop{40%{transform:scale(.985)}100%{transform:scale(1)}}
+.prev::after{content:"";position:absolute;inset:0;border-radius:14px;padding:2px;background:linear-gradient(130deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);background-size:300% 300%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:shine 8s linear infinite;pointer-events:none}
+.presets{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.presets::-webkit-scrollbar{display:none}
+.presets button{flex:0 0 auto;border:1px solid var(--line);background:rgba(31,26,40,.8);backdrop-filter:blur(8px);color:var(--ink);border-radius:99px;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer;transition:transform .15s,border-color .15s}
+.presets button:active{transform:scale(.95)}
+.presets button[aria-pressed=true]{border-color:var(--acc);background:rgba(233,194,122,.14)}
+.tpl{transition:transform .2s;animation:rise .5s both}
+.tpl:nth-child(2){animation-delay:.05s}.tpl:nth-child(3){animation-delay:.1s}.tpl:nth-child(4){animation-delay:.15s}.tpl:nth-child(5){animation-delay:.2s}.tpl:nth-child(6){animation-delay:.25s}
+.tpl:active{transform:scale(.96)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.buy{position:relative;overflow:hidden}
+.buy::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sweep 3.2s ease-in-out infinite}
+@keyframes sweep{0%,60%{left:-60%}100%{left:130%}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <span class="badge-new">НОВОЕ · ПОСТЕР ЗА 5 МИНУТ</span>
   <h1>Автопостер <em>за 5 минут</em></h1>
   <p class="lead">Выберите стиль, впишите текст и цены, добавьте своё фото — постер соберётся сам. Предпросмотр бесплатный, файл без водяного знака 1080×1350 — <b>390 ₽</b>.</p>
   <div class="steps"><span>1 · стиль</span><span>2 · текст и цены</span><span>3 · фото</span><span>4 · получить файл</span></div>
 
-  <div class="prev"><canvas id="cv" width="1080" height="1350"></canvas></div>
+  <span class="lbl" style="margin-top:4px">Быстрый старт — выберите пример</span>
+  <div class="presets" id="presets"></div>
+  <div style="height:8px"></div>
+  <div class="prev" id="prevbox"><canvas id="cv" width="1080" height="1350"></canvas></div>
 
   <span class="lbl">1 · Стиль</span>
   <div class="tpls" id="tpls"></div>
@@ -79,6 +106,7 @@ textarea{min-height:104px;resize:vertical}
   <div class="ok" id="ok"><b>Готово!</b> Вернитесь в чат с ботом — там кнопка оплаты 390 ₽. Сразу после оплаты бот пришлёт постер в полном качестве.</div>
   <p class="contacts">Хотите уникальный дизайн руками дизайнера? <a href="https://t.me/visuall_sveta_bot?start=o_poster">Заказать у Светланы от 990 ₽</a><br>VISUALL · Светлана Музыка · @sveta_muzyka · +7 (925) 062-00-01</p>
 </div>
+<canvas id="confetti"></canvas>
 <div class="bar"><div class="in"><button class="buy" id="buy">Получить постер без водяного знака — 390 ₽</button><p class="note" id="note">Файл придёт в чат с ботом @visuall_sveta_bot после оплаты</p></div></div>
 
 <script>
@@ -93,9 +121,9 @@ function rr(x,y,w,h,r){const c=this;c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,
 CanvasRenderingContext2D.prototype.rr=rr;
 function fit(c,text,font,size,maxW,min){let s=size;do{c.font=font.replace("$",s);if(c.measureText(text).width<=maxW)break;s-=2;}while(s>min);return s;}
 function wrap(c,text,maxW){const w=text.split(/\s+/);const out=[];let cur="";for(const x of w){const t=(cur+" "+x).trim();if(c.measureText(t).width<=maxW||!cur)cur=t;else{out.push(cur);cur=x;}}if(cur)out.push(cur);return out;}
-function title2(c,text,font,size,maxW,min,lh){ // up to 2 lines, shrink to fit
-  let s=size,lines;for(;;){c.font=font.replace("$",s);lines=wrap(c,text,maxW);if((lines.length<=2&&lines.every(l=>c.measureText(l).width<=maxW))||s<=min)break;s-=2;}
-  return{lines:lines.slice(0,2),size:s,lh:s*(lh||1.05)};}
+function title2(c,text,font,size,maxW,min,lh,ml){ // up to ml lines, shrink to fit
+  ml=ml||2;let s=size,lines;for(;;){c.font=font.replace("$",s);lines=wrap(c,text,maxW);if((lines.length<=ml&&lines.every(l=>c.measureText(l).width<=maxW))||s<=min)break;s-=2;}
+  return{lines:lines.slice(0,ml),size:s,lh:s*(lh||1.05)};}
 function cover(c,img,x,y,w,h){const r=Math.max(w/img.width,h/img.height);const iw=img.width*r,ih=img.height*r;c.drawImage(img,x+(w-iw)/2,y+(h-ih)/2,iw,ih);}
 function photoIn(c,shape,x,y,w,h,r,ph){c.save();if(shape==="circle"){c.beginPath();c.arc(x+w/2,y+h/2,Math.min(w,h)/2,0,7);}else if(shape==="arch"){c.beginPath();c.moveTo(x,y+h);c.lineTo(x,y+w/2);c.arc(x+w/2,y+w/2,w/2,Math.PI,0);c.lineTo(x+w,y+h);c.closePath();}else c.rr(x,y,w,h,r||0);c.clip();if(ph)cover(c,ph,x,y,w,h);c.restore();}
 function prices(){return $("prices").value.split("\n").map(s=>s.trim()).filter(Boolean).slice(0,5).map(s=>{const m=s.split(/\s+[—–-]\s+/);return m.length>1?[m.slice(0,-1).join(" — "),m[m.length-1]]:[s,""];});}
@@ -128,7 +156,7 @@ const T=[
   for(const [x,y,r,col] of [[160,180,330,"rgba(244,183,197,.55)"],[960,1150,420,"rgba(246,200,214,.6)"],[980,180,220,"rgba(255,221,228,.8)"]]){const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,col);g.addColorStop(1,"rgba(255,255,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);}
   const cx=W/2,cy=360,r=250;c.fillStyle="#fff";c.beginPath();c.arc(cx,cy,r+16,0,7);c.fill();
   if(ph)photoIn(c,"circle",cx-r,cy-r,r*2,r*2,0,ph);else{const g=c.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g.addColorStop(0,"#f6c7d2");g.addColorStop(1,"#fbe3e8");c.fillStyle=g;c.beginPath();c.arc(cx,cy,r,0,7);c.fill();}
-  const t=title2(c,v("title")||"Ваша услуга","400 $px 'Marck Script'",120,W-160,60,1);c.fillStyle="#9b3f5e";c.textAlign="center";let y=cy+r+60+t.size*.75;
+  const t=title2(c,v("title")||"Ваша услуга","400 $px 'Marck Script'",120,W-160,56,1,1);c.fillStyle="#9b3f5e";c.textAlign="center";let y=cy+r+60+t.size*.75;
   for(const l of t.lines){c.font=`400 ${t.size}px 'Marck Script'`;c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
   if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.5,"500 34px Jost","#b26a82","center");
   c.fillStyle="rgba(255,255,255,.78)";c.rr(110,y+40,W-220,Math.max(1,prices().length)*62+44,30);c.fill();
@@ -183,16 +211,34 @@ function watermark(c){c.save();c.globalAlpha=.2;c.fillStyle="#fff";c.strokeStyle
   for(let y=-H;y<H;y+=190)for(let x=-W;x<W;x+=520){c.strokeText("VISUALL · ОБРАЗЕЦ",x,y);c.fillText("VISUALL · ОБРАЗЕЦ",x,y);}c.restore();}
 function render(cv,i,wm){const c=cv.getContext("2d");c.setTransform(cv.width/W,0,0,cv.height/H,0,0);c.clearRect(0,0,W,H);T[i].draw(c,photo);if(wm)watermark(c);}
 const cv=$("cv");
-function draw(){render(cv,tpl,true);}
+function draw(){render(cv,tpl,true);const pb=$("prevbox");pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop");}
+const haptic=t=>{try{TG&&TG.HapticFeedback&&TG.HapticFeedback.impactOccurred(t||"light");}catch(e){}};
+const PRE=[
+ {e:"💅",n:"Маникюр",t:0,img:"img/demo-nails.jpg",title:"Маникюр",sub:"с покрытием, который держится 4 недели",prices:"Маникюр + покрытие — 2 200 ₽\nУкрепление — 300 ₽\nДизайн — от 100 ₽",badge:"−10%",place:"Москва · запись в Telegram"},
+ {e:"🍰",n:"Кондитер",t:4,img:"img/demo-cake.jpg",title:"Торты на заказ",sub:"натуральные сливки и ягоды",prices:"Бенто-торт — 1 500 ₽\nТорт 1 кг — от 2 400 ₽\nКапкейки, 6 шт — 1 200 ₽",badge:"NEW",place:"Доставка по городу"},
+ {e:"☕",n:"Кофейня",t:2,img:"img/demo-coffee.jpg",title:"Сначала кофе",sub:"потом всё остальное",prices:"Капучино — 220 ₽\nРаф — 280 ₽\nАйс-латте — 260 ₽",badge:"2+1",place:"ул. Цветочная, 5"},
+ {e:"🐶",n:"Груминг",t:1,img:"img/demo-dog.jpg",title:"Груминг без стресса",sub:"бережно, спокойно, по записи",prices:"Комплекс для малых пород — 2 000 ₽\nСтрижка когтей — 400 ₽\nГигиеническая стрижка — 1 200 ₽",badge:"−15%",place:"Запись в Telegram"},
+ {e:"📚",n:"Репетитор",t:3,img:"",title:"Математика без страха",sub:"подготовка к ОГЭ и ЕГЭ",prices:"Пробный урок — 500 ₽\nЗанятие 60 минут — 1 500 ₽\nАбонемент 8 занятий — 11 000 ₽",badge:"",place:"Онлайн по всей России"},
+ {e:"✨",n:"Своё",t:null}];
+function loadImg(src){return new Promise(r=>{if(!src)return r(null);const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src;});}
+async function applyPreset(i){const p=PRE[i];document.querySelectorAll("#presets button").forEach((b,j)=>b.setAttribute("aria-pressed",j===i));haptic();
+  if(p.t===null){["title","sub","prices","badge","place"].forEach(id=>$(id).value="");photo=null;$("title").focus();draw();thumbs();return;}
+  $("title").value=p.title;$("sub").value=p.sub;$("prices").value=p.prices.replace(/\\n/g,"\n");$("badge").value=p.badge;$("place").value=p.place;tpl=p.t;photo=await loadImg(p.img);draw();thumbs();}
+$("presets").innerHTML=PRE.map((p,i)=>`<button type="button" aria-pressed="${i===0}">${p.e} ${p.n}</button>`).join("");
+$("presets").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>applyPreset(i));
+function confetti(){const c=$("confetti"),x=c.getContext("2d");c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);
+  const cols=["#f3d08c","#ff8fd0","#9fd4ff","#ffffff","#ff5fb7"];const P=Array.from({length:140},()=>({x:innerWidth/2,y:innerHeight*.7,vx:(Math.random()-.5)*14,vy:-Math.random()*16-6,r:Math.random()*6+3,c:cols[Math.random()*5|0],a:Math.random()*6,s:(Math.random()-.5)*.3}));
+  let f=0;(function step(){x.clearRect(0,0,innerWidth,innerHeight);for(const p of P){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();}if(++f<130)requestAnimationFrame(step);else x.clearRect(0,0,innerWidth,innerHeight);})();}
+if(location.hash==="#demo")window.__vp={render,T,W,H,loadImg,set:(im)=>{photo=im;},PRE};
 function thumbs(){const box=$("tpls");box.innerHTML="";T.forEach((t,i)=>{const b=document.createElement("button");b.className="tpl";b.type="button";b.setAttribute("aria-pressed",i===tpl);
   const c=document.createElement("canvas");c.width=216;c.height=270;b.appendChild(c);const s=document.createElement("span");s.textContent=t.n;b.appendChild(s);
-  b.onclick=()=>{tpl=i;box.querySelectorAll(".tpl").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw();};box.appendChild(b);render(c,i,false);});}
+  b.onclick=()=>{tpl=i;haptic();box.querySelectorAll(".tpl").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw();};box.appendChild(b);render(c,i,false);});}
 let tmr;["title","sub","prices","contact","badge","place"].forEach(id=>$(id).addEventListener("input",()=>{clearTimeout(tmr);tmr=setTimeout(()=>{draw();thumbs();},120);}));
 $("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{photo=im;draw();thumbs();};im.src=r.result;};r.readAsDataURL(f);};
 $("nofoto").onclick=()=>{photo=null;$("file").value="";draw();thumbs();};
 
 const fonts=["400 40px Oranienbaum","400 40px 'Marck Script'","400 40px 'Rubik Mono One'","500 40px Unbounded","400 40px Prata","500 40px Jost","600 40px Jost","400 40px Jost","italic 600 40px 'Cormorant Garamond'","500 40px Manrope","700 40px Manrope","800 40px Manrope"];
-Promise.all(fonts.map(f=>document.fonts.load(f,"Абв"))).catch(()=>{}).then(()=>{draw();thumbs();});
+Promise.all(fonts.map(f=>document.fonts.load(f,"Абв"))).catch(()=>{}).then(()=>applyPreset(0));
 draw();
 
 const inTG=!!(TG&&TG.initData);
@@ -206,8 +252,8 @@ $("buy").onclick=async()=>{
     const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tg:TG.initData,img,title:v("title"),tpl:T[tpl].n})});
     const j=await r.json().catch(()=>({}));
     if(!r.ok||!j.ok)throw new Error(j.err||r.status);
-    $("ok").style.display="block";b.textContent="✅ Отправлено в чат — оплатите там";
-    setTimeout(()=>{try{TG.close();}catch(e){}},1600);
+    $("ok").style.display="block";b.textContent="✅ Отправлено в чат — оплатите там";confetti();try{TG.HapticFeedback.notificationOccurred("success");}catch(e){}
+    setTimeout(()=>{try{TG.close();}catch(e){}},2400);
   }catch(e){b.disabled=false;b.textContent="Получить постер без водяного знака — 390 ₽";alert("Не получилось отправить. Проверьте интернет и попробуйте ещё раз.");}
 };
 })();
