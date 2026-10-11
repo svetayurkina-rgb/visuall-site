@@ -84,7 +84,7 @@ textarea{min-height:110px;resize:vertical;line-height:1.55}
   <div class="top"><div class="brand">VISUALL<small>STUDIO</small></div><div class="kick">N°01 · 2026</div></div>
   <div class="kick reveal">Постер за 5 минут</div>
   <h1 class="reveal">Реклама уровня<br><i>дорогого бренда</i></h1>
-  <p class="lead reveal">Выберите образ, впишите своё предложение, добавьте фото работы — постер соберётся на ваших глазах. Предпросмотр бесплатный. Файл в полном качестве 1080×1350 — <b>390 ₽</b>.</p>
+  <p class="lead reveal">Выберите образ, впишите своё предложение, добавьте фото работы — постер соберётся на ваших глазах. Предпросмотр бесплатный. Файл в полном качестве 1080×1350 — <b>390 ₽</b>, а версия для сторис — в подарок.</p>
 
   <div class="lbl reveal"><b>01</b>Начните с примера</div>
   <div class="presets reveal" id="presets"></div>
@@ -113,7 +113,7 @@ textarea{min-height:110px;resize:vertical;line-height:1.55}
   <div class="why reveal"><div><b>5 мин</b><span>от идеи до готового файла</span></div><div><b>4</b><span>премиальных стиля</span></div><div><b>1080</b><span>пикселей — для соцсетей и печати</span></div></div>
   <p class="foot">Нужен уникальный дизайн руками дизайнера? <a href="https://t.me/visuall_sveta_bot?start=o_poster">Заказать у Светланы — от 990 ₽</a><br>VISUALL · Светлана Музыка · @sveta_muzyka · +7 (925) 062-00-01</p>
 </div>
-<div class="done" id="done"><div><div class="ring">✓</div><h2>Постер отправлен</h2><p>Вернитесь в чат с ботом — там оплата 390 ₽.<br>Сразу после неё придёт файл в полном качестве.</p></div></div>
+<div class="done" id="done"><div><div class="ring">✓</div><h2>Постер отправлен</h2><p>Вернитесь в чат с ботом — там оплата 390 ₽.<br>Сразу после неё придёт постер в полном качестве и подарок — версия для сторис.</p></div></div>
 <div class="bar"><div class="in"><button class="buy" id="buy">Получить постер — 390 ₽</button><p class="note" id="note">Файл придёт в чат с ботом @visuall_sveta_bot после оплаты</p></div></div>
 
 <script>
@@ -237,7 +237,11 @@ $("buy").onclick=async()=>{
   const b=$("buy");b.disabled=true;b.textContent="Готовлю файл…";
   try{const full=document.createElement("canvas");full.width=W;full.height=H;render(full,tpl,false);
     const img=full.toDataURL("image/jpeg",.92);
-    const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tg:TG.initData,img,title:v("title"),tpl:T[tpl].n})});
+    const st=document.createElement("canvas");st.width=W;st.height=1920;const sc=st.getContext("2d");
+    sc.fillStyle="#0b0a0d";sc.fillRect(0,0,W,1920);try{sc.filter="blur(48px) brightness(.55)";sc.drawImage(full,-280,-20,W+560,1960);sc.filter="none";}catch(e){}
+    sc.fillStyle="rgba(8,7,10,.35)";sc.fillRect(0,0,W,1920);sc.shadowColor="rgba(0,0,0,.6)";sc.shadowBlur=60;sc.drawImage(full,0,285,W,H);sc.shadowBlur=0;
+    const img2=st.toDataURL("image/jpeg",.9);
+    const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tg:TG.initData,img,img2,title:v("title"),tpl:T[tpl].n})});
     const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.err||r.status);
     $("done").classList.add("show");b.textContent="Отправлено";try{TG.HapticFeedback.notificationOccurred("success");}catch(e){}
     setTimeout(()=>{try{TG.close();}catch(e){}},2600);
