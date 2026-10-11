@@ -1020,55 +1020,71 @@ main,footer{position:relative;z-index:1}
     </div>
   </section>
 
-  <section id="shop">
+  <section id="shop" class="atl">
     <style>
-    #shop .rs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
-    #shop .rs-card{position:relative;border-radius:22px;overflow:hidden;background:#17131f;isolation:isolate;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;box-shadow:0 10px 40px rgba(0,0,0,.35)}
-    #shop .rs-card::before{content:"";position:absolute;inset:0;border-radius:22px;padding:1.5px;background:linear-gradient(130deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);background-size:300% 300%;animation:rsGlow 8s linear infinite;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:2;pointer-events:none;opacity:.55}
-    #shop .rs-card.rs-in:hover{transform:translateY(-6px) rotate(-.4deg);box-shadow:0 22px 60px rgba(233,194,122,.18)}
-    #shop .rs-card:hover::before{opacity:1}
-    #shop .rs-img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
-    #shop .rs-card:hover .rs-img{transform:scale(1.05)}
-    #shop .rs-body{padding:16px 18px 18px;background:linear-gradient(180deg,rgba(23,19,31,0),#17131f 30%);margin-top:-60px;position:relative}
-    #shop .rs-price{display:inline-block;font-weight:800;font-size:15px;color:#1c1626;background:linear-gradient(135deg,#f3d08c,#d9a35a);border-radius:99px;padding:5px 12px;margin-bottom:8px}
-    #shop .rs-body h3{margin:0 0 6px;font-size:20px}
-    #shop .rs-body p{margin:0 0 14px;font-size:14px;line-height:1.5;opacity:.82}
-    #shop .rs-tag{position:absolute;top:14px;right:14px;z-index:3;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(135deg,#ff5fb7,#ff9b5c);border-radius:99px;padding:6px 12px;animation:rsPulse 2.4s ease-in-out infinite}
-    #shop .rs-big{grid-column:span 2;grid-row:span 2}
-    #shop .rs-big .rs-img{aspect-ratio:auto;height:100%;min-height:520px;object-fit:contain;background:radial-gradient(circle at 70% 30%,#3a2048,#140f1c)}
-    #shop .rs-wide{grid-column:span 3;display:grid;grid-template-columns:minmax(220px,300px) 1fr;align-items:center}
-    #shop .rs-wide .rs-body{margin:0;background:none;padding:24px 28px}
-    #shop .rs-wide h3{font-size:26px}
-    #shop .rs-big .rs-body{position:absolute;left:0;right:0;bottom:0;margin:0;padding:80px 24px 24px;background:linear-gradient(180deg,rgba(23,19,31,0),rgba(15,12,20,.92) 40%)}
-    #shop .rs-big h3{font-size:30px}
-    #shop .rs-marq{overflow:hidden;margin:28px -16px 0;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-    #shop .rs-track{display:flex;gap:14px;width:max-content;animation:rsMarq 36s linear infinite}
-    #shop .rs-track img{height:230px;width:auto;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
-    #shop .rs-marq:hover .rs-track{animation-play-state:paused}
-    #shop .rs-cap{text-align:center;font-size:13px;opacity:.7;margin-top:10px}
-    @keyframes rsGlow{to{background-position:300% 0}}
-    @keyframes rsPulse{50%{transform:scale(1.08);box-shadow:0 0 24px rgba(255,95,183,.5)}}
-    @keyframes rsMarq{to{transform:translateX(-50%)}}
-    #shop .rs-card{opacity:0;transform:translateY(24px)}
-    #shop .rs-card.rs-in{opacity:1;transform:none;transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
-    @media (max-width:820px){#shop .rs-grid{grid-template-columns:1fr 1fr;gap:12px}#shop .rs-wide{grid-column:span 2;grid-template-columns:42% 1fr}#shop .rs-wide .rs-body{padding:14px}#shop .rs-wide h3{font-size:18px}#shop .rs-big{grid-column:span 2;grid-row:auto}#shop .rs-big .rs-img{min-height:0;aspect-ratio:4/5}#shop .rs-body h3{font-size:16px}#shop .rs-body p{font-size:12.5px}#shop .rs-big h3{font-size:24px}}
-    @media (max-width:420px){#shop .rs-body{padding:12px 12px 14px}#shop .rs-body p{display:none}#shop .rs-big .rs-body p,#shop .rs-wide .rs-body p{display:block}}
-    @media (prefers-reduced-motion:reduce){#shop *{animation:none!important}#shop .rs-card{opacity:1;transform:none}}
+    .atl{--g:#d6b67a;--i:#f2e9da;--m:#978d7f;--l:rgba(214,182,122,.18);padding-inline:clamp(16px,4vw,40px);padding-top:60px!important}
+    .atl>div{max-width:1100px;margin-left:auto;margin-right:auto}
+    .atl .atl-head{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+    .atl .atl-k{font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--g)}
+    .atl h2.atl-h{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,6vw,78px);line-height:.96;margin:16px 0 18px;letter-spacing:-.01em;text-align:left}
+    .atl h2.atl-h i{color:var(--g)}
+    .atl .atl-lead{color:var(--m);font-size:16px;line-height:1.7;max-width:480px;margin:0}
+    .atl .atl-por{position:relative;justify-self:center;width:min(360px,80%)}
+    .atl .atl-por img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:999px 999px 0 0;filter:saturate(.9) contrast(1.05)}
+    .atl .atl-por::after{content:"";position:absolute;inset:-12px;border:1px solid var(--g);border-bottom:0;border-radius:999px 999px 0 0;opacity:.6;pointer-events:none}
+    .atl .atl-por figcaption{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--m);margin-top:14px;text-align:center}
+    .atl .atl-studio{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;margin:72px 0 0;border:1px solid var(--l);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
+    .atl .atl-fade{position:relative;aspect-ratio:4/5;overflow:hidden;background:#000}
+    .atl .atl-fade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:atlFade 24s infinite}
+    .atl .atl-fade img:nth-child(1){animation-delay:0s}.atl .atl-fade img:nth-child(2){animation-delay:4s}.atl .atl-fade img:nth-child(3){animation-delay:8s}.atl .atl-fade img:nth-child(4){animation-delay:12s}.atl .atl-fade img:nth-child(5){animation-delay:16s}.atl .atl-fade img:nth-child(6){animation-delay:20s}
+    @keyframes atlFade{0%{opacity:0;transform:scale(1.04)}4%,16%{opacity:1}20%,100%{opacity:0;transform:scale(1)}}
+    .atl .atl-sb{padding:44px 44px;display:flex;flex-direction:column;justify-content:center}
+    .atl .atl-sb h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,4vw,52px);line-height:1;margin:14px 0 16px}
+    .atl .atl-sb p{color:var(--m);line-height:1.7;margin:0 0 26px;font-size:15.5px}
+    .atl .atl-sb ul{list-style:none;padding:0;margin:0 0 30px;display:grid;gap:10px}
+    .atl .atl-sb li{font-size:14px;color:var(--i);padding-left:22px;position:relative}
+    .atl .atl-sb li::before{content:"";position:absolute;left:0;top:.7em;width:12px;height:1px;background:var(--g)}
+    .atl .atl-cta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .atl .atl-btn{display:inline-block;padding:16px 30px;background:linear-gradient(180deg,#e6c890,#c7a265);color:#16110a;font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;border-radius:2px}
+    .atl .atl-pr{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--i)}
+    .atl .atl-pr small{display:block;font-family:inherit;font-size:12px;color:var(--m);letter-spacing:.04em}
+    .atl .atl-list{margin:72px 0 0;border-top:1px solid var(--l)}
+    .atl .atl-lt{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline;margin:0 0 18px}
+    .atl .atl-lt h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.6vw,44px);margin:0}
+    .atl .atl-row{display:grid;grid-template-columns:64px 72px 1fr auto 28px;gap:22px;align-items:center;padding:20px 0;border-bottom:1px solid var(--l);color:var(--i);text-decoration:none;position:relative}
+    .atl .atl-row::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--g);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+    .atl .atl-row:hover::after{width:100%}
+    .atl .atl-n{font-size:11px;letter-spacing:.2em;color:var(--m)}
+    .atl .atl-row img{width:72px;aspect-ratio:4/5;object-fit:cover;transition:transform .6s}
+    .atl .atl-row:hover img{transform:scale(1.06)}
+    .atl .atl-t b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,2.4vw,30px);line-height:1.1}
+    .atl .atl-t em{display:block;font-style:normal;color:var(--m);font-size:14px;margin-top:4px;line-height:1.5}
+    .atl .atl-p{font-family:'Cormorant Garamond',serif;font-size:24px;white-space:nowrap}
+    .atl .atl-a{color:var(--g);font-size:20px;transition:transform .4s}
+    .atl .atl-row:hover .atl-a{transform:translateX(6px)}
+    .atl .atl-foot{color:var(--m);font-size:13px;margin:22px 0 0;letter-spacing:.02em}
+    .atl .atl-rv{opacity:0;transform:translateY(22px);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)}
+    .atl .atl-rv.in{opacity:1;transform:none}
+    @media (max-width:860px){.atl .atl-head{grid-template-columns:1fr;gap:34px}.atl .atl-por{width:min(300px,78%)}.atl .atl-studio{grid-template-columns:1fr}.atl .atl-sb{padding:30px 22px}
+      .atl .atl-row{grid-template-columns:56px 1fr auto;gap:14px}.atl .atl-n,.atl .atl-a{display:none}.atl .atl-row img{width:56px}.atl .atl-t em{font-size:12.5px}.atl .atl-p{font-size:19px}}
+    @media (prefers-reduced-motion:reduce){.atl *{animation:none!important;transition:none!important}.atl .atl-rv{opacity:1;transform:none}.atl .atl-fade img:first-child{opacity:1}}
     </style>
-    <div class="eyebrow">Готовые решения · новое</div>
-    <div class="center"><h2>Сделайте рекламу сами — или по подписке</h2><p>Оплата и файлы — сразу в Telegram-боте, без ожидания.</p></div>
-    <div class="rs-grid">
-      <article class="rs-card rs-big"><span class="rs-tag">NEW</span><img class="rs-img" src="img/shop/poster.jpg" alt="Автопостер за 5 минут" loading="lazy"><div class="rs-body"><span class="rs-price">390&nbsp;₽</span><h3>Автопостер за 5 минут</h3><p>Выберите стиль, впишите текст и цены, добавьте фото работы — постер 1080×1350 соберётся сам. Предпросмотр бесплатно.</p><a class="btn gold" href="poster.html">Собрать постер</a></div></article>
-      <article class="rs-card"><img class="rs-img" src="img/shop/guide-s.jpg" alt="Гайд + 40 промптов" loading="lazy"><div class="rs-body"><span class="rs-price">990&nbsp;₽</span><h3>Гайд + 40 промптов</h3><p>Реклама своими руками с нейросетью: формулы текста и заголовков, промпты для 30 сфер, чек-лист.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_guide" target="_blank" rel="noopener">Купить в боте</a></div></article>
-      <article class="rs-card"><span class="rs-tag">🎄</span><img class="rs-img" src="img/shop/ny-s.jpg" alt="Новогодний пакет" loading="lazy"><div class="rs-body"><span class="rs-price">490&nbsp;₽</span><h3>Новогодний пакет</h3><p>30 текстов акций, календарь акций на декабрь и 15 промптов праздничных постеров.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_ny" target="_blank" rel="noopener">Купить в боте</a></div></article>
-      <article class="rs-card"><img class="rs-img" src="img/shop/plan-s.jpg" alt="Контент-план на месяц" loading="lazy"><div class="rs-body"><span class="rs-price">490&nbsp;₽</span><h3>Контент-план на месяц</h3><p>30 тем постов, 30 идей сторис и 20 ответов клиентам, которые доводят до записи.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_plan" target="_blank" rel="noopener">Купить в боте</a></div></article>
-      <article class="rs-card"><img class="rs-img" src="img/shop/certs-s.jpg" alt="5 шаблонов сертификатов" loading="lazy"><div class="rs-body"><span class="rs-price">390&nbsp;₽</span><h3>5 шаблонов сертификатов</h3><p>Печать 210×99 мм, PDF + PNG: тёмный люкс, нежный, мятный, новогодний, бежевый.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_certs" target="_blank" rel="noopener">Купить в боте</a></div></article>
-      <article class="rs-card"><span class="rs-tag">−37%</span><img class="rs-img" src="img/shop/all-s.jpg" alt="Всё вместе −37%" loading="lazy"><div class="rs-body"><span class="rs-price">1&nbsp;490&nbsp;₽</span><h3>Всё вместе −37%</h3><p>Гайд, новогодний пакет, контент-план и сертификаты. Вместо 2&nbsp;360&nbsp;₽.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=pr_all" target="_blank" rel="noopener">Купить набор</a></div></article>
-      <article class="rs-card rs-wide"><img class="rs-img" src="img/shop/subs-s.jpg" alt="Реклама на месяц" loading="lazy"><div class="rs-body"><span class="rs-price">2&nbsp;990&nbsp;₽/мес</span><h3>Реклама на месяц</h3><p>4 постера и 4 текста в одном стиле за 30 дней. Поддержка бота — 690&nbsp;₽/мес.</p><a class="btn" href="https://t.me/visuall_sveta_bot?start=subs" target="_blank" rel="noopener">Оформить</a></div></article>
+    <div class="atl-head">
+      <div class="atl-rv"><div class="atl-k">VISUALL Atelier · коллекция</div><h2 class="atl-h">Реклама,<br>которую <i>сохраняют</i></h2><p class="atl-lead">Для тех, кто делает рекламу сам — и хочет, чтобы она выглядела как у дорогого бренда. Инструменты и материалы VISUALL — теперь и в ваших руках.</p></div>
+      <figure class="atl-por atl-rv" style="margin:0"><img src="img/svetlana-crown.jpg" alt="Светлана Музыка, VISUALL" loading="lazy"><figcaption>Светлана Музыка · основатель VISUALL</figcaption></figure>
     </div>
-    <div class="rs-marq" aria-hidden="true"><div class="rs-track"><img src="img/shop/ap-0.jpg" alt="" loading="lazy"><img src="img/shop/ap-1.jpg" alt="" loading="lazy"><img src="img/shop/ap-2.jpg" alt="" loading="lazy"><img src="img/shop/ap-3.jpg" alt="" loading="lazy"><img src="img/shop/ap-4.jpg" alt="" loading="lazy"><img src="img/shop/ap-5.jpg" alt="" loading="lazy"><img src="img/shop/ap-0.jpg" alt="" loading="lazy"><img src="img/shop/ap-1.jpg" alt="" loading="lazy"><img src="img/shop/ap-2.jpg" alt="" loading="lazy"><img src="img/shop/ap-3.jpg" alt="" loading="lazy"><img src="img/shop/ap-4.jpg" alt="" loading="lazy"><img src="img/shop/ap-5.jpg" alt="" loading="lazy"></div></div>
-    <p class="rs-cap">Это всё сделал автопостер за пару минут — попробуйте сами</p>
-    <script>(function(){const cs=document.querySelectorAll("#shop .rs-card");if(!("IntersectionObserver"in window)){cs.forEach(c=>c.classList.add("rs-in"));return;}const io=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("rs-in"),80*[...cs].indexOf(e.target)%400);io.unobserve(e.target);}}),{threshold:.15});cs.forEach(c=>io.observe(c));if(matchMedia("(hover:hover)").matches)cs.forEach(c=>{c.addEventListener("pointermove",e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateY(${x*7}deg) rotateX(${-y*7}deg) translateY(-6px)`;});c.addEventListener("pointerleave",()=>c.style.transform="");});})();</script>
+    <div class="atl-studio atl-rv">
+      <div class="atl-fade"><img src="img/shop/ap-0.jpg" alt="" loading="lazy"><img src="img/shop/ap-1.jpg" alt="" loading="lazy"><img src="img/shop/ap-2.jpg" alt="" loading="lazy"><img src="img/shop/ap-3.jpg" alt="" loading="lazy"><img src="img/shop/ap-4.jpg" alt="" loading="lazy"><img src="img/shop/ap-5.jpg" alt="" loading="lazy"></div>
+      <div class="atl-sb"><div class="atl-k">Studio · новое</div><h3>Постер за 5 минут</h3><p>Выберите образ, впишите своё предложение и добавьте фото работы — постер соберётся на ваших глазах. Предпросмотр бесплатный.</p>
+        <ul><li>4 стиля: Noir, Ivory, Cinema, Emerald</li><li>готовые примеры для разных сфер</li><li>файл 1080×1350 — для соцсетей и печати</li></ul>
+        <div class="atl-cta"><a class="atl-btn" href="poster.html">Открыть Studio</a><span class="atl-pr">390&nbsp;₽<small>за готовый файл без водяного знака</small></span></div></div>
+    </div>
+    <div class="atl-list atl-rv">
+      <div class="atl-lt"><h3>Коллекция</h3><span class="atl-k">оплата и файлы — в боте</span></div>
+      <a class="atl-row" href="https://t.me/visuall_sveta_bot?start=pr_guide" target="_blank" rel="noopener"><span class="atl-n">N°01</span><img src="img/shop/guide-s.jpg" alt="Код рекламы" loading="lazy"><span class="atl-t"><b>Код рекламы</b><em>Гайд и 40 промптов: как сделать рекламу уровня бренда самой, с нейросетью.</em></span><span class="atl-p">990&nbsp;₽</span><span class="atl-a">→</span></a><a class="atl-row" href="https://t.me/visuall_sveta_bot?start=pr_ny" target="_blank" rel="noopener"><span class="atl-n">N°02</span><img src="img/shop/ny-s.jpg" alt="Новогодняя коллекция" loading="lazy"><span class="atl-t"><b>Новогодняя коллекция</b><em>30 текстов акций, календарь декабря и праздничные промпты.</em></span><span class="atl-p">490&nbsp;₽</span><span class="atl-a">→</span></a><a class="atl-row" href="https://t.me/visuall_sveta_bot?start=pr_plan" target="_blank" rel="noopener"><span class="atl-n">N°03</span><img src="img/shop/plan-s.jpg" alt="30 дней контента" loading="lazy"><span class="atl-t"><b>30 дней контента</b><em>Темы постов, идеи сторис и ответы, которые доводят до записи.</em></span><span class="atl-p">490&nbsp;₽</span><span class="atl-a">→</span></a><a class="atl-row" href="https://t.me/visuall_sveta_bot?start=pr_certs" target="_blank" rel="noopener"><span class="atl-n">N°04</span><img src="img/shop/certs-s.jpg" alt="Подарочная линия" loading="lazy"><span class="atl-t"><b>Подарочная линия</b><em>5 сертификатов для печати — от тёмного люкса до новогоднего.</em></span><span class="atl-p">390&nbsp;₽</span><span class="atl-a">→</span></a><a class="atl-row" href="https://t.me/visuall_sveta_bot?start=pr_all" target="_blank" rel="noopener"><span class="atl-n">N°05</span><img src="img/shop/all-s.jpg" alt="Полная коллекция" loading="lazy"><span class="atl-t"><b>Полная коллекция</b><em>Все четыре материала вместе. Вместо 2&nbsp;360&nbsp;₽.</em></span><span class="atl-p">1&nbsp;490&nbsp;₽</span><span class="atl-a">→</span></a><a class="atl-row" href="https://t.me/visuall_sveta_bot?start=subs" target="_blank" rel="noopener"><span class="atl-n">N°06</span><img src="img/shop/subs-s.jpg" alt="Реклама на месяц" loading="lazy"><span class="atl-t"><b>Реклама на месяц</b><em>4 постера и 4 текста в одном стиле за 30 дней.</em></span><span class="atl-p">2&nbsp;990&nbsp;₽/мес</span><span class="atl-a">→</span></a>
+      <p class="atl-foot">Покупка в Telegram-боте @visuall_sveta_bot: оплата по СБП или картой, файлы приходят сразу после подтверждения оплаты.</p>
+    </div>
+    <script>(function(){const els=document.querySelectorAll(".atl .atl-rv");if(!("IntersectionObserver"in window)){els.forEach(e=>e.classList.add("in"));return;}const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.12});els.forEach(e=>io.observe(e));})();</script>
   </section>
   <section id="calc">
     <div class="eyebrow">Калькулятор</div>

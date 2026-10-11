@@ -3,275 +3,245 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Автопостер VISUALL — постер за 5 минут</title>
-<meta name="description" content="Соберите рекламный постер с вашим текстом, ценами и фото за 5 минут. Предпросмотр бесплатно, готовый файл 1080×1350 — 390 ₽.">
+<title>VISUALL Studio — постер за 5 минут</title>
+<meta name="description" content="Рекламный постер в стиле дорогого бренда за 5 минут: ваш текст, цены и фото. Предпросмотр бесплатно, файл 1080×1350 — 390 ₽.">
+<meta name="theme-color" content="#0b0a0d">
 <link rel="icon" href="favicon-32.png">
 <link rel="stylesheet" href="fonts.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:#14111a;--card:#1f1a28;--ink:#f5efe6;--mut:#a79fb3;--acc:#e9c27a;--line:#352d42}
+:root{--bg:#0b0a0d;--card:#131117;--ink:#f3ece0;--mut:#9a9184;--gold:#d9b77a;--gold2:#b8935a;--line:#26222b}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;-webkit-text-size-adjust:100%}
-.wrap{max-width:560px;margin:0 auto;padding:16px 16px 120px}
-h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:32px;line-height:1.05;margin:6px 0 6px}
-h1 em{color:var(--acc)}
-.lead{color:var(--mut);font-size:14px;margin:0 0 14px}
-.steps{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
-.steps span{font-size:12px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:5px 10px;color:var(--mut)}
-.prev{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.45);background:#000;aspect-ratio:4/5}
-.prev canvas{width:100%;height:100%;display:block}
-.lbl{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin:18px 0 8px;font-weight:700}
-.tpls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.tpl{border:2px solid transparent;border-radius:10px;overflow:hidden;padding:0;background:none;cursor:pointer;position:relative}
-.tpl[aria-pressed=true]{border-color:var(--acc)}
-.tpl canvas{width:100%;display:block;aspect-ratio:4/5}
-.tpl span{position:absolute;left:0;right:0;bottom:0;font-size:11px;background:rgba(0,0,0,.55);color:#fff;padding:3px 0;text-align:center}
-input,textarea{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px;outline:none}
-input:focus,textarea:focus{border-color:var(--acc)}
-textarea{min-height:104px;resize:vertical}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.hint{font-size:12px;color:var(--mut);margin:5px 0 0}
-.photo{display:flex;gap:8px;align-items:center}
-.photo label{flex:1;text-align:center;background:var(--card);border:1px dashed var(--acc);border-radius:10px;padding:12px;color:var(--acc);font-weight:700;cursor:pointer}
-.photo button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:12px;font:inherit;cursor:pointer}
-.bar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(20,17,26,0),var(--bg) 30%);padding:18px 16px calc(14px + env(safe-area-inset-bottom))}
-.bar .in{max-width:560px;margin:0 auto}
-.buy{width:100%;border:0;border-radius:14px;padding:16px;font:inherit;font-weight:800;font-size:17px;color:#1c1626;background:linear-gradient(135deg,#f3d08c,#d9a35a);cursor:pointer;box-shadow:0 10px 30px rgba(217,163,90,.35)}
-.buy:disabled{opacity:.6}
-.note{font-size:12px;color:var(--mut);text-align:center;margin:7px 0 0}
-.ok{background:var(--card);border:1px solid var(--acc);border-radius:14px;padding:16px;margin:16px 0 0;display:none}
-.ok b{color:var(--acc)}
-.contacts{font-size:12px;color:var(--mut);text-align:center;margin:26px 0 0}
-.contacts a{color:var(--acc)}
-
-body::before{content:"";position:fixed;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 20% 20%,rgba(233,194,122,.18),transparent 70%),radial-gradient(35% 30% at 80% 30%,rgba(255,80,180,.14),transparent 70%),radial-gradient(40% 35% at 50% 85%,rgba(80,120,255,.14),transparent 70%);animation:aur 18s ease-in-out infinite alternate}
-@keyframes aur{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(4%,-3%) rotate(8deg)}100%{transform:translate(-3%,4%) rotate(-6deg)}}
-h1 em{background:linear-gradient(90deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
-@keyframes shine{to{background-position:300% 0}}
-.badge-new{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;background:linear-gradient(135deg,#ff5fb7,#ffb35c);color:#1c1626;border-radius:99px;padding:4px 10px;margin-bottom:8px;animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 0 22px rgba(255,95,183,.45)}}
-.prev{transition:transform .25s}.prev.pop{animation:pop .35s ease}
-@keyframes pop{40%{transform:scale(.985)}100%{transform:scale(1)}}
-.prev::after{content:"";position:absolute;inset:0;border-radius:14px;padding:2px;background:linear-gradient(130deg,#f3d08c,#ff8fd0,#9fd4ff,#f3d08c);background-size:300% 300%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:shine 8s linear infinite;pointer-events:none}
-.presets{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(120% 60% at 50% -10%,#1d1820 0%,var(--bg) 60%) fixed}
+.wrap{max-width:560px;margin:0 auto;padding:22px 18px 130px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.brand{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.34em;font-size:15px}
+.brand small{display:block;font-family:'Manrope';letter-spacing:.32em;font-size:9px;color:var(--mut);margin-top:2px}
+.kick{font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:44px;line-height:.98;margin:10px 0 14px;letter-spacing:-.01em}
+h1 i{color:var(--gold);font-weight:500}
+.lead{color:var(--mut);font-size:14.5px;line-height:1.6;margin:0 0 26px}
+.lead b{color:var(--ink);font-weight:600}
+.lbl{display:flex;align-items:baseline;gap:10px;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);margin:26px 0 12px}
+.lbl b{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:0;color:var(--gold);font-weight:500}
+.presets{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
 .presets::-webkit-scrollbar{display:none}
-.presets button{flex:0 0 auto;border:1px solid var(--line);background:rgba(31,26,40,.8);backdrop-filter:blur(8px);color:var(--ink);border-radius:99px;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer;transition:transform .15s,border-color .15s}
-.presets button:active{transform:scale(.95)}
-.presets button[aria-pressed=true]{border-color:var(--acc);background:rgba(233,194,122,.14)}
-.tpl{transition:transform .2s;animation:rise .5s both}
-.tpl:nth-child(2){animation-delay:.05s}.tpl:nth-child(3){animation-delay:.1s}.tpl:nth-child(4){animation-delay:.15s}.tpl:nth-child(5){animation-delay:.2s}.tpl:nth-child(6){animation-delay:.25s}
-.tpl:active{transform:scale(.96)}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}}
-.buy{position:relative;overflow:hidden}
-.buy::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sweep 3.2s ease-in-out infinite}
-@keyframes sweep{0%,60%{left:-60%}100%{left:130%}}
-#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
-.mini{position:fixed;right:12px;top:12px;width:96px;aspect-ratio:4/5;border-radius:10px;overflow:hidden;z-index:40;box-shadow:0 10px 30px rgba(0,0,0,.55);border:2px solid var(--acc);transform:translateY(-140%) scale(.8);opacity:0;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s;cursor:pointer;background:#000}
+.presets button{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:9px 16px;font:inherit;font-size:13.5px;cursor:pointer;transition:border-color .3s,color .3s}
+.presets button[aria-pressed=true]{border-color:var(--gold);color:var(--gold)}
+.stage{position:relative;padding:14px;border:1px solid var(--line);border-radius:4px;background:linear-gradient(180deg,#141117,#0e0c10)}
+.stage::before,.stage::after{content:"";position:absolute;width:18px;height:18px;border:1px solid var(--gold);opacity:.7}
+.stage::before{top:-1px;left:-1px;border-right:0;border-bottom:0}.stage::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.prev{position:relative;aspect-ratio:4/5;background:#000;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+.prev canvas{width:100%;height:100%;display:block;transition:opacity .35s}
+.prev.fade canvas{opacity:.35}
+.caption{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-top:12px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.tools button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:2px;padding:12px;font:inherit;font-size:13px;letter-spacing:.06em;cursor:pointer;transition:border-color .3s}
+.tools button:hover{border-color:var(--gold)}
+.tpls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tpl{border:1px solid var(--line);padding:4px;background:none;cursor:pointer;position:relative;transition:border-color .3s}
+.tpl[aria-pressed=true]{border-color:var(--gold)}
+.tpl canvas{width:100%;display:block;aspect-ratio:4/5}
+.tpl span{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);padding:6px 0 2px;text-align:center}
+.tpl[aria-pressed=true] span{color:var(--gold)}
+input,textarea{width:100%;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 2px;font:inherit;font-size:16px;outline:none;transition:border-color .3s}
+input:focus,textarea:focus{border-color:var(--gold)}
+input::placeholder,textarea::placeholder{color:#5f5850}
+textarea{min-height:110px;resize:vertical;line-height:1.55}
+.row{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}
+.hint{font-size:12px;color:var(--mut);margin:8px 0 0;line-height:1.5}
+.photo{display:flex;gap:8px}
+.photo label{flex:1;text-align:center;border:1px solid var(--gold2);padding:14px;color:var(--gold);font-size:13px;letter-spacing:.08em;cursor:pointer}
+.photo button{background:none;border:1px solid var(--line);color:var(--mut);padding:14px;font:inherit;font-size:13px;cursor:pointer}
+.bar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(11,10,13,0),var(--bg) 35%);padding:22px 18px calc(14px + env(safe-area-inset-bottom));z-index:30}
+.bar .in{max-width:560px;margin:0 auto}
+.buy{width:100%;border:0;border-radius:2px;padding:17px;font:inherit;font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#14100a;background:linear-gradient(180deg,#e6c890,#c9a467);cursor:pointer;box-shadow:0 12px 30px rgba(201,164,103,.18)}
+.buy:disabled{opacity:.6}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin:8px 0 0;letter-spacing:.02em}
+.mini{position:fixed;right:14px;top:14px;width:88px;aspect-ratio:4/5;overflow:hidden;z-index:40;box-shadow:0 12px 30px rgba(0,0,0,.6);border:1px solid var(--gold);transform:translateY(-140%);opacity:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s;cursor:pointer;background:#000}
 .mini.show{transform:none;opacity:1}
 .mini canvas{width:100%;height:100%;display:block}
-.mini::after{content:"↑";position:absolute;right:4px;bottom:3px;font-size:12px;font-weight:800;color:#1c1626;background:var(--acc);border-radius:99px;width:18px;height:18px;display:grid;place-items:center}
-.tools{display:flex;gap:8px;margin:10px 0 0}
-.tools button{flex:1;border:1px solid var(--line);background:rgba(31,26,40,.8);color:var(--ink);border-radius:12px;padding:11px;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s}
-.tools button:active{transform:scale(.96)}
-.prev{transform-style:preserve-3d;will-change:transform}
+.done{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(8,7,10,.92);opacity:0;pointer-events:none;transition:opacity .6s}
+.done.show{opacity:1;pointer-events:auto}
+.done div{text-align:center;padding:24px}
+.done .ring{width:74px;height:74px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;font-family:'Cormorant Garamond';font-size:34px;color:var(--gold)}
+.done h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:34px;margin:0 0 8px}
+.done p{color:var(--mut);font-size:14px;margin:0;line-height:1.6}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:30px}
+.why div{background:var(--bg);padding:16px 12px}
+.why b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px;color:var(--gold)}
+.why span{font-size:11.5px;color:var(--mut);line-height:1.45;display:block;margin-top:4px}
+.foot{font-size:12px;color:var(--mut);text-align:center;margin:30px 0 0;line-height:1.7}
+.foot a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(217,183,122,.4)}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="badge-new">НОВОЕ · ПОСТЕР ЗА 5 МИНУТ</span>
-  <h1>Автопостер <em>за 5 минут</em></h1>
-  <p class="lead">Выберите стиль, впишите текст и цены, добавьте своё фото — постер соберётся сам. Предпросмотр бесплатный, файл без водяного знака 1080×1350 — <b>390 ₽</b>.</p>
-  <div class="steps"><span>1 · стиль</span><span>2 · текст и цены</span><span>3 · фото</span><span>4 · получить файл</span></div>
+  <div class="top"><div class="brand">VISUALL<small>STUDIO</small></div><div class="kick">N°01 · 2026</div></div>
+  <div class="kick reveal">Постер за 5 минут</div>
+  <h1 class="reveal">Реклама уровня<br><i>дорогого бренда</i></h1>
+  <p class="lead reveal">Выберите образ, впишите своё предложение, добавьте фото работы — постер соберётся на ваших глазах. Предпросмотр бесплатный. Файл в полном качестве 1080×1350 — <b>390 ₽</b>.</p>
 
-  <span class="lbl" style="margin-top:4px">Быстрый старт — выберите пример</span>
-  <div class="presets" id="presets"></div>
-  <div style="height:8px"></div>
-  <div class="prev" id="prevbox"><canvas id="cv" width="1080" height="1350"></canvas></div>
-  <div class="tools"><button type="button" id="shuffle">🎲 Удиви меня</button><button type="button" id="next">Следующий стиль →</button></div>
-  <div class="mini" id="mini" title="Наверх к предпросмотру"><canvas id="mcv" width="216" height="270"></canvas></div>
+  <div class="lbl reveal"><b>01</b>Начните с примера</div>
+  <div class="presets reveal" id="presets"></div>
 
-  <span class="lbl">1 · Стиль</span>
+  <div style="height:16px"></div>
+  <div class="stage reveal"><div class="prev" id="prevbox"><canvas id="cv" width="1080" height="1350"></canvas></div>
+    <div class="caption"><span id="capName">Noir</span><span>1080 × 1350</span></div></div>
+  <div class="tools"><button type="button" id="shuffle">Другой образ</button><button type="button" id="next">Следующий стиль</button></div>
+  <div class="mini" id="mini" title="К предпросмотру"><canvas id="mcv" width="216" height="270"></canvas></div>
+
+  <div class="lbl"><b>02</b>Стиль</div>
   <div class="tpls" id="tpls"></div>
 
-  <span class="lbl">2 · Текст</span>
-  <input id="title" maxlength="32" placeholder="Название услуги — например, Маникюр" value="Маникюр">
-  <div style="height:8px"></div>
-  <input id="sub" maxlength="48" placeholder="Подзаголовок — например, с покрытием и укреплением" value="с покрытием, который держится 4 недели">
-  <span class="lbl">Цены (каждая с новой строки: услуга — цена)</span>
-  <textarea id="prices">Маникюр + покрытие — 2 200 ₽
-Укрепление — 300 ₽
-Дизайн — от 100 ₽</textarea>
-  <p class="hint">До 5 строк. Можно без цен — тогда строки станут списком преимуществ.</p>
-  <div class="row" style="margin-top:8px">
-    <input id="contact" maxlength="40" placeholder="Контакт: @ник или телефон" value="@your_nick · +7 900 000-00-00">
-    <input id="badge" maxlength="10" placeholder="Бейдж: −10%" value="−10%">
-  </div>
-  <div style="height:8px"></div>
-  <input id="place" maxlength="40" placeholder="Город или адрес (необязательно)" value="Москва · запись в Telegram">
+  <div class="lbl"><b>03</b>Ваше предложение</div>
+  <input id="title" maxlength="32" placeholder="Название — например, Маникюр">
+  <input id="sub" maxlength="48" placeholder="Одна строка ценности">
+  <textarea id="prices" placeholder="Услуга — цена (каждая с новой строки)"></textarea>
+  <p class="hint">До 5 строк в формате «Услуга — цена». Без цен строки станут списком преимуществ.</p>
+  <div class="row"><input id="contact" maxlength="40" placeholder="@ник или телефон"><input id="badge" maxlength="10" placeholder="Метка: −10%"></div>
+  <input id="place" maxlength="40" placeholder="Город или формат (необязательно)">
 
-  <span class="lbl">3 · Ваше фото (необязательно)</span>
-  <div class="photo"><label>📷 Загрузить фото работы<input type="file" id="file" accept="image/*" hidden></label><button type="button" id="nofoto">Без фото</button></div>
-  <p class="hint">Фото маникюра, торта, интерьера, себя за работой — оно станет главным на постере.</p>
+  <div class="lbl"><b>04</b>Фото работы</div>
+  <div class="photo"><label>Загрузить фото<input type="file" id="file" accept="image/*" hidden></label><button type="button" id="nofoto">Без фото</button></div>
+  <p class="hint">Маникюр, торт, интерьер, вы за работой — фото станет героем постера.</p>
 
-  <div class="ok" id="ok"><b>Готово!</b> Вернитесь в чат с ботом — там кнопка оплаты 390 ₽. Сразу после оплаты бот пришлёт постер в полном качестве.</div>
-  <p class="contacts">Хотите уникальный дизайн руками дизайнера? <a href="https://t.me/visuall_sveta_bot?start=o_poster">Заказать у Светланы от 990 ₽</a><br>VISUALL · Светлана Музыка · @sveta_muzyka · +7 (925) 062-00-01</p>
+  <div class="why reveal"><div><b>5 мин</b><span>от идеи до готового файла</span></div><div><b>4</b><span>премиальных стиля</span></div><div><b>1080</b><span>пикселей — для соцсетей и печати</span></div></div>
+  <p class="foot">Нужен уникальный дизайн руками дизайнера? <a href="https://t.me/visuall_sveta_bot?start=o_poster">Заказать у Светланы — от 990 ₽</a><br>VISUALL · Светлана Музыка · @sveta_muzyka · +7 (925) 062-00-01</p>
 </div>
-<canvas id="confetti"></canvas>
-<div class="bar"><div class="in"><button class="buy" id="buy">Получить постер без водяного знака — 390 ₽</button><p class="note" id="note">Файл придёт в чат с ботом @visuall_sveta_bot после оплаты</p></div></div>
+<div class="done" id="done"><div><div class="ring">✓</div><h2>Постер отправлен</h2><p>Вернитесь в чат с ботом — там оплата 390 ₽.<br>Сразу после неё придёт файл в полном качестве.</p></div></div>
+<div class="bar"><div class="in"><button class="buy" id="buy">Получить постер — 390 ₽</button><p class="note" id="note">Файл придёт в чат с ботом @visuall_sveta_bot после оплаты</p></div></div>
 
 <script>
 (function(){
 const W=1080,H=1350,$=id=>document.getElementById(id);
-const TG=window.Telegram&&Telegram.WebApp; if(TG){try{TG.ready();TG.expand();}catch(e){}}
+const TG=window.Telegram&&Telegram.WebApp; if(TG){try{TG.ready();TG.expand();TG.setHeaderColor&&TG.setHeaderColor("#0b0a0d");TG.setBackgroundColor&&TG.setBackgroundColor("#0b0a0d");}catch(e){}}
 const API="https://visuall-bot.svetayurkina.workers.dev/poster";
 let photo=null,tpl=0;
+const SERIF="'Cormorant Garamond'",SANS="Manrope";
 
-/* ---------- helpers ---------- */
-function rr(x,y,w,h,r){const c=this;c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
-CanvasRenderingContext2D.prototype.rr=rr;
-function fit(c,text,font,size,maxW,min){let s=size;do{c.font=font.replace("$",s);if(c.measureText(text).width<=maxW)break;s-=2;}while(s>min);return s;}
-function wrap(c,text,maxW){const w=text.split(/\s+/);const out=[];let cur="";for(const x of w){const t=(cur+" "+x).trim();if(c.measureText(t).width<=maxW||!cur)cur=t;else{out.push(cur);cur=x;}}if(cur)out.push(cur);return out;}
-function title2(c,text,font,size,maxW,min,lh,ml){ // up to ml lines, shrink to fit
-  ml=ml||2;let s=size,lines;for(;;){c.font=font.replace("$",s);lines=wrap(c,text,maxW);if((lines.length<=ml&&lines.every(l=>c.measureText(l).width<=maxW))||s<=min)break;s-=2;}
-  return{lines:lines.slice(0,ml),size:s,lh:s*(lh||1.05)};}
-function cover(c,img,x,y,w,h){const r=Math.max(w/img.width,h/img.height);const iw=img.width*r,ih=img.height*r;c.drawImage(img,x+(w-iw)/2,y+(h-ih)/2,iw,ih);}
-function photoIn(c,shape,x,y,w,h,r,ph){c.save();if(shape==="circle"){c.beginPath();c.arc(x+w/2,y+h/2,Math.min(w,h)/2,0,7);}else if(shape==="arch"){c.beginPath();c.moveTo(x,y+h);c.lineTo(x,y+w/2);c.arc(x+w/2,y+w/2,w/2,Math.PI,0);c.lineTo(x+w,y+h);c.closePath();}else c.rr(x,y,w,h,r||0);c.clip();if(ph)cover(c,ph,x,y,w,h);c.restore();}
+CanvasRenderingContext2D.prototype.rr=function(x,y,w,h,r){this.beginPath();this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();};
+function wrap(c,t,maxW){const w=t.split(/\s+/);const o=[];let cur="";for(const x of w){const s=(cur+" "+x).trim();if(c.measureText(s).width<=maxW||!cur)cur=s;else{o.push(cur);cur=x;}}if(cur)o.push(cur);return o;}
+function titleFit(c,text,font,size,maxW,min,ml){ml=ml||2;let s=size,L;for(;;){c.font=font.replace("$",s);L=wrap(c,text,maxW);if((L.length<=ml&&L.every(l=>c.measureText(l).width<=maxW))||s<=min)break;s-=2;}return{L:L.slice(0,ml),s};}
+function cover(c,img,x,y,w,h,fx,fy){const r=Math.max(w/img.width,h/img.height),iw=img.width*r,ih=img.height*r;c.drawImage(img,x+(w-iw)*(fx??.5),y+(h-ih)*(fy??.5),iw,ih);}
+function clipShape(c,shape,x,y,w,h,r){c.beginPath();if(shape==="arch"){c.moveTo(x,y+h);c.lineTo(x,y+w/2);c.arc(x+w/2,y+w/2,w/2,Math.PI,0);c.lineTo(x+w,y+h);c.closePath();}else if(shape==="circle"){c.arc(x+w/2,y+h/2,Math.min(w,h)/2,0,7);}else c.rr(x,y,w,h,r||0);}
+function photoIn(c,shape,x,y,w,h,r,ph,fill){c.save();clipShape(c,shape,x,y,w,h,r);c.clip();if(ph)cover(c,ph,x,y,w,h);else{c.fillStyle=fill;c.fillRect(x,y,w,h);}c.restore();}
+function tracked(c,t,x,y,font,col,sp,align){c.font=font;c.fillStyle=col;const chars=[...t];const w=chars.reduce((a,ch)=>a+c.measureText(ch).width,0)+sp*Math.max(0,chars.length-1);let cx=align==="center"?x-w/2:align==="right"?x-w:x;for(const ch of chars){c.fillText(ch,cx,y);cx+=c.measureText(ch).width+sp;}return w;}
 function prices(){return $("prices").value.split("\n").map(s=>s.trim()).filter(Boolean).slice(0,5).map(s=>{const m=s.split(/\s+[—–-]\s+/);return m.length>1?[m.slice(0,-1).join(" — "),m[m.length-1]]:[s,""];});}
-function priceList(c,x,y,w,o){const L=prices();const fs=o.size||34,gap=o.gap||fs*1.75;c.textBaseline="alphabetic";
-  for(const [a,b] of L){c.font=`${o.w||500} ${fs}px ${o.font}`;c.fillStyle=o.col;let name=a;while(c.measureText(name).width>w*(b?0.66:0.98)&&name.length>3)name=name.slice(0,-2)+"…";
-    if(!b&&o.bullet){c.fillStyle=o.acc;c.fillText(o.bullet,x,y);c.fillStyle=o.col;c.fillText(name,x+fs*1.1,y);}else c.fillText(name,x,y);
-    if(b){c.font=`${o.pw||700} ${fs}px ${o.pfont||o.font}`;const bw=c.measureText(b).width;c.fillStyle=o.pcol||o.col;c.fillText(b,x+w-bw,y);
-      c.font=`500 ${fs}px ${o.font}`;const nw=c.measureText(name).width;if(o.dots){c.fillStyle=o.dots;for(let d=x+nw+12;d<x+w-bw-12;d+=12)c.fillRect(d,y-4,3,3);}}
-    y+=gap;}return y;}
-function txt(c,t,x,y,font,col,align){c.font=font;c.fillStyle=col;c.textAlign=align||"left";c.fillText(t,x,y);c.textAlign="left";}
-function badge(c,t,x,y,r,bg,fg,font){if(!t)return;c.save();c.fillStyle=bg;c.beginPath();c.arc(x,y,r,0,7);c.fill();const s=fit(c,t,font,r*.62,r*1.6,16);c.font=font.replace("$",s);c.fillStyle=fg;c.textAlign="center";c.textBaseline="middle";c.fillText(t,x,y+2);c.restore();c.textBaseline="alphabetic";}
-function v(id){return $(id).value.trim();}
+function priceRows(c,x,y,w,o){const L=prices();const fs=o.size||32,gap=o.gap||fs*1.9;
+  for(const [a,b] of L){c.font=`${o.w||500} ${fs}px ${o.font||SANS}`;let n=a;while(c.measureText(n).width>w*(b?0.68:1)&&n.length>3)n=n.slice(0,-2)+"…";c.fillStyle=o.col;c.textAlign="left";c.fillText(n,x,y);
+    if(b){c.font=`${o.pw||500} ${o.psize||fs}px ${o.pfont||SERIF}`;c.fillStyle=o.pcol||o.col;c.textAlign="right";c.fillText(b,x+w,y);c.textAlign="left";}
+    if(o.rule){c.fillStyle=o.rule;c.fillRect(x,y+fs*.62,w,1.5);}y+=gap;}return y;}
+const v=id=>$(id).value.trim();
+function tag(c,t,x,y,col,bg,align){if(!t)return;const f=`700 26px ${SANS}`;c.font=f;const w=tracked(c,t.toUpperCase(),-9999,-9999,f,col,4)+44;const bx=align==="right"?x-w:x;c.fillStyle=bg;c.fillRect(bx,y,w,52);tracked(c,t.toUpperCase(),bx+22,y+36,f,col,4);}
+function vignette(c,a){const g=c.createRadialGradient(W/2,H*.45,H*.2,W/2,H*.5,H*.85);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,`rgba(0,0,0,${a})`);c.fillStyle=g;c.fillRect(0,0,W,H);}
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+function grain(c,alpha){seed=7;c.save();c.globalAlpha=alpha;for(let i=0;i<2200;i++){c.fillStyle=rnd()<.5?"#fff":"#000";c.fillRect(rnd()*W,rnd()*H,1.6,1.6);}c.restore();}
 
-/* ---------- templates ---------- */
 const T=[
-{n:"Тёмный люкс",draw(c,ph){
-  const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#231b2e");g.addColorStop(1,"#0e0b12");c.fillStyle=g;c.fillRect(0,0,W,H);
-  c.strokeStyle="#d6b068";c.lineWidth=3;c.strokeRect(36,36,W-72,H-72);c.lineWidth=1;c.strokeRect(50,50,W-100,H-100);
-  const px=290,py=110,pw=500,phh=560;
-  if(ph)photoIn(c,"arch",px,py,pw,phh,0,ph);else{c.save();c.strokeStyle="#d6b068";c.lineWidth=2;for(let i=0;i<14;i++){c.beginPath();c.arc(W/2,py+260,60+i*14,0,7);c.globalAlpha=.08+i*.02;c.stroke();}c.restore();}
-  c.strokeStyle="#d6b068";c.lineWidth=2;c.beginPath();c.moveTo(px-14,py+phh+14);c.lineTo(px-14,py+pw/2);c.arc(W/2,py+pw/2,pw/2+14,Math.PI,0);c.lineTo(px+pw+14,py+phh+14);c.stroke();
-  const t=title2(c,v("title")||"Ваша услуга","400 $px Oranienbaum",112,W-200,60);c.fillStyle="#f0d6a0";c.textAlign="center";let y=py+phh+60+t.size*.8;
-  for(const l of t.lines){c.font=`400 ${t.size}px Oranienbaum`;c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
-  if(v("sub"))txt(c,v("sub"),W/2,y+4-t.lh+t.size*.55,"italic 600 40px 'Cormorant Garamond'","#cbb48a","center");
-  priceList(c,150,y+80,W-300,{font:"Jost",size:34,col:"#efe6d6",pcol:"#e9c27a",dots:"rgba(214,176,104,.5)",bullet:"✦",acc:"#d6b068"});
-  txt(c,v("contact"),W/2,H-120,"500 36px Jost","#f0d6a0","center");if(v("place"))txt(c,v("place"),W/2,H-76,"400 26px Jost","#9e8f7a","center");
-  badge(c,v("badge"),W-170,190,86,"#d6b068","#1b1622","700 $px Jost");}},
-{n:"Нежный",draw(c,ph){
-  c.fillStyle="#fbe9ec";c.fillRect(0,0,W,H);
-  for(const [x,y,r,col] of [[160,180,330,"rgba(244,183,197,.55)"],[960,1150,420,"rgba(246,200,214,.6)"],[980,180,220,"rgba(255,221,228,.8)"]]){const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,col);g.addColorStop(1,"rgba(255,255,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);}
-  const cx=W/2,cy=360,r=250;c.fillStyle="#fff";c.beginPath();c.arc(cx,cy,r+16,0,7);c.fill();
-  if(ph)photoIn(c,"circle",cx-r,cy-r,r*2,r*2,0,ph);else{const g=c.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g.addColorStop(0,"#f6c7d2");g.addColorStop(1,"#fbe3e8");c.fillStyle=g;c.beginPath();c.arc(cx,cy,r,0,7);c.fill();}
-  const t=title2(c,v("title")||"Ваша услуга","400 $px 'Marck Script'",120,W-160,56,1,1);c.fillStyle="#9b3f5e";c.textAlign="center";let y=cy+r+60+t.size*.75;
-  for(const l of t.lines){c.font=`400 ${t.size}px 'Marck Script'`;c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
-  if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.5,"500 34px Jost","#b26a82","center");
-  c.fillStyle="rgba(255,255,255,.78)";c.rr(110,y+40,W-220,Math.max(1,prices().length)*62+44,30);c.fill();
-  priceList(c,150,y+102,W-300,{font:"Jost",size:33,gap:62,col:"#6d3047",pcol:"#b0456b",bullet:"♡",acc:"#d77d98"});
-  txt(c,v("contact"),W/2,H-110,"600 36px Jost","#9b3f5e","center");if(v("place"))txt(c,v("place"),W/2,H-66,"400 26px Jost","#b88596","center");
-  badge(c,v("badge"),cx+r-20,cy-r+40,76,"#e0718f","#fff","700 $px Jost");}},
-{n:"Поп-арт",draw(c,ph){
-  c.fillStyle="#ffe14d";c.fillRect(0,0,W,H);c.fillStyle="rgba(0,0,0,.07)";for(let y=0;y<H;y+=28)for(let x=(y/28)%2?14:0;x<W;x+=28){c.beginPath();c.arc(x,y,4,0,7);c.fill();}
-  const t=title2(c,(v("title")||"Ваша услуга").toUpperCase(),"400 $px 'Rubik Mono One'",104,W-120,48,1.02);let y=70+t.size;
-  for(const l of t.lines){c.font=`400 ${t.size}px 'Rubik Mono One'`;c.fillStyle="#111";c.fillText(l,64,y);y+=t.lh;}
-  if(v("sub")){c.font="800 36px Manrope";const sw=c.measureText(v("sub")).width;c.fillStyle="#111";c.fillRect(60,y-t.lh+30,sw+40,58);txt(c,v("sub"),80,y-t.lh+71,"800 36px Manrope","#ffe14d");}
-  const n=Math.max(1,prices().length),py=y-t.lh+120,pw=640,phh=Math.min(520,1010-py-n*64);c.save();c.translate(64+pw/2,py+phh/2);c.rotate(-.03);c.fillStyle="#111";c.fillRect(-pw/2+16,-phh/2+16,pw,phh);c.fillStyle="#ff4d8d";c.fillRect(-pw/2,-phh/2,pw,phh);
-  if(ph){c.save();c.beginPath();c.rect(-pw/2+14,-phh/2+14,pw-28,phh-28);c.clip();cover(c,ph,-pw/2+14,-phh/2+14,pw-28,phh-28);c.restore();}c.restore();
-  priceList(c,64,py+phh+86,W-128,{font:"Manrope",size:34,gap:64,w:800,col:"#111",pcol:"#e0004f",pw:800,bullet:"★",acc:"#e0004f"});
-  const by=Math.max(py+phh+60+n*64+30,1150);c.fillStyle="#111";c.fillRect(0,by,W,H-by);txt(c,v("contact"),64,by+86,"800 44px Manrope","#ffe14d");if(v("place"))txt(c,v("place"),64,by+140,"600 30px Manrope","#fff");
-  badge(c,v("badge"),W-150,by-10,100,"#ff4d8d","#fff","400 $px 'Rubik Mono One'");}},
-{n:"Минимализм",draw(c,ph){
-  c.fillStyle="#f4efe8";c.fillRect(0,0,W,H);const phh=650;
-  if(ph)photoIn(c,"rect",0,0,W,phh,0,ph);else{c.fillStyle="#e6ddd0";c.fillRect(0,0,W,phh);c.fillStyle="#d8ccbb";c.beginPath();c.arc(W*.7,phh*.45,180,0,7);c.fill();}
-  c.fillStyle="#1c1a17";c.fillRect(70,phh-34,120,8);
-  const t=title2(c,v("title")||"Ваша услуга","500 $px Unbounded",88,W-140,44,1.08);let y=phh+40+t.size;
-  for(const l of t.lines){c.font=`500 ${t.size}px Unbounded`;c.fillStyle="#1c1a17";c.fillText(l,70,y);y+=t.lh;}
-  if(v("sub"))txt(c,v("sub"),70,y-t.lh+t.size*.62+10,"400 34px Jost","#6e665b");
-  priceList(c,70,y+70,W-140,{font:"Jost",size:33,gap:58,col:"#1c1a17",pcol:"#1c1a17",dots:"rgba(28,26,23,.25)",bullet:"—",acc:"#1c1a17"});
-  c.fillStyle="#1c1a17";c.fillRect(0,H-130,W,130);txt(c,v("contact"),70,H-56,"500 36px Jost","#f4efe8");if(v("place"))txt(c,v("place"),W-70,H-56,"400 26px Jost","#b9b0a3","right");
-  badge(c,v("badge"),W-150,phh,84,"#1c1a17","#f4efe8","500 $px Unbounded");}},
-{n:"Неон",draw(c,ph){
-  const g=c.createLinearGradient(0,0,W,H);g.addColorStop(0,"#0b0b2a");g.addColorStop(1,"#1b0630");c.fillStyle=g;c.fillRect(0,0,W,H);
-  c.strokeStyle="rgba(120,90,255,.18)";c.lineWidth=1;for(let x=0;x<W;x+=60){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}for(let y=0;y<H;y+=60){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
-  const px=170,py=90,pw=740,phh=520;if(ph)photoIn(c,"rect",px,py,pw,phh,30,ph);
-  c.save();c.shadowColor="#ff3fd4";c.shadowBlur=30;c.strokeStyle="#ff6ee0";c.lineWidth=6;c.rr(px,py,pw,phh,30);c.stroke();c.restore();
-  const t=title2(c,v("title")||"Ваша услуга","500 $px Unbounded",96,W-140,44,1.08);let y=py+phh+70+t.size*.8;c.textAlign="center";
-  for(const l of t.lines){c.font=`500 ${t.size}px Unbounded`;c.save();c.shadowColor="#2ef2ff";c.shadowBlur=36;c.fillStyle="#bff9ff";c.fillText(l,W/2,y);c.restore();y+=t.lh;}c.textAlign="left";
-  if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.55,"500 34px Manrope","#d9b8ff","center");
-  priceList(c,150,y+80,W-300,{font:"Manrope",size:33,gap:60,col:"#efe8ff",pcol:"#ff8ae6",pw:800,dots:"rgba(255,110,224,.35)",bullet:"▸",acc:"#2ef2ff"});
-  c.save();c.shadowColor="#2ef2ff";c.shadowBlur=18;txt(c,v("contact"),W/2,H-104,"700 38px Manrope","#9ff6ff","center");c.restore();if(v("place"))txt(c,v("place"),W/2,H-60,"500 26px Manrope","#9c8bc4","center");
-  badge(c,v("badge"),px+pw-10,py+20,80,"#ff3fd4","#fff","800 $px Manrope");}},
-{n:"Эко",draw(c,ph){
-  c.fillStyle="#e7ece0";c.fillRect(0,0,W,H);c.fillStyle="#cfdbc4";
-  for(const [x,y,r,a] of [[90,120,120,.6],[1010,300,90,-.5],[980,1230,140,.4],[60,1180,90,-.3]]){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.ellipse(0,0,r,r*.42,0,0,7);c.fill();c.restore();}
-  const px=120,py=100,pw=W-240,phh=560;c.fillStyle="#fff";c.rr(px-14,py-14,pw+28,phh+28,46);c.fill();
-  if(ph)photoIn(c,"rect",px,py,pw,phh,36,ph);else{c.fillStyle="#d7e0cd";c.rr(px,py,pw,phh,36);c.fill();}
-  const t=title2(c,v("title")||"Ваша услуга","400 $px Prata",96,W-160,48,1.08);c.textAlign="center";let y=py+phh+70+t.size*.8;
-  for(const l of t.lines){c.font=`400 ${t.size}px Prata`;c.fillStyle="#2f4a35";c.fillText(l,W/2,y);y+=t.lh;}c.textAlign="left";
-  if(v("sub"))txt(c,v("sub"),W/2,y-t.lh+t.size*.55,"italic 600 40px 'Cormorant Garamond'","#5f7a62","center");
-  priceList(c,150,y+76,W-300,{font:"Jost",size:33,gap:58,col:"#2f4a35",pcol:"#2f4a35",dots:"rgba(47,74,53,.3)",bullet:"❀",acc:"#7f9c76"});
-  txt(c,v("contact"),W/2,H-110,"600 36px Jost","#2f4a35","center");if(v("place"))txt(c,v("place"),W/2,H-66,"400 26px Jost","#6f8670","center");
-  badge(c,v("badge"),px+pw-20,py+40,80,"#2f4a35","#e7ece0","600 $px Jost");}},
+{n:"Noir",draw(c,ph){
+  c.fillStyle="#0c0a0e";c.fillRect(0,0,W,H);const g=c.createRadialGradient(W/2,380,40,W/2,380,700);g.addColorStop(0,"#241d22");g.addColorStop(1,"#0c0a0e");c.fillStyle=g;c.fillRect(0,0,W,H);
+  tracked(c,"VISUALL",W/2,96,`600 20px ${SANS}`,"#9c8a6a",10,"center");
+  c.font=`500 118px ${SERIF}`;const nl=titleFit(c,v("title")||"Ваша услуга",`500 $px ${SERIF}`,118,W-200,60).L.length,ex=Math.max(0,prices().length-3);const phh=560-(nl-1)*110-ex*62,pw=Math.min(480,phh*.86),px=(W-pw)/2,py=140;photoIn(c,"arch",px,py,pw,phh,0,ph,"#1a1519");
+  if(!ph){c.strokeStyle="rgba(217,183,122,.25)";c.lineWidth=1;for(let i=0;i<9;i++){c.beginPath();c.arc(W/2,py+300,40+i*26,0,7);c.stroke();}}
+  c.strokeStyle="#cfae73";c.lineWidth=1.5;c.beginPath();c.moveTo(px-16,py+phh+16);c.lineTo(px-16,py+pw/2);c.arc(W/2,py+pw/2,pw/2+16,Math.PI,0);c.lineTo(px+pw+16,py+phh+16);c.stroke();
+  const t=titleFit(c,v("title")||"Ваша услуга",`500 $px ${SERIF}`,118,W-200,60);c.fillStyle="#f1e3c8";c.textAlign="center";let y=py+phh+52+t.s*.82;
+  for(const l of t.L){c.font=`500 ${t.s}px ${SERIF}`;c.fillText(l,W/2,y);y+=t.s*.98;}c.textAlign="left";
+  if(v("sub"))tracked(c,v("sub").toUpperCase(),W/2,y-t.s*.98+t.s*.55+8,`600 22px ${SANS}`,"#cfae73",4,"center");
+  priceRows(c,190,y+76,W-380,{size:30,gap:62,col:"#e9dfcf",pcol:"#e7c88e",psize:38,rule:"rgba(207,174,115,.22)"});
+  c.fillStyle="rgba(207,174,115,.5)";c.fillRect(W/2-40,H-150,80,1.5);
+  tracked(c,v("contact"),W/2,H-102,`500 30px ${SANS}`,"#f1e3c8",1,"center");if(v("place"))tracked(c,v("place").toUpperCase(),W/2,H-62,`600 18px ${SANS}`,"#8b7d68",4,"center");
+  tag(c,v("badge"),86,86,"#120e0a","#cfae73");vignette(c,.45);grain(c,.035);}},
+{n:"Ivory",draw(c,ph){
+  c.fillStyle="#f2ece2";c.fillRect(0,0,W,H);const t0=titleFit(c,v("title")||"Ваша услуга",`italic 500 $px ${SERIF}`,128,W-260,60);const phh=Math.max(440,700-(t0.L.length-1)*t0.s*.95-Math.max(0,prices().length-3)*58);photoIn(c,"rect",70,70,W-140,phh,0,ph,"#e2d9cb");
+  if(!ph){c.fillStyle="#d6cbbb";c.beginPath();c.arc(W*.66,70+phh*.5,Math.min(170,phh*.3),0,7);c.fill();}
+  tracked(c,"N°01",W-80,phh+130,`600 20px ${SANS}`,"#8a7d6c",4,"right");
+  const t=titleFit(c,v("title")||"Ваша услуга",`italic 500 $px ${SERIF}`,128,W-260,60);let y=phh+70+t.s*.88;
+  for(const l of t.L){c.font=`italic 500 ${t.s}px ${SERIF}`;c.fillStyle="#171310";c.fillText(l,70,y);y+=t.s*.95;}
+  if(v("sub"))tracked(c,v("sub").toUpperCase(),72,y-t.s*.95+t.s*.42+10,`600 21px ${SANS}`,"#8a6a3c",4);
+  c.fillStyle="#171310";c.fillRect(70,y+34,W-140,2);
+  priceRows(c,70,y+100,W-140,{size:30,gap:58,col:"#171310",pcol:"#171310",psize:36,rule:"rgba(23,19,16,.12)"});
+  tracked(c,v("contact"),70,H-70,`600 28px ${SANS}`,"#171310",1);if(v("place"))tracked(c,v("place").toUpperCase(),W-70,H-72,`600 17px ${SANS}`,"#8a7d6c",3,"right");
+  tag(c,v("badge"),W-70,100,"#f2ece2","#171310","right");grain(c,.03);}},
+{n:"Cinema",draw(c,ph){
+  c.fillStyle="#0b0a0c";c.fillRect(0,0,W,H);if(ph)cover(c,ph,0,0,W,H,.5,.35);else{const g=c.createLinearGradient(0,0,W,H);g.addColorStop(0,"#2a2220");g.addColorStop(1,"#0b0a0c");c.fillStyle=g;c.fillRect(0,0,W,H);}
+  const g=c.createLinearGradient(0,H*.32,0,H);g.addColorStop(0,"rgba(8,7,9,0)");g.addColorStop(.45,"rgba(8,7,9,.82)");g.addColorStop(1,"rgba(8,7,9,.97)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  const gt=c.createLinearGradient(0,0,0,260);gt.addColorStop(0,"rgba(8,7,9,.6)");gt.addColorStop(1,"rgba(8,7,9,0)");c.fillStyle=gt;c.fillRect(0,0,W,260);
+  tracked(c,"VISUALL",80,96,`600 20px ${SANS}`,"rgba(255,255,255,.7)",10);
+  const L=prices().length;const t=titleFit(c,v("title")||"Ваша услуга",`500 $px ${SERIF}`,136,W-160,64);let y=H-180-L*58-90-(t.L.length-1)*t.s*.95;
+  if(v("sub"))tracked(c,v("sub").toUpperCase(),80,y-t.s*.95-6,`600 22px ${SANS}`,"#e2c287",4);
+  for(const l of t.L){c.font=`500 ${t.s}px ${SERIF}`;c.fillStyle="#fff";c.fillText(l,76,y);y+=t.s*.95;}
+  priceRows(c,80,y+30,W-160,{size:30,gap:58,col:"rgba(255,255,255,.88)",pcol:"#e2c287",psize:36,rule:"rgba(255,255,255,.14)"});
+  c.fillStyle="#e2c287";c.fillRect(80,H-130,60,2);tracked(c,v("contact"),80,H-80,`600 30px ${SANS}`,"#fff",1);if(v("place"))tracked(c,v("place").toUpperCase(),W-80,H-82,`600 18px ${SANS}`,"rgba(255,255,255,.6)",3,"right");
+  tag(c,v("badge"),W-80,70,"#100c08","#e2c287","right");grain(c,.04);}},
+{n:"Emerald",draw(c,ph){
+  c.fillStyle="#0e2620";c.fillRect(0,0,W,H);const g=c.createRadialGradient(W/2,420,60,W/2,420,760);g.addColorStop(0,"#17392f");g.addColorStop(1,"#0a1d18");c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.strokeStyle="#c9a86a";c.lineWidth=2;c.strokeRect(46,46,W-92,H-92);c.lineWidth=1;c.strokeRect(60,60,W-120,H-120);
+  const en=titleFit(c,v("title")||"Ваша услуга",`400 $px Prata`,92,W-220,48).L.length,ee=Math.max(0,prices().length-3);const r=230-(en-1)*48-ee*30,cx=W/2,cy=170+r;c.strokeStyle="#c9a86a";c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,r+18,0,7);c.stroke();photoIn(c,"circle",cx-r,cy-r,r*2,r*2,0,ph,"#163a30");
+  const t=titleFit(c,v("title")||"Ваша услуга",`400 $px Prata`,92,W-220,48);c.textAlign="center";let y=cy+r+86+t.s*.75;
+  for(const l of t.L){c.font=`400 ${t.s}px Prata`;c.fillStyle="#ecd9ad";c.fillText(l,W/2,y);y+=t.s*1.08;}c.textAlign="left";
+  if(v("sub"))tracked(c,v("sub").toUpperCase(),W/2,y-t.s*1.08+t.s*.5+8,`600 21px ${SANS}`,"#9fbfae",4,"center");
+  priceRows(c,190,y+72,W-380,{size:30,gap:60,col:"#e3eadf",pcol:"#e3c88f",psize:36,rule:"rgba(201,168,106,.25)"});
+  tracked(c,v("contact"),W/2,H-112,`500 30px ${SANS}`,"#ecd9ad",1,"center");if(v("place"))tracked(c,v("place").toUpperCase(),W/2,H-76,`600 18px ${SANS}`,"#87a495",4,"center");
+  tag(c,v("badge"),cx+r-30,cy-r-10,"#0e2620","#c9a86a");grain(c,.03);}},
 ];
 
-function watermark(c){c.save();c.globalAlpha=.2;c.fillStyle="#fff";c.strokeStyle="#000";c.lineWidth=2;c.font="700 46px Manrope";c.translate(W/2,H/2);c.rotate(-.5);
-  for(let y=-H;y<H;y+=190)for(let x=-W;x<W;x+=520){c.strokeText("VISUALL · ОБРАЗЕЦ",x,y);c.fillText("VISUALL · ОБРАЗЕЦ",x,y);}c.restore();}
-function render(cv,i,wm){const c=cv.getContext("2d");c.setTransform(cv.width/W,0,0,cv.height/H,0,0);c.clearRect(0,0,W,H);T[i].draw(c,photo);if(wm)watermark(c);}
+function watermark(c){c.save();c.globalAlpha=.16;c.fillStyle="#fff";c.font=`600 36px ${SANS}`;c.translate(W/2,H/2);c.rotate(-.5);
+  for(let y=-H;y<H;y+=180)for(let x=-W;x<W;x+=470)c.fillText("VISUALL · ОБРАЗЕЦ",x,y);c.restore();}
+function render(cv,i,wm){const c=cv.getContext("2d");c.setTransform(cv.width/W,0,0,cv.height/H,0,0);c.clearRect(0,0,W,H);c.textAlign="left";T[i].draw(c,photo);if(wm)watermark(c);}
 const cv=$("cv");
-function draw(){render(cv,tpl,true);try{render($("mcv"),tpl,false);}catch(e){}const pb=$("prevbox");pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop");}
+function draw(){render(cv,tpl,true);try{render($("mcv"),tpl,false);}catch(e){}$("capName").textContent=T[tpl].n;}
+function soft(){const pb=$("prevbox");pb.classList.add("fade");setTimeout(()=>{draw();pb.classList.remove("fade");},180);}
 const haptic=t=>{try{TG&&TG.HapticFeedback&&TG.HapticFeedback.impactOccurred(t||"light");}catch(e){}};
-const PRE=[
- {e:"💅",n:"Маникюр",t:0,img:"img/demo-nails.jpg",title:"Маникюр",sub:"с покрытием, который держится 4 недели",prices:"Маникюр + покрытие — 2 200 ₽\nУкрепление — 300 ₽\nДизайн — от 100 ₽",badge:"−10%",place:"Москва · запись в Telegram"},
- {e:"🍰",n:"Кондитер",t:4,img:"img/demo-cake.jpg",title:"Торты на заказ",sub:"натуральные сливки и ягоды",prices:"Бенто-торт — 1 500 ₽\nТорт 1 кг — от 2 400 ₽\nКапкейки, 6 шт — 1 200 ₽",badge:"NEW",place:"Доставка по городу"},
- {e:"☕",n:"Кофейня",t:2,img:"img/demo-coffee.jpg",title:"Сначала кофе",sub:"потом всё остальное",prices:"Капучино — 220 ₽\nРаф — 280 ₽\nАйс-латте — 260 ₽",badge:"2+1",place:"ул. Цветочная, 5"},
- {e:"🐶",n:"Груминг",t:1,img:"img/demo-dog.jpg",title:"Груминг без стресса",sub:"бережно, спокойно, по записи",prices:"Комплекс для малых пород — 2 000 ₽\nСтрижка когтей — 400 ₽\nГигиеническая стрижка — 1 200 ₽",badge:"−15%",place:"Запись в Telegram"},
- {e:"📚",n:"Репетитор",t:3,img:"",title:"Математика без страха",sub:"подготовка к ОГЭ и ЕГЭ",prices:"Пробный урок — 500 ₽\nЗанятие 60 минут — 1 500 ₽\nАбонемент 8 занятий — 11 000 ₽",badge:"",place:"Онлайн по всей России"},
- {e:"✨",n:"Своё",t:null}];
-function loadImg(src){return new Promise(r=>{if(!src)return r(null);const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src;});}
-async function applyPreset(i){const p=PRE[i];document.querySelectorAll("#presets button").forEach((b,j)=>b.setAttribute("aria-pressed",j===i));haptic();
-  if(p.t===null){["title","sub","prices","badge","place"].forEach(id=>$(id).value="");photo=null;$("title").focus();draw();thumbs();return;}
-  $("title").value=p.title;$("sub").value=p.sub;$("prices").value=p.prices.replace(/\\n/g,"\n");$("badge").value=p.badge;$("place").value=p.place;tpl=p.t;photo=await loadImg(p.img);draw();thumbs();}
-$("presets").innerHTML=PRE.map((p,i)=>`<button type="button" aria-pressed="${i===0}">${p.e} ${p.n}</button>`).join("");
-$("presets").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>applyPreset(i));
-function confetti(){const c=$("confetti"),x=c.getContext("2d");c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);
-  const cols=["#f3d08c","#ff8fd0","#9fd4ff","#ffffff","#ff5fb7"];const P=Array.from({length:140},()=>({x:innerWidth/2,y:innerHeight*.7,vx:(Math.random()-.5)*14,vy:-Math.random()*16-6,r:Math.random()*6+3,c:cols[Math.random()*5|0],a:Math.random()*6,s:(Math.random()-.5)*.3}));
-  let f=0;(function step(){x.clearRect(0,0,innerWidth,innerHeight);for(const p of P){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();}if(++f<130)requestAnimationFrame(step);else x.clearRect(0,0,innerWidth,innerHeight);})();}
-const BADGES=["−10%","−15%","NEW","ХИТ","2+1","−20%",""];
-$("shuffle").onclick=()=>{let t;do{t=Math.random()*T.length|0;}while(t===tpl&&T.length>1);tpl=t;$("badge").value=BADGES[Math.random()*BADGES.length|0];haptic("medium");draw();thumbs();};
-$("next").onclick=()=>{tpl=(tpl+1)%T.length;haptic();draw();thumbs();};
-const mini=$("mini");mini.onclick=()=>{$("prevbox").scrollIntoView({behavior:"smooth",block:"center"});};
-if("IntersectionObserver"in window)new IntersectionObserver(es=>es.forEach(e=>mini.classList.toggle("show",!e.isIntersecting&&scrollY>200)),{threshold:.08}).observe($("prevbox"));
-const pb0=$("prevbox");if(matchMedia("(hover:hover)").matches){pb0.addEventListener("pointermove",e=>{const r=pb0.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;pb0.style.transform=`perspective(900px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;});pb0.addEventListener("pointerleave",()=>pb0.style.transform="");}
-if(location.hash==="#demo")window.__vp={render,T,W,H,loadImg,set:(im)=>{photo=im;},PRE};
 let thFirst=true;
-function thumbs(){const box=$("tpls");if(!thFirst&&box.children.length===T.length){T.forEach((t,i)=>{const b=box.children[i];b.setAttribute("aria-pressed",i===tpl);render(b.querySelector("canvas"),i,false);});return;}thFirst=false;box.innerHTML="";T.forEach((t,i)=>{const b=document.createElement("button");b.className="tpl";b.type="button";b.setAttribute("aria-pressed",i===tpl);
-  const c=document.createElement("canvas");c.width=216;c.height=270;b.appendChild(c);const s=document.createElement("span");s.textContent=t.n;b.appendChild(s);
-  b.onclick=()=>{tpl=i;haptic();box.querySelectorAll(".tpl").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw();};box.appendChild(b);render(c,i,false);});}
+function thumbs(){const box=$("tpls");if(!thFirst&&box.children.length===T.length){T.forEach((t,i)=>{const b=box.children[i];b.setAttribute("aria-pressed",i===tpl);render(b.querySelector("canvas"),i,false);});return;}
+  thFirst=false;box.innerHTML="";T.forEach((t,i)=>{const b=document.createElement("button");b.className="tpl";b.type="button";b.setAttribute("aria-pressed",i===tpl);const c=document.createElement("canvas");c.width=216;c.height=270;b.appendChild(c);const s=document.createElement("span");s.textContent=t.n;b.appendChild(s);
+    b.onclick=()=>{tpl=i;haptic();box.querySelectorAll(".tpl").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));soft();};box.appendChild(b);render(c,i,false);});}
 let tmr;["title","sub","prices","contact","badge","place"].forEach(id=>$(id).addEventListener("input",()=>{clearTimeout(tmr);tmr=setTimeout(()=>{draw();thumbs();},120);}));
-$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{photo=im;draw();thumbs();};im.src=r.result;};r.readAsDataURL(f);};
-$("nofoto").onclick=()=>{photo=null;$("file").value="";draw();thumbs();};
-
-const fonts=["400 40px Oranienbaum","400 40px 'Marck Script'","400 40px 'Rubik Mono One'","500 40px Unbounded","400 40px Prata","500 40px Jost","600 40px Jost","400 40px Jost","italic 600 40px 'Cormorant Garamond'","500 40px Manrope","700 40px Manrope","800 40px Manrope"];
+function loadImg(src){return new Promise(r=>{if(!src)return r(null);const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src;});}
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async()=>{photo=await loadImg(r.result);soft();thumbs();};r.readAsDataURL(f);};
+$("nofoto").onclick=()=>{photo=null;$("file").value="";soft();thumbs();};
+const PRE=[
+ {n:"Маникюр",t:0,img:"img/demo-nails.jpg",title:"Маникюр",sub:"держится четыре недели",prices:"Маникюр + покрытие — 2 200 ₽\nУкрепление — 300 ₽\nДизайн — от 100 ₽",badge:"−10%",contact:"@your_nick · +7 900 000-00-00",place:"Москва · по записи"},
+ {n:"Кондитер",t:2,img:"img/demo-cake.jpg",title:"Торты на заказ",sub:"натуральные сливки и ягоды",prices:"Бенто-торт — 1 500 ₽\nТорт 1 кг — от 2 400 ₽\nКапкейки, 6 шт — 1 200 ₽",badge:"New",contact:"@your_nick · +7 900 000-00-00",place:"Доставка по городу"},
+ {n:"Кофейня",t:1,img:"img/demo-coffee.jpg",title:"Сначала кофе",sub:"потом всё остальное",prices:"Капучино — 220 ₽\nРаф — 280 ₽\nАйс-латте — 260 ₽",badge:"",contact:"@your_cafe",place:"ул. Цветочная, 5"},
+ {n:"Груминг",t:3,img:"img/demo-dog.jpg",title:"Груминг",sub:"бережно и без стресса",prices:"Комплекс, малые породы — 2 000 ₽\nСтрижка когтей — 400 ₽\nГигиеническая стрижка — 1 200 ₽",badge:"−15%",contact:"@your_nick · +7 900 000-00-00",place:"Запись в Telegram"},
+ {n:"Репетитор",t:1,img:"",title:"Математика без страха",sub:"подготовка к ОГЭ и ЕГЭ",prices:"Пробный урок — 500 ₽\nЗанятие 60 минут — 1 500 ₽\nАбонемент, 8 занятий — 11 000 ₽",badge:"",contact:"@your_nick",place:"Онлайн по всей России"},
+ {n:"Своё",t:null}];
+async function applyPreset(i){const p=PRE[i];document.querySelectorAll("#presets button").forEach((b,j)=>b.setAttribute("aria-pressed",j===i));haptic();
+  if(p.t===null){["title","sub","prices","badge","place"].forEach(id=>$(id).value="");photo=null;soft();thumbs();$("title").focus();return;}
+  for(const k of ["title","sub","prices","badge","contact","place"])$(k).value=p[k];tpl=p.t;photo=await loadImg(p.img);soft();thumbs();}
+$("presets").innerHTML=PRE.map((p,i)=>`<button type="button" aria-pressed="${i===0}">${p.n}</button>`).join("");
+$("presets").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>applyPreset(i));
+const BADGES=["−10%","−15%","New","Хит","−20%",""];
+$("shuffle").onclick=()=>{let t;do{t=Math.random()*T.length|0;}while(t===tpl&&T.length>1);tpl=t;$("badge").value=BADGES[Math.random()*BADGES.length|0];haptic("medium");soft();thumbs();};
+$("next").onclick=()=>{tpl=(tpl+1)%T.length;haptic();soft();thumbs();};
+const mini=$("mini");mini.onclick=()=>$("prevbox").scrollIntoView({behavior:"smooth",block:"center"});
+if("IntersectionObserver"in window){new IntersectionObserver(es=>es.forEach(e=>mini.classList.toggle("show",!e.isIntersecting&&scrollY>200)),{threshold:.08}).observe($("prevbox"));
+  const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");ro.unobserve(e.target);}}),{threshold:.1});document.querySelectorAll(".reveal").forEach((el,i)=>{el.style.transitionDelay=Math.min(i*90,450)+"ms";ro.observe(el);});}
+else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
+const fonts=[`500 40px ${SERIF}`,`italic 500 40px ${SERIF}`,"400 40px Prata",`500 40px ${SANS}`,`600 40px ${SANS}`,`700 40px ${SANS}`];
 Promise.all(fonts.map(f=>document.fonts.load(f,"Абв"))).catch(()=>{}).then(()=>applyPreset(0));
 draw();
+if(location.hash==="#demo")window.__vp={render,T,W,H,loadImg,set:(im)=>{photo=im;},PRE,applyPreset};
 
 const inTG=!!(TG&&TG.initData);
-if(!inTG){$("buy").textContent="Открыть в Telegram и получить постер — 390 ₽";$("note").textContent="Оплата и получение файла — через бота @visuall_sveta_bot";}
+if(!inTG){$("buy").textContent="Открыть в Telegram — 390 ₽";$("note").textContent="Оплата и файл — через бота @visuall_sveta_bot";}
 $("buy").onclick=async()=>{
   if(!inTG){location.href="https://t.me/visuall_sveta_bot?start=poster";return;}
-  if(!v("title")){alert("Впишите название услуги");$("title").focus();return;}
+  if(!v("title")){alert("Впишите название");$("title").focus();return;}
   const b=$("buy");b.disabled=true;b.textContent="Готовлю файл…";
   try{const full=document.createElement("canvas");full.width=W;full.height=H;render(full,tpl,false);
     const img=full.toDataURL("image/jpeg",.92);
     const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tg:TG.initData,img,title:v("title"),tpl:T[tpl].n})});
-    const j=await r.json().catch(()=>({}));
-    if(!r.ok||!j.ok)throw new Error(j.err||r.status);
-    $("ok").style.display="block";b.textContent="✅ Отправлено в чат — оплатите там";confetti();try{TG.HapticFeedback.notificationOccurred("success");}catch(e){}
-    setTimeout(()=>{try{TG.close();}catch(e){}},2400);
-  }catch(e){b.disabled=false;b.textContent="Получить постер без водяного знака — 390 ₽";alert("Не получилось отправить. Проверьте интернет и попробуйте ещё раз.");}
+    const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw new Error(j.err||r.status);
+    $("done").classList.add("show");b.textContent="Отправлено";try{TG.HapticFeedback.notificationOccurred("success");}catch(e){}
+    setTimeout(()=>{try{TG.close();}catch(e){}},2600);
+  }catch(e){b.disabled=false;b.textContent="Получить постер — 390 ₽";alert("Не получилось отправить. Проверьте интернет и попробуйте ещё раз.");}
 };
 })();
 </script>

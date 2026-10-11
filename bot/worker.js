@@ -58,8 +58,8 @@ const MAIN_KB = { inline_keyboard: [
   [{ text: "💳 Оплата", callback_data: "pay" }, { text: "⏱ Сроки и правки", callback_data: "terms" }],
   [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
   [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
-  [{ text: "🛍 Магазин готовых решений", callback_data: "shop" }, { text: "💎 Подписки", callback_data: "subs" }],
-  [{ text: "🎨 Автопостер за 5 минут — 390 ₽", callback_data: "ap" }],
+  [{ text: "✦ Atelier — готовые решения", callback_data: "shop" }],
+  [{ text: "✦ Studio — постер за 5 минут", callback_data: "ap" }, { text: "Подписки", callback_data: "subs" }],
   [{ text: "💬 Позвать Светлану", callback_data: "human" }],
 ] };
 const BACK = [{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }];
@@ -310,11 +310,11 @@ async function sendReport(env, chat, days, offset) {
 
 // ---------- магазин, оплата, подписки, автопостер ----------
 const PRODUCTS = {
-  guide: { e: "📘", n: "Гайд «Реклама своими руками с нейросетью» + 40 промптов", s: "Гайд + 40 промптов", p: 990, d: "PDF, 12 страниц: из чего состоит реклама, которую не пролистывают, формула текста и 7 формул заголовков, как писать промпт для картинки, 40 готовых промптов для 30 сфер, чек-лист перед публикацией и 8 мест, где разместить рекламу бесплатно." },
-  ny: { e: "🎄", n: "Новогодний пакет для бизнеса", s: "Новогодний пакет", p: 490, d: "PDF, 10 страниц: 30 готовых текстов акций, календарь акций с 1 декабря по 10 января, 6 идей подарочных сертификатов и 15 промптов для праздничных постеров." },
-  plan: { e: "🗓", n: "Контент-план на месяц для мастера", s: "Контент-план на месяц", p: 490, d: "PDF, 8 страниц: 30 тем постов по дням с подсказками, 30 идей для сторис и 20 шаблонов ответов клиентам, которые доводят до записи." },
-  certs: { e: "🎁", n: "5 шаблонов подарочных сертификатов", s: "5 шаблонов сертификатов", p: 390, d: "5 дизайнов 210×99 мм в высоком качестве (300 dpi): тёмный люкс, нежный розовый, мятный, новогодний, бежевый. PDF для печати + PNG. Поля «Для», «На сумму», «Действует до», «№» заполняются от руки." },
-  all: { e: "💎", n: "Всё вместе со скидкой", s: "Все 4 материала", p: 1490, d: "Гайд + новогодний пакет + контент-план + 5 шаблонов сертификатов. Вместо 2 360 ₽.", items: ["guide", "ny", "plan", "certs"] },
+  guide: { e: "", n: "Код рекламы — гайд и 40 промптов", s: "Код рекламы", p: 990, d: "Как сделать рекламу уровня бренда самой, с помощью нейросети.\n\nВнутри: из чего состоит реклама, которую не пролистывают; формула текста и 7 формул заголовков; как писать промпт для картинки; 40 готовых промптов для 30 сфер; чек-лист перед публикацией и 8 мест, где разместить рекламу бесплатно.\n\nPDF, 12 страниц." },
+  ny: { e: "", n: "Новогодняя коллекция", s: "Новогодняя коллекция", p: 490, d: "Всё, чтобы декабрь стал самым прибыльным месяцем года.\n\nВнутри: 30 готовых текстов акций, календарь акций с 1 декабря по 10 января, 6 идей подарочных сертификатов и 15 промптов для праздничных постеров.\n\nPDF, 10 страниц." },
+  plan: { e: "", n: "30 дней контента", s: "30 дней контента", p: 490, d: "Месяц постов без мучений «что бы выложить».\n\nВнутри: 30 тем постов по дням с подсказками, 30 идей для сторис и 20 шаблонов ответов клиентам, которые доводят до записи.\n\nPDF, 8 страниц." },
+  certs: { e: "", n: "Подарочная линия — 5 сертификатов", s: "Подарочная линия", p: 390, d: "Сертификаты, которые приятно дарить и не стыдно вручить.\n\n5 дизайнов 210×99 мм в высоком качестве: тёмный люкс, нежный розовый, мятный, новогодний, бежевый. PDF для печати и PNG. Поля «Для», «На сумму», «Действует до», «№» заполняются от руки." },
+  all: { e: "", n: "Полная коллекция", s: "Полная коллекция", p: 1490, d: "Все четыре материала Atelier вместе: Код рекламы, Новогодняя коллекция, 30 дней контента и Подарочная линия.\n\nВместо 2 360 ₽.", items: ["guide", "ny", "plan", "certs"] },
 };
 const SUBS = {
   ads: { n: "Реклама на месяц", p: 2990, d: "4 постера + 4 рекламных текста к ним в одном стиле в течение 30 дней. Присылаете материалы, когда удобно, — каждый постер готов за 1 рабочий день, 1 круг правок." },
@@ -380,12 +380,12 @@ async function fulfill(env, pid, how) {
   const admin = await getAdmin(env);
   const head = `💰 <b>Оплата ${rub(r.amount)}</b> — ${esc(r.title)}\n👤 ${who2(r)}\n#id${r.uid}`;
   if (r.kind === "prod") {
-    await send(env, r.chat, `🎉 <b>Спасибо за покупку!</b> Ваши материалы 👇`);
+    await send(env, r.chat, `<b>Спасибо за покупку.</b> Ваши материалы ниже — приятной работы.`);
     const miss = await deliverProduct(env, r.chat, r.ref);
     if (miss.length) { await send(env, r.chat, "Часть файлов Светлана пришлёт сюда лично в ближайшее время 💛");
       if (admin) await send(env, admin, head + `\n\n⚠️ Не загружены файлы: ${miss.join(", ")}. Отправьте файл боту с подписью <code>/товар ${miss[0]}</code>, а клиенту — ответом на это сообщение.`); }
     else if (admin) await send(env, admin, head + "\n✅ Файлы отправлены автоматически.");
-    return send(env, r.chat, `Если захотите, чтобы рекламу сделали за вас, — для покупателей материалов <b>−10%</b> на первый заказ 💛`, kb([[{ text: "🛒 Заказать рекламу", callback_data: "order" }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
+    return send(env, r.chat, `Если захотите, чтобы рекламу сделали за вас, — для покупателей материалов <b>−10%</b> на первый заказ 💛`, kb([[{ text: "Заказать рекламу у Светланы", callback_data: "order" }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
   }
   if (r.kind === "sub") {
     const plan = SUBS[r.ref] || SUBS.ads; const key = "sub:" + r.uid + ":" + r.ref;
@@ -400,13 +400,13 @@ async function fulfill(env, pid, how) {
     const b64 = await env.KV.get("pp:" + r.ref);
     if (b64) {
       const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
-      const fd = new FormData(); fd.append("chat_id", r.chat); fd.append("caption", "🎨 Ваш постер готов! Файл в полном качестве 1080×1350 — для соцсетей и печати.");
+      const fd = new FormData(); fd.append("chat_id", r.chat); fd.append("caption", "Ваш постер готов — файл в полном качестве 1080×1350, для соцсетей и печати.");
       fd.append("document", new Blob([bin], { type: "image/jpeg" }), "poster-visuall.jpg");
       await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/sendDocument`, { method: "POST", body: fd });
       await env.KV.delete("pp:" + r.ref);
       if (admin) await send(env, admin, head + "\n🎨 Автопостер отправлен клиенту.");
     } else if (admin) await send(env, admin, head + "\n⚠️ Файл автопостера не найден — свяжитесь с клиентом.");
-    return send(env, r.chat, "Хотите постер, сделанный вручную, в уникальном стиле, или весь комплект — визитку, сертификат и прайс? Для вас −10% 💛", kb([[{ text: "🛒 Заказать у Светланы", callback_data: "order" }], [{ text: "🎨 Ещё один постер", web_app: { url: POSTER_URL } }]]));
+    return send(env, r.chat, "Хотите постер, сделанный вручную, в уникальном стиле, или весь комплект — визитку, сертификат и прайс? Для вас −10% 💛", kb([[{ text: "Заказать у Светланы", callback_data: "order" }], [{ text: "Ещё один постер", web_app: { url: POSTER_URL } }]]));
   }
   // предоплата и счета
   const s = await getS(env, r.uid); if (r.kind === "pre" && s.last) { s.last.prepaid = r.amount; await setS(env, r.uid, s); }
@@ -415,23 +415,22 @@ async function fulfill(env, pid, how) {
 }
 
 async function showShop(env, chat) {
-  const rows = Object.entries(PRODUCTS).map(([k, p]) => [{ text: `${p.e} ${p.s} — ${rub(p.p)}`, callback_data: "pr:" + k }]);
-  rows.push([{ text: "🎨 Автопостер за 5 минут — " + rub(POSTER_PRICE), callback_data: "ap" }]);
-  rows.push([{ text: "💎 Подписки", callback_data: "subs" }, { text: "⬅️ Меню", callback_data: "menu" }]);
-  return media(env, chat, "anim", "shop.mp4", `🛍 <b>Магазин готовых решений</b>\n\nМатериалы, с которыми рекламу можно сделать самостоятельно. Оплата — прямо здесь, файлы приходят сразу после оплаты.\n\n${Object.values(PRODUCTS).map((p) => `${p.e} <b>${esc(p.s)}</b> — ${rub(p.p)}`).join("\n")}\n🎨 <b>Автопостер</b> — ${rub(POSTER_PRICE)}: соберите постер с вашим текстом и фото за 5 минут`, kb(rows));
+  const rows = [[{ text: "Studio — постер за 5 минут · " + rub(POSTER_PRICE), callback_data: "ap" }]];
+  for (const [k, p] of Object.entries(PRODUCTS)) rows.push([{ text: `${p.s} · ${rub(p.p)}`, callback_data: "pr:" + k }]);
+  rows.push([{ text: "Подписки", callback_data: "subs" }, { text: "Меню", callback_data: "menu" }]);
+  return media(env, chat, "anim", "shop.mp4", `<b>VISUALL ATELIER</b>\n<i>Коллекция для тех, кто делает рекламу сам — и хочет, чтобы она выглядела дорого.</i>\n\n<b>Studio</b> — постер за 5 минут · ${rub(POSTER_PRICE)}\n<b>Код рекламы</b> — гайд и 40 промптов · 990 ₽\n<b>Новогодняя коллекция</b> — 30 текстов акций · 490 ₽\n<b>30 дней контента</b> — месяц постов · 490 ₽\n<b>Подарочная линия</b> — 5 сертификатов · 390 ₽\n<b>Полная коллекция</b> — всё вместе · 1 490 ₽\n\nОплата здесь же, файлы приходят сразу после неё.`, kb(rows));
 }
 async function showProduct(env, chat, k) {
   const p = PRODUCTS[k]; if (!p) return showShop(env, chat);
-  return media(env, chat, "photo", "shop/" + k + ".jpg", `${p.e} <b>${esc(p.n)}</b>\n\n${esc(p.d)}\n\nЦена: <b>${rub(p.p)}</b>\nФайлы придут сюда сразу после оплаты.`, kb([[{ text: `💳 Купить за ${rub(p.p)}`, callback_data: "buy:" + k }], [{ text: "⬅️ Все товары", callback_data: "shop" }]]));
+  return media(env, chat, "photo", "shop/" + k + ".jpg", `<b>${esc(p.n)}</b>\n\n${esc(p.d)}\n\n<b>${rub(p.p)}</b> · файлы придут сюда сразу после оплаты`, kb([[{ text: `Купить · ${rub(p.p)}`, callback_data: "buy:" + k }], [{ text: "← Коллекция", callback_data: "shop" }]]));
 }
 async function showPosterOffer(env, chat) {
-  return media(env, chat, "photo", "shop/poster.jpg", `🎨 <b>Автопостер за 5 минут</b>\n\n1. Выберите пример или один из 6 стилей: тёмный люкс, нежный, поп-арт, минимализм, неон, эко\n2. Впишите название, цены и контакты\n3. Добавьте фото своей работы\n\nПредпросмотр — бесплатно. Файл 1080×1350 без водяного знака — <b>${rub(POSTER_PRICE)}</b>, придёт сюда сразу после оплаты.`, kb([[{ text: "🎨 Открыть конструктор", web_app: { url: POSTER_URL } }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
+  return media(env, chat, "photo", "shop/poster.jpg", `<b>VISUALL Studio — постер за 5 минут</b>\n<i>Реклама уровня дорогого бренда — без дизайнера.</i>\n\nВыберите пример или один из 4 стилей — Noir, Ivory, Cinema, Emerald. Впишите своё предложение, добавьте фото работы и смотрите, как постер собирается на ваших глазах.\n\nПредпросмотр бесплатный. Файл 1080×1350 без водяного знака — <b>${rub(POSTER_PRICE)}</b>, придёт сюда сразу после оплаты.`, kb([[{ text: "Открыть Studio", web_app: { url: POSTER_URL } }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
 }
 async function showSubs(env, chat) {
-  return media(env, chat, "photo", "shop/subs.jpg", `💎 <b>Подписки</b>\n\n<b>${SUBS.ads.n}</b> — ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> — ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> — от 9 900 ₽\nКак этот: меню услуг и цен, приём заявок, уведомления вам. Поддержка — 690 ₽/мес.\n\nПродлевать не обязательно: за 3 дня до конца я пришлю ссылку на продление, а вы решите сами.`,
-    kb([[{ text: `💎 ${SUBS.ads.n} — ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `🤖 ${SUBS.bot.n} — ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "🤖 Заказать бота", callback_data: "svc0:bot" }], [{ text: "🛍 Магазин", callback_data: "shop" }, { text: "⬅️ Меню", callback_data: "menu" }]]));
+  return media(env, chat, "photo", "shop/subs.jpg", `<b>Подписки VISUALL</b>\n\n<b>${SUBS.ads.n}</b> · ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> · ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> · от 9 900 ₽\nКак этот: услуги и цены, приём заявок, уведомления вам.\n\nПродление — только по вашему решению: за 3 дня до конца я пришлю ссылку.`,
+    kb([[{ text: `${SUBS.ads.n} · ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `${SUBS.bot.n} · ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "Заказать бота", callback_data: "svc0:bot" }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
 }
-
 async function subsTick(env) {
   const l = await env.KV.list({ prefix: "sub:", limit: 200 }); const admin = await getAdmin(env); let n = 0;
   for (const k of l.keys) {
@@ -455,7 +454,7 @@ async function posterUpload(req, env) {
   if (!m || m[1].length > 6e6) return new Response('{"ok":false,"err":"bad_image"}', { status: 400, headers: cors });
   const ref = newPid(); await env.KV.put("pp:" + ref, m[1], { expirationTtl: 86400 * 7 });
   await trackBot(env, u, "автопостер").catch(() => {});
-  await createPay(env, u.id, u, { kind: "poster", ref, amount: POSTER_PRICE, title: "Автопостер VISUALL" + (b.title ? ` «${String(b.title).slice(0, 40)}»` : "") });
+  await createPay(env, u.id, u, { kind: "poster", ref, amount: POSTER_PRICE, title: "VISUALL Studio — постер" + (b.title ? ` «${String(b.title).slice(0, 40)}»` : "") });
   return new Response('{"ok":true}', { headers: cors });
 }
 
