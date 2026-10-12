@@ -42,6 +42,17 @@ h1 i{color:var(--acc)}
 .cov img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cov .emo{font-size:96px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.5));animation:float 4s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-10px) rotate(4deg)}}
+.cov.tx{container-type:inline-size;display:flex;flex-direction:column;justify-content:center;gap:2.6cqw;padding:16cqw 7cqw 8cqw;box-sizing:border-box}
+.tx .hd{font-family:'Cormorant Garamond',serif;font-size:11cqw;line-height:1;color:#ffcf8a;margin-bottom:1cqw}
+.tx .tk{position:relative;background:linear-gradient(120deg,#f4e3c3,#d9b46f);color:#1c1626;border-radius:3cqw;padding:2.6cqw 4cqw 2.6cqw 6cqw;box-shadow:0 2cqw 5cqw rgba(0,0,0,.45);opacity:0;animation:tkin .6s cubic-bezier(.2,.8,.2,1.2) forwards}
+.tx .tk:nth-child(odd){transform:rotate(-1.6deg)}.tx .tk:nth-child(even){transform:rotate(1.4deg)}
+.tx .tk::before,.tx .tk::after{content:"";position:absolute;left:-2cqw;top:50%;width:4cqw;height:4cqw;border-radius:50%;background:#1f1424;transform:translateY(-50%)}.tx .tk::after{left:auto;right:-2cqw}
+.tx .tk b{display:block;font-size:5.6cqw;line-height:1.1;font-weight:800}.tx .tk small{display:block;font-size:4.4cqw;opacity:.75;margin-top:.6cqw}
+.tx .tk.dk{background:linear-gradient(120deg,#2e2036,#1d1524);color:#f4e3c3;border:1px solid #d9b46f66}.tx .tk.dk::before,.tx .tk.dk::after{display:none}
+.tx .bars{display:flex;align-self:stretch;align-items:flex-end;gap:1.6cqw;height:16cqw;margin:0 0 2cqw}
+.tx .bars i{flex:1;border-radius:1cqw;background:linear-gradient(#ffcf8a,#ff7a1a);animation:eq 1s ease-in-out infinite alternate}
+@keyframes eq{0%{height:15%}100%{height:100%}}
+@keyframes tkin{from{opacity:0;translate:0 4cqw}to{opacity:1;translate:0 0}}
 .cov .cat{position:absolute;left:14px;top:14px;font-size:12px;font-weight:800;background:#fff;color:#1c1626;border-radius:99px;padding:5px 11px;transform:rotate(-4deg)}
 .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
 .body h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px;line-height:1.05;margin:0}
@@ -105,6 +116,10 @@ document.documentElement.style.setProperty("--acc",d.accent||"#ff7a1a");
 $("kick").textContent=d.kicker;$("lead").textContent=d.lead;$("date").textContent="Выпуск от "+d.date;$("until").textContent="🔥 актуально до "+d.until;$("s1").textContent="🎃 "+d.until;
 const words=d.title.split(" ");$("title").innerHTML=esc(words.slice(0,-1).join(" "))+" <i>"+esc(words.slice(-1)[0])+"</i>";
 const cats=["Все",...new Set(d.cards.map(c=>c.cat))];let cur="Все";
+function cover(c){const v=c.cov;if(!v)return c.img?`<img src="${esc(c.img)}" alt="${esc(c.t)}" loading="lazy">`:`<span class="emo">${c.emo}</span>`;
+let s=`<div class="hd">${esc(v.head||"")}</div>`;
+if(v.kind==="eq")s+=`<div class="bars">${Array.from({length:14},(_,k)=>`<i style="animation-delay:-${(k*137%100)/100}s;animation-duration:${.6+(k*53%50)/100}s"></i>`).join("")}</div>`;
+s+=v.items.map((it,k)=>`<div class="tk${v.kind==="eq"?" dk":""}" style="animation-delay:${.15+k*.12}s"><b>${esc(it[0])}</b><small>${esc(it[1])}</small></div>`).join("");return s;}
 const grads=["linear-gradient(150deg,#2b1530,#ff7a1a33)","linear-gradient(150deg,#1a1430,#8c46dc55)","linear-gradient(150deg,#2a1810,#ffb35c44)","linear-gradient(150deg,#121a1a,#4fd1a544)","linear-gradient(150deg,#2a1020,#ff5fb744)"];
 function toast(){const t=$("toast");t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1500);}
 function copy(s){(navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject()).catch(()=>{const ta=document.createElement("textarea");ta.value=s;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();}).finally(toast);}
@@ -112,7 +127,7 @@ function render(){
   $("filters").innerHTML=cats.map(c=>`<button type="button" aria-pressed="${c===cur}">${esc(c)}</button>`).join("");
   $("filters").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>{cur=cats[i];render();});
   const L=d.cards.filter(c=>cur==="Все"||c.cat===cur);
-  $("grid").innerHTML=L.map((c,i)=>`<article class="card"><div class="cov" style="background:${grads[i%grads.length]}">${c.img?`<img src="${esc(c.img)}" alt="${esc(c.t)}" loading="lazy">`:`<span class="emo">${c.emo}</span>`}<span class="cat">${esc(c.cat)}</span></div>
+  $("grid").innerHTML=L.map((c,i)=>`<article class="card"><div class="cov${c.cov?" tx":""}" style="background:${grads[i%grads.length]}">${cover(c)}<span class="cat">${esc(c.cat)}</span></div>
     <div class="body"><h3>${esc(c.t)}</h3><p>${esc(c.d)}</p><div class="tip"><b>Как заработать:</b> ${esc(c.tip)}</div>
     <div class="act">${c.prompt?`<button class="btn" data-p="${i}">Скопировать промпт</button>`:""}<a class="btn gold" href="https://t.me/visuall_sveta_bot?start=o_poster" target="_blank" rel="noopener">Хочу такую рекламу</a></div></div></article>`).join("");
   $("grid").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>copy(L[+b.dataset.p].prompt));
