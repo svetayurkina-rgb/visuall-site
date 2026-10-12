@@ -1,20 +1,118 @@
 {
- "id":"2026-10-halloween","date":"12 октября 2026","title":"Хэллоуин, который продаёт","kicker":"Тренды недели · выпуск №1","until":"31 октября",
- "lead":"До Хэллоуина меньше трёх недель — самое время запустить тематическую рекламу. Собрали идеи для мастеров, пекарен и кофеен: что предложить клиентам, как это показать и что написать. К каждой идее — готовый промпт для картинки.",
- "accent":"#ff7a1a",
- "cards":[
-  {"cat":"Маникюр","emo":"💅","t":"Паутина, призраки и «кровавый» френч","d":"Самые ходовые идеи: тонкая чёрная паутина на белом или нюде, мини-призраки и летучие мыши на матовом чёрном, френч с «подтёками» красного. Тренд прошлых сезонов, который не уходит, — один акцентный ноготь вместо дизайна на всех.","tip":"Предложите «хэллоуинский акцент» на 1–2 ногтя за небольшую доплату: клиенту легко согласиться, вам — плюс к чеку.","prompt":"Luxury nail art close-up, vertical 4:5, elegant female hand with almond nails: glossy black with thin silver spider-web lines, one nude nail with a tiny white ghost, soft moody studio light, dark velvet background with small orange bokeh, photorealistic, high detail, no text."},
-  {"cat":"Маникюр","emo":"🦇","t":"Нестрашная палитра: розовый и зелёный","d":"Альтернатива классике оранжевый + чёрный — пыльно-розовый с зелёным, «милый» Хэллоуин: тыковки, призраки с румянцем, глазки. Нравится тем, кто не любит мрачное.","tip":"Сделайте два прайса-постера: «Мрачный» и «Милый» — клиенту проще выбрать.","prompt":"Cute pastel Halloween manicure, vertical 4:5, short rounded nails in dusty pink and sage green with tiny smiling pumpkins and blushing ghosts, soft daylight, pink background, playful and sweet, photorealistic, no text."},
-  {"cat":"Макияж","emo":"🖤","t":"Образ «Уэнсдей» и вампирский глэм","d":"Бледная матовая кожа, графичная стрелка, тёмно-винные губы. Носибельно — можно и на вечеринку, и на фотосессию.","tip":"Пакет «Образ на вечеринку»: макияж + укладка со скидкой при записи до 25 октября.","prompt":"Editorial beauty portrait, vertical 4:5, gothic glam makeup: porcelain matte skin, sharp graphic black eyeliner, deep burgundy lips, sleek dark hair, moody low-key lighting, dark background, high fashion, photorealistic, no text."},
-  {"cat":"Макияж","emo":"✨","t":"Глэм со стразами и «кровью»","d":"Стразы вокруг глаз в сочетании с капелькой искусственной крови или призрачная кожа с графичными стрелками — эффектно для Reels и фото «до/после».","tip":"Снимите короткое видео процесса: такие ролики хорошо смотрят именно в октябре.","prompt":"Glam Halloween makeup close-up, vertical 4:5, face with rhinestones along the eyes, subtle faux blood drop on the cheek, glossy lips, dramatic purple and orange rim light, dark background, photorealistic, high detail, no text."},
-  {"cat":"Пекарня и кондитерская","emo":"🎃","t":"Тыква, шоколадные летучие мыши, «глазастые» пирожные","d":"Работает простое: тыквенный чизкейк или тарт, десерты в форме тыквы, шоколадные мыши и призраки из белого шоколада, пирожные с «глазками». Бенто-торты с хэллоуинским декором — хит для подарков.","tip":"Ограниченная серия «только до 31 октября» продаёт лучше, чем постоянное меню.","prompt":"Halloween pastry showcase, vertical 4:5, pumpkin cheesecake slices, chocolate bats, white chocolate ghosts and cupcakes with candy eyes on a dark slate board, warm moody light, orange and purple accents, photorealistic, high detail, no text."},
-  {"cat":"Пекарня и кондитерская","emo":"🕸","t":"Бенто-торт «Паутина» и печенье-набор","d":"Маленький торт с паутиной из глазури и набор печенья (тыквы, пауки, летучие мыши) в крафт-коробке — готовый подарок коллегам и детям.","tip":"Сделайте набор для офиса: 12 печений + открытка. Предложите компаниям поблизости.","prompt":"Halloween bento cake with black icing spider web and a small chocolate spider, next to decorated cookies shaped like pumpkins and bats in a kraft box, vertical 4:5, cozy moody light, photorealistic, no text."},
-  {"cat":"Кофейня","emo":"☕","t":"Фиолетовая матча, тыквенный латте, напиток-«зелье»","d":"Яркий цвет продаёт: фиолетовый (батат, ube), тыквенный латте с пряностями, напиток с маршмеллоу-«призраком». Назовите его как зелье — гости фотографируют.","tip":"Дайте напитку смешное название и поставьте его первым в сторис — фото гостей станут вашей бесплатной рекламой.","prompt":"Halloween coffee drinks, vertical 4:5, purple ube matcha latte and pumpkin spice latte with marshmallow ghost topping, cinnamon sticks, tiny pumpkins, dark wooden counter, moody orange light, photorealistic, no text."},
-  {"cat":"Салоны и студии","emo":"🕯","t":"Декор, который фотографируют","d":"Пара тыкв, свечи-призраки, тканевая паутина в зеркале — и у клиентов появляется повод сделать фото у вас. Красиво ≠ дорого.","tip":"Поставьте в фотозону небольшой постер с вашим ником и QR — так фото клиентов приводят новых.","prompt":"Elegant Halloween decor in a beauty salon, vertical 4:5, mirror with soft cobweb, white pumpkins, ghost candles, warm moody light, dark luxury interior, photorealistic, no text."},
-  {"cat":"Акции и тексты","emo":"📣","t":"Готовые идеи акций","d":"«Сладость или гадость»: каждый 5-й клиент получает подарок. «Костюм — скидка»: пришли в образе — −10%. «Образ к вечеринке»: запись до 25 октября. «Ночь страха»: вечерние окна 30–31 октября.","tip":"Акцию — в закреп и сторис, постер — в районные чаты в разрешённый день.","prompt":""},
-  {"cat":"Музыка для Reels","emo":"🎧","t":"Какое звучание выбрать","d":"Мрачный глэм — медленные тёмные биты и низкие басы; милый Хэллоуин — игривые мелодии с колокольчиками; процесс работы — ритмичные треки с акцентом на смену кадра. Выбирайте трек в библиотеке самого приложения: так не будет проблем с авторскими правами.","tip":"Меняйте кадр на сильную долю — видео смотрят дольше.","prompt":""}
+ "id": "2026-10-halloween",
+ "date": "12 октября 2026",
+ "title": "Хэллоуин, который продаёт",
+ "kicker": "Тренды недели · выпуск №1",
+ "until": "31 октября",
+ "lead": "До Хэллоуина меньше трёх недель — самое время запустить тематическую рекламу. Собрали идеи для мастеров, пекарен и кофеен: что предложить клиентам, как это показать и что написать. К каждой идее — готовый промпт для картинки.",
+ "accent": "#ff7a1a",
+ "cards": [
+  {
+   "cat": "Маникюр",
+   "emo": "💅",
+   "t": "Паутина, призраки и «кровавый» френч",
+   "d": "Самые ходовые идеи: тонкая чёрная паутина на белом или нюде, мини-призраки и летучие мыши на матовом чёрном, френч с «подтёками» красного. Тренд прошлых сезонов, который не уходит, — один акцентный ноготь вместо дизайна на всех.",
+   "tip": "Предложите «хэллоуинский акцент» на 1–2 ногтя за небольшую доплату: клиенту легко согласиться, вам — плюс к чеку.",
+   "prompt": "Luxury nail art close-up, vertical 4:5, elegant female hand with almond nails: glossy black with thin silver spider-web lines, one nude nail with a tiny white ghost, soft moody studio light, dark velvet background with small orange bokeh, photorealistic, high detail, no text.",
+   "img": "trends/img/nails-dark.webp"
+  },
+  {
+   "cat": "Маникюр",
+   "emo": "🦇",
+   "t": "Нестрашная палитра: розовый и зелёный",
+   "d": "Альтернатива классике оранжевый + чёрный — пыльно-розовый с зелёным, «милый» Хэллоуин: тыковки, призраки с румянцем, глазки. Нравится тем, кто не любит мрачное.",
+   "tip": "Сделайте два прайса-постера: «Мрачный» и «Милый» — клиенту проще выбрать.",
+   "prompt": "Cute pastel Halloween manicure, vertical 4:5, short rounded nails in dusty pink and sage green with tiny smiling pumpkins and blushing ghosts, soft daylight, pink background, playful and sweet, photorealistic, no text.",
+   "img": "trends/img/nails-pastel.webp"
+  },
+  {
+   "cat": "Макияж",
+   "emo": "🖤",
+   "t": "Образ «Уэнсдей» и вампирский глэм",
+   "d": "Бледная матовая кожа, графичная стрелка, тёмно-винные губы. Носибельно — можно и на вечеринку, и на фотосессию.",
+   "tip": "Пакет «Образ на вечеринку»: макияж + укладка со скидкой при записи до 25 октября.",
+   "prompt": "Editorial beauty portrait, vertical 4:5, gothic glam makeup: porcelain matte skin, sharp graphic black eyeliner, deep burgundy lips, sleek dark hair, moody low-key lighting, dark background, high fashion, photorealistic, no text.",
+   "img": "trends/img/makeup-wednesday.webp"
+  },
+  {
+   "cat": "Макияж",
+   "emo": "🤍",
+   "t": "«Призрачный» глэм: белый, жемчуг, серебро",
+   "d": "Главная альтернатива «крови» — светлый образ: белые ресницы и брови, жемчужины и стразы вокруг глаз, серебристый хайлайтер, нюдовые губы. Выглядит дорого, подходит и для вечеринки, и для фотосессии.",
+   "tip": "Предложите «образ для фотосессии»: макияж + укладка + 3 обработанных кадра. Светлый образ отлично смотрится на фото — клиенты сами выложат его.",
+   "prompt": "Editorial beauty portrait, vertical 4:5, ethereal ghost glam Halloween makeup: porcelain skin, white bleached brows and lashes, tiny pearls and silver rhinestones arranged around the eyes, silver highlighter, soft nude lips, platinum hair with a delicate crystal headpiece and white lace collar, misty dark background, soft studio light, high fashion, ultra detailed, no text",
+   "img": "trends/img/makeup-pearl.webp"
+  },
+  {
+   "cat": "Пекарня и кондитерская",
+   "emo": "🎃",
+   "t": "Тыква, шоколадные летучие мыши, «глазастые» пирожные",
+   "d": "Работает простое: тыквенный чизкейк или тарт, десерты в форме тыквы, шоколадные мыши и призраки из белого шоколада, пирожные с «глазками». Бенто-торты с хэллоуинским декором — хит для подарков.",
+   "tip": "Ограниченная серия «только до 31 октября» продаёт лучше, чем постоянное меню.",
+   "prompt": "Halloween pastry showcase, vertical 4:5, pumpkin cheesecake slices, chocolate bats, white chocolate ghosts and cupcakes with candy eyes on a dark slate board, warm moody light, orange and purple accents, photorealistic, high detail, no text.",
+   "img": "trends/img/bakery-desserts.webp"
+  },
+  {
+   "cat": "Пекарня и кондитерская",
+   "emo": "🕸",
+   "t": "Бенто-торт «Паутина» и печенье-набор",
+   "d": "Маленький торт с паутиной из глазури и набор печенья (тыквы, пауки, летучие мыши) в крафт-коробке — готовый подарок коллегам и детям.",
+   "tip": "Сделайте набор для офиса: 12 печений + открытка. Предложите компаниям поблизости.",
+   "prompt": "Halloween bento cake with black icing spider web and a small chocolate spider, next to decorated cookies shaped like pumpkins and bats in a kraft box, vertical 4:5, cozy moody light, photorealistic, no text."
+  },
+  {
+   "cat": "Кофейня",
+   "emo": "☕",
+   "t": "Фиолетовая матча, тыквенный латте, напиток-«зелье»",
+   "d": "Яркий цвет продаёт: фиолетовый (батат, ube), тыквенный латте с пряностями, напиток с маршмеллоу-«призраком». Назовите его как зелье — гости фотографируют.",
+   "tip": "Дайте напитку смешное название и поставьте его первым в сторис — фото гостей станут вашей бесплатной рекламой.",
+   "prompt": "Halloween coffee drinks, vertical 4:5, purple ube matcha latte and pumpkin spice latte with marshmallow ghost topping, cinnamon sticks, tiny pumpkins, dark wooden counter, moody orange light, photorealistic, no text."
+  },
+  {
+   "cat": "Витрины и декор",
+   "emo": "🕯",
+   "t": "Салон: чёрно-белый декор с призраками",
+   "d": "Пара тыкв, свечи-призраки, тканевая паутина в зеркале — и у клиентов появляется повод сделать фото у вас. Красиво ≠ дорого.",
+   "tip": "Поставьте в фотозону небольшой постер с вашим ником и QR — так фото клиентов приводят новых.",
+   "prompt": "Elegant Halloween decor in a beauty salon, vertical 4:5, mirror with soft cobweb, white pumpkins, ghost candles, warm moody light, dark luxury interior, photorealistic, no text.",
+   "img": "trends/img/decor-salon.webp"
+  },
+  {
+   "cat": "Витрины и декор",
+   "emo": "🥐",
+   "img": "trends/img/decor-bakery.webp",
+   "t": "Пекарня: арка из тыкв и осенних веток",
+   "d": "Тыквы разного размера у входа, гирлянды из сухих веток и листьев, маленькие призраки-фонарики. Тёплый свет из витрины — и прохожие останавливаются сфотографироваться.",
+   "tip": "Повесьте у входа табличку «Сфотографируйся и отметь нас — печенье в подарок». Фото с вашей вывеской разлетятся по сторис района.",
+   "prompt": "Cozy bakery storefront decorated for Halloween, vertical 4:5, evening, arched glass doors with warm glowing light, sign «ПЕКАРНЯ» above the entrance, lush arch of dried autumn branches, red amaranth and orange leaves, stacks of pumpkins of different sizes with soft inner glow, small white ghost lanterns hanging, wet stone pavement reflections, cinematic, photorealistic, elegant, no people"
+  },
+  {
+   "cat": "Витрины и декор",
+   "emo": "📚",
+   "img": "trends/img/decor-school.webp",
+   "t": "Школа или детский центр: «волшебная книга»",
+   "d": "Вход в виде раскрытой книги, летающие книги и луна над вывеской, милые призраки в шляпах волшебников, фиолетовые и оранжевые акценты. Не страшно, а сказочно — детям нравится, родители фотографируют.",
+   "tip": "Сделайте у входа фотозону и проведите «Хэллоуин-урок» или открытое занятие: это лучший повод привести новых учеников с родителями.",
+   "prompt": "Children's English school storefront decorated for Halloween, vertical 4:5, evening, entrance framed as a giant open storybook with glowing pages, sign «ШКОЛА АНГЛИЙСКОГО» above, flying books and a glowing crescent moon over the sign, cute white ghosts wearing wizard hats, pumpkins, purple and orange accents, stars, giant pencil decoration, warm magical light, photorealistic, friendly not scary, no people"
+  },
+  {
+   "cat": "Акции и тексты",
+   "emo": "📣",
+   "t": "Готовые идеи акций",
+   "d": "«Сладость или гадость»: каждый 5-й клиент получает подарок. «Костюм — скидка»: пришли в образе — −10%. «Образ к вечеринке»: запись до 25 октября. «Ночь страха»: вечерние окна 30–31 октября.",
+   "tip": "Акцию — в закреп и сторис, постер — в районные чаты в разрешённый день.",
+   "prompt": ""
+  },
+  {
+   "cat": "Музыка для Reels",
+   "emo": "🎧",
+   "t": "Какое звучание выбрать",
+   "d": "Мрачный глэм — медленные тёмные биты и низкие басы; милый Хэллоуин — игривые мелодии с колокольчиками; процесс работы — ритмичные треки с акцентом на смену кадра. Выбирайте трек в библиотеке самого приложения: так не будет проблем с авторскими правами.",
+   "tip": "Меняйте кадр на сильную долю — видео смотрят дольше.",
+   "prompt": ""
+  }
  ],
- "texts":[
+ "texts": [
   "🎃 Хэллоуин уже близко! Хэллоуинский дизайн ногтей — паутина, призраки или «кровавый» френч. Акцент на 1–2 ногтя — всего +[цена]. Запись до 31 октября 👉 [контакт]",
   "🍰 Только до 31 октября: тыквенный чизкейк, шоколадные летучие мыши и бенто-торт «Паутина». Наборы печенья для офиса — от [цена]. Заказ: [контакт]",
   "☕ Новое зелье недели — фиолетовая матча с маршмеллоу-призраком 👻 Сфотографируйте и отметьте нас — второй напиток со скидкой!",
