@@ -58,7 +58,8 @@
    "t": "Бенто-торт «Паутина» и печенье-набор",
    "d": "Маленький торт с паутиной из глазури и набор печенья (тыквы, пауки, летучие мыши) в крафт-коробке — готовый подарок коллегам и детям.",
    "tip": "Сделайте набор для офиса: 12 печений + открытка. Предложите компаниям поблизости.",
-   "prompt": "Halloween bento cake with black icing spider web and a small chocolate spider, next to decorated cookies shaped like pumpkins and bats in a kraft box, vertical 4:5, cozy moody light, photorealistic, no text."
+   "prompt": "Halloween bento cake with black icing spider web and a small chocolate spider, next to decorated cookies shaped like pumpkins and bats in a kraft box, vertical 4:5, cozy moody light, photorealistic, no text.",
+   "img": "trends/img/bakery-bento.webp"
   },
   {
    "cat": "Кофейня",
@@ -66,7 +67,8 @@
    "t": "Фиолетовая матча, тыквенный латте, напиток-«зелье»",
    "d": "Яркий цвет продаёт: фиолетовый (батат, ube), тыквенный латте с пряностями, напиток с маршмеллоу-«призраком». Назовите его как зелье — гости фотографируют.",
    "tip": "Дайте напитку смешное название и поставьте его первым в сторис — фото гостей станут вашей бесплатной рекламой.",
-   "prompt": "Halloween coffee drinks, vertical 4:5, purple ube matcha latte and pumpkin spice latte with marshmallow ghost topping, cinnamon sticks, tiny pumpkins, dark wooden counter, moody orange light, photorealistic, no text."
+   "prompt": "Halloween coffee drinks, vertical 4:5, purple ube matcha latte and pumpkin spice latte with marshmallow ghost topping, cinnamon sticks, tiny pumpkins, dark wooden counter, moody orange light, photorealistic, no text.",
+   "img": "trends/img/coffee.webp"
   },
   {
    "cat": "Витрины и декор",
