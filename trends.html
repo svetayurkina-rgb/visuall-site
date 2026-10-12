@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Тренды недели — VISUALL</title>
+<meta name="description" content="Идеи и тренды для малого бизнеса: что предложить клиентам к празднику, как показать в рекламе и что написать. Готовые промпты и тексты.">
+<meta name="theme-color" content="#0b0a0d">
+<link rel="icon" href="favicon-32.png">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{--bg:#0b0a0d;--ink:#f3ece0;--mut:#a39a8c;--gold:#d9b77a;--acc:#ff7a1a;--line:#28222e}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(90% 50% at 80% -10%,color-mix(in srgb,var(--acc) 22%,transparent),transparent 60%),radial-gradient(70% 40% at 0% 10%,rgba(140,70,220,.18),transparent 60%),var(--bg)}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 18px 120px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}
+.brand{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.34em;font-size:16px;text-decoration:none}
+.top a.back{font-size:13px;color:var(--mut);text-decoration:none;border:1px solid var(--line);padding:9px 14px;border-radius:99px}
+.hero{position:relative;padding:8px 0 30px}
+.kick{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--acc)}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(44px,8vw,96px);line-height:.94;margin:14px 0 18px;max-width:820px}
+h1 i{color:var(--acc)}
+.lead{color:var(--mut);font-size:16px;line-height:1.7;max-width:640px;margin:0}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.pill{font-size:12.5px;font-weight:700;border-radius:99px;padding:8px 14px;border:1px solid var(--line)}
+.pill.hot{background:var(--acc);color:#1a0d02;border-color:var(--acc)}
+.stk{position:absolute;font-weight:800;font-size:14px;color:#1c1626;border:3px solid #fff;border-radius:99px;padding:6px 14px;box-shadow:0 10px 24px rgba(0,0,0,.4);white-space:nowrap}
+.hero .s1{right:2%;top:-6px;background:#ffd36b;transform:rotate(8deg)}
+.hero .s2{right:2%;top:200px;background:#c9a0ff;transform:rotate(-6deg)}
+.hero .s3{right:6%;top:250px;background:#ff9a5a;transform:rotate(4deg)}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;margin:24px 0 8px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:0 0 auto;font:inherit;font-size:13.5px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:99px;padding:9px 15px;cursor:pointer;transition:.3s}
+.filters button[aria-pressed=true]{background:var(--ink);color:#141016;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{position:relative;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#141118;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s;opacity:0;transform:translateY(20px)}
+.card.in{opacity:1;transform:none}
+.card:hover{border-color:color-mix(in srgb,var(--acc) 60%,var(--line));transform:translateY(-4px)}
+.cov{position:relative;aspect-ratio:4/5;display:grid;place-items:center;overflow:hidden}
+.cov img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cov .emo{font-size:96px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.5));animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px) rotate(4deg)}}
+.cov .cat{position:absolute;left:14px;top:14px;font-size:12px;font-weight:800;background:#fff;color:#1c1626;border-radius:99px;padding:5px 11px;transform:rotate(-4deg)}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.body h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px;line-height:1.05;margin:0}
+.body p{margin:0;color:var(--mut);font-size:14px;line-height:1.6}
+.tip{background:color-mix(in srgb,var(--acc) 12%,transparent);border-left:3px solid var(--acc);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.5}
+.tip b{color:var(--acc)}
+.act{display:flex;gap:8px;margin-top:auto;padding-top:4px;flex-wrap:wrap}
+.btn{font:inherit;font-size:13px;font-weight:700;border-radius:99px;padding:10px 14px;cursor:pointer;text-decoration:none;border:1px solid var(--line);background:transparent;color:var(--ink);transition:.25s}
+.btn:hover{border-color:var(--gold)}
+.btn.gold{border:0;color:#1c1626;background:linear-gradient(110deg,#f6e3b8,#d9b26e,#fff1cc,#c99a55);background-size:200% 100%;animation:g 6s ease-in-out infinite}
+@keyframes g{50%{background-position:100% 0}}
+h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,5vw,52px);margin:60px 0 8px}
+.sub{color:var(--mut);margin:0 0 18px}
+.texts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tx{border:1px dashed color-mix(in srgb,var(--acc) 50%,var(--line));border-radius:16px;padding:16px;font-size:14.5px;line-height:1.6;position:relative}
+.tx button{position:absolute;right:10px;bottom:10px}
+.tx p{margin:0 0 30px}
+.cta{margin-top:60px;border-radius:26px;padding:30px 26px;background:linear-gradient(135deg,#1d1622,#110e14);border:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;position:relative;overflow:hidden}
+.cta h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,40px);margin:0 0 8px}
+.cta p{color:var(--mut);margin:0;line-height:1.6}
+.cta img{width:120px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.6))}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,40px);opacity:0;background:var(--ink);color:#16121a;font-weight:700;font-size:14px;padding:12px 18px;border-radius:99px;transition:.35s;z-index:9}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.foot{color:var(--mut);font-size:12.5px;margin-top:34px;line-height:1.7}
+@media (max-width:860px){.grid{grid-template-columns:1fr 1fr;gap:12px}.texts{grid-template-columns:1fr}.cta{grid-template-columns:1fr}.cta img{width:90px}.hero .stk{display:none}.body h3{font-size:21px}.cov .emo{font-size:70px}}
+@media (max-width:480px){.grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="brand" href="index.html">VISUALL</a><a class="back" href="index.html">← На сайт</a></div>
+  <section class="hero">
+    <span class="stk s1" id="s1"></span><span class="stk s2">💡 идеи + промпты</span><span class="stk s3">📣 готовые тексты</span>
+    <div class="kick" id="kick"></div>
+    <h1 id="title"></h1>
+    <p class="lead" id="lead"></p>
+    <div class="meta"><span class="pill hot" id="until"></span><span class="pill" id="date"></span><span class="pill">обновляется каждую неделю</span></div>
+  </section>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+
+  <h2>Тексты для постов</h2>
+  <p class="sub">Скопируйте, подставьте свою цену и контакт — и публикуйте.</p>
+  <div class="texts" id="texts"></div>
+
+  <div class="cta">
+    <div><h3>Хотите такую рекламу — но уже готовую?</h3><p>Светлана сделает праздничный постер, сторис и текст под ваш бизнес за 1 день — от 990 ₽, а версия для сторис в подарок. Или соберите постер сами в Studio за 5 минут.</p>
+      <div class="act" style="margin-top:16px"><a class="btn gold" href="https://t.me/visuall_sveta_bot?start=o_poster" target="_blank" rel="noopener">Заказать постер</a><a class="btn" href="poster.html">Открыть Studio</a><a class="btn" href="https://t.me/visuall_sveta_bot?start=free" target="_blank" rel="noopener">Бесплатный разбор</a></div></div>
+    <img src="img/robot-girl-point.webp" alt="" loading="lazy">
+  </div>
+  <p class="foot">Промпты подходят для Grok, Шедеврума, Kandinsky и других нейросетей. Текст на картинку лучше добавлять отдельно — так буквы не исказятся.<br>VISUALL · Светлана Музыка · @sveta_muzyka · +7 (925) 062-00-01</p>
+</div>
+<div class="toast" id="toast">Скопировано ✓</div>
+<script>
+(async function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let d;try{d=await (await fetch("trends/issue.json",{cache:"no-cache"})).json();}catch(e){$("title").textContent="Скоро здесь появятся тренды";return;}
+document.documentElement.style.setProperty("--acc",d.accent||"#ff7a1a");
+$("kick").textContent=d.kicker;$("lead").textContent=d.lead;$("date").textContent="Выпуск от "+d.date;$("until").textContent="🔥 актуально до "+d.until;$("s1").textContent="🎃 "+d.until;
+const words=d.title.split(" ");$("title").innerHTML=esc(words.slice(0,-1).join(" "))+" <i>"+esc(words.slice(-1)[0])+"</i>";
+const cats=["Все",...new Set(d.cards.map(c=>c.cat))];let cur="Все";
+const grads=["linear-gradient(150deg,#2b1530,#ff7a1a33)","linear-gradient(150deg,#1a1430,#8c46dc55)","linear-gradient(150deg,#2a1810,#ffb35c44)","linear-gradient(150deg,#121a1a,#4fd1a544)","linear-gradient(150deg,#2a1020,#ff5fb744)"];
+function toast(){const t=$("toast");t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1500);}
+function copy(s){(navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject()).catch(()=>{const ta=document.createElement("textarea");ta.value=s;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();}).finally(toast);}
+function render(){
+  $("filters").innerHTML=cats.map(c=>`<button type="button" aria-pressed="${c===cur}">${esc(c)}</button>`).join("");
+  $("filters").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>{cur=cats[i];render();});
+  const L=d.cards.filter(c=>cur==="Все"||c.cat===cur);
+  $("grid").innerHTML=L.map((c,i)=>`<article class="card"><div class="cov" style="background:${grads[i%grads.length]}">${c.img?`<img src="${esc(c.img)}" alt="${esc(c.t)}" loading="lazy">`:`<span class="emo">${c.emo}</span>`}<span class="cat">${esc(c.cat)}</span></div>
+    <div class="body"><h3>${esc(c.t)}</h3><p>${esc(c.d)}</p><div class="tip"><b>Как заработать:</b> ${esc(c.tip)}</div>
+    <div class="act">${c.prompt?`<button class="btn" data-p="${i}">Скопировать промпт</button>`:""}<a class="btn gold" href="https://t.me/visuall_sveta_bot?start=o_poster" target="_blank" rel="noopener">Хочу такую рекламу</a></div></div></article>`).join("");
+  $("grid").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>copy(L[+b.dataset.p].prompt));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.1});
+  document.querySelectorAll(".card").forEach((c,i)=>{c.style.transitionDelay=(i%3)*80+"ms";io.observe(c);});
+}
+render();
+$("texts").innerHTML=d.texts.map((t,i)=>`<div class="tx"><p>${esc(t)}</p><button class="btn" data-t="${i}">Скопировать</button></div>`).join("");
+$("texts").querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>copy(d.texts[+b.dataset.t]));
+})();
+</script>
+</body>
+</html>

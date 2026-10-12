@@ -59,6 +59,7 @@ const MAIN_KB = { inline_keyboard: [
   [{ text: "💳 Оплата", callback_data: "pay" }, { text: "⏱ Сроки и правки", callback_data: "terms" }],
   [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
   [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
+  [{ text: "🎃 Тренды недели: Хэллоуин", url: SITE + "trends.html" }],
   [{ text: "🎁 Бесплатно и полезно", callback_data: "free" }],
   [{ text: "✦ Atelier — готовые решения", callback_data: "shop" }],
   [{ text: "✦ Studio — постер за 5 минут", callback_data: "ap" }, { text: "Подписки", callback_data: "subs" }],
@@ -774,6 +775,7 @@ function smart(raw, user) {
   if (/(привет|здравств|добрый (день|вечер|утро)|доброе утро|hello|(?<![а-яa-z])hi(?![а-яa-z])|салют)/.test(t) && raw.length < 40) return [{ route: "menu" }];
   if (/(спасибо|благодар|(?<![а-яa-z])спс(?![а-яa-z]))/.test(t) && raw.length < 60) return [{ text: A.thanks(), kb: MAIN_KB }];
   if (/(срочн|сегодня|до завтра|за сутки|24 час|горит)/.test(t)) out.push({ text: A.urgent(), kb: kb([BACK]) });
+  if (/(тренд|хэллоуин|хеллоуин|halloween|новинк)/.test(t)) return [{ text: "🎃 <b>Тренды недели</b> — Хэллоуин, который продаёт: идеи маникюра и макияжа, десерты, напитки, акции и готовые тексты с промптами.", kb: kb([[{ text: "Смотреть тренды", url: SITE + "trends.html" }], BACK]) }];
   if (/(бесплатн|даром|халяв)/.test(t)) return [{ route: "free" }];
   if (/(видео или|или видео|reels или|или постер|рилс или)/.test(t)) return [{ text: A.vidpost(), kb: kb([BACK]) }];
   if (/(сторис|stories|статус)/.test(t) && !/(instagram|инстаграм|инста(?![а-я])|ведени|под ключ)/.test(t)) return [{ text: A.stories(), kb: kb([BACK]) }];
