@@ -3647,6 +3647,22 @@ requestAnimationFrame(f);})();</script>
 @keyframes vbTapD{0%,100%{transform:translateY(0) rotate(90deg)}45%{transform:translateY(8px) rotate(90deg)}55%{transform:translateY(9px) rotate(90deg) scale(.92)}}
 #vbot.mob .vb-bub{right:68px;bottom:70px;max-width:170px;font-size:12px;padding:8px 11px}
 @media (prefers-reduced-motion:reduce){#vbot *{animation:none!important}}
+#vbot .vb-hand{display:none}
+#vbot.b{right:150px;bottom:44px}
+#vbot.b .vb-r{width:118px;animation:vbPointB 1.4s ease-in-out infinite;transform-origin:30% 100%}
+@keyframes vbPointB{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(5px,4px) rotate(3deg)}}
+#vbot.b .vb-bub{right:96px;bottom:150px}
+#vbot.g{right:22px;bottom:70px}
+#vbot.g .vb-r{width:120px;animation:vbPointG 1.6s ease-in-out infinite;transform-origin:70% 100%}
+@keyframes vbPointG{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-4px,-3px) rotate(-3deg)}}
+#vbot.g .vb-bub{right:118px;bottom:150px;border-radius:16px 16px 4px 16px}
+#vbot.mob.b{right:132px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+#vbot.mob.b .vb-r{width:82px}
+#vbot.mob.b .vb-bub{right:66px;bottom:118px}
+#vbot.mob.g{right:8px;bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+#vbot.mob.g .vb-r{width:84px}
+#vbot.mob.g .vb-bub{right:84px;bottom:104px}
+#vbot.hop .vb-r{animation:vbHop .6s cubic-bezier(.3,1.6,.5,1)!important}
 </style>
 <div id="vbot" aria-live="polite">
   <div class="vb-r" title="Привет! Я помощник VISUALL">
@@ -3665,7 +3681,7 @@ requestAnimationFrame(f);})();</script>
 const box=document.getElementById("vbot");if(!box)return;
 let hidden=false;try{hidden=sessionStorage.getItem("vbHide")==="1";}catch(e){}
 if(hidden){box.remove();return;}
-const girl=Math.random()<.5;box.querySelector("img").src="img/robot-"+(girl?"girl":"boy")+".webp";
+const girl=Math.random()<.5;box.querySelector("img").src="img/robot-"+(girl?"girl":"boy")+"-point.webp";box.classList.add(girl?"g":"b");
 box.dataset.g=girl?1:0;const H=girl?["Привет! Я помощница <b>VISUALL</b>. Жмите сюда — сделаем рекламу, которую сохраняют ✨","К каждому заказу — <b>подарок</b> 🎁 Нажмите, расскажу какой!","Постер за 5 минут — в <b>Studio</b>. Попробуйте, предпросмотр бесплатный!","<b>−10%</b> на первый заказ по коду VISUALL10 — успейте до воскресенья!","Бесплатно: мини-гайд «15 ошибок в рекламе». Нажмите — пришлю 📘"]
                :["Привет! Я помощник <b>VISUALL</b>. Нажмите сюда — оформим заказ за минуту 👇","К каждому заказу — <b>подарок</b> 🎁 Жмите, покажу!","Хотите постер за 5 минут? Загляните в <b>Studio</b>!","<b>−10%</b> на первый заказ по коду VISUALL10","Бесплатный разбор вашей рекламы — нажмите и пришлите пост 🔍"];
 const LINKS=["https://t.me/visuall_sveta_bot?start=o_poster","https://t.me/visuall_sveta_bot?start=free","poster.html","https://t.me/visuall_sveta_bot?start=o_poster","https://t.me/visuall_sveta_bot?start="+(girl?"free":"audit")];
