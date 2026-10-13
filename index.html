@@ -1123,7 +1123,7 @@ main,footer{position:relative;z-index:1}
     </style>
     <div class="atl-head">
       <div class="atl-rv"><div class="atl-k">VISUALL Atelier · коллекция</div><h2 class="atl-h">Реклама,<br>которую <i>сохраняют</i></h2><p class="atl-lead">Для тех, кто делает рекламу сам — и хочет, чтобы она выглядела как у дорогого бренда. Инструменты и материалы VISUALL — теперь и в ваших руках.</p></div>
-      <figure class="atl-por atl-rv" style="margin:0"><img src="img/svetlana-crown.jpg" alt="Светлана Музыка, VISUALL" loading="lazy"><figcaption>Светлана Музыка · основатель VISUALL</figcaption></figure>
+      <figure class="atl-por atl-rv" style="margin:0"><video poster="img/svetlana-v.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Светлана Музыка, VISUALL"><source src="img/svetlana.mp4" type="video/mp4"><source src="img/svetlana.webm" type="video/webm"></video><figcaption>Светлана Музыка · основатель VISUALL</figcaption></figure>
     </div>
     <div class="atl-studio atl-rv">
       <div class="atl-fade"><img src="img/shop/ap-0.jpg" alt="" loading="lazy"><img src="img/shop/ap-1.jpg" alt="" loading="lazy"><img src="img/shop/ap-2.jpg" alt="" loading="lazy"><img src="img/shop/ap-3.jpg" alt="" loading="lazy"><img src="img/shop/ap-4.jpg" alt="" loading="lazy"><img src="img/shop/ap-5.jpg" alt="" loading="lazy"></div>
@@ -3866,6 +3866,36 @@ cards.forEach((c,i)=>c.addEventListener("click",e=>{if(e.target.closest("a"))ret
 upd();
 /* quiz from steps */
 document.querySelectorAll("[data-quiz]").forEach(b=>b.addEventListener("click",()=>{const q=document.getElementById("quizOpen");q?q.click():location.hash="#catalog";}));
+})();
+</script>
+
+<style id="vmusic">
+.atl-por video{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 18%;border-radius:999px 999px 0 0}
+#vmu{position:fixed;z-index:81;left:16px;bottom:20px;display:flex;align-items:center;gap:8px}
+#vmu button{width:46px;height:46px;border-radius:50%;border:1px solid rgba(232,201,145,.5);background:rgba(16,13,20,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer;display:grid;place-items:center;padding:0;box-shadow:0 8px 24px rgba(0,0,0,.45);transition:transform .3s,border-color .3s}
+#vmu button:active{transform:scale(.92)}
+#vmu .bars{display:flex;align-items:flex-end;gap:2.5px;height:16px}
+#vmu .bars i{width:3px;height:30%;border-radius:2px;background:linear-gradient(#fff1cc,#c99a55);transition:height .3s}
+#vmu.on .bars i{animation:vmuB .9s ease-in-out infinite alternate}
+#vmu.on .bars i:nth-child(2){animation-duration:.6s}#vmu.on .bars i:nth-child(3){animation-duration:1.1s}#vmu.on .bars i:nth-child(4){animation-duration:.75s}
+@keyframes vmuB{from{height:20%}to{height:100%}}
+#vmu.on button{border-color:#e8c991;box-shadow:0 0 0 4px rgba(232,201,145,.12),0 8px 24px rgba(0,0,0,.45)}
+#vmu .tip{font:600 12.5px/1.2 Manrope,system-ui,sans-serif;color:#1c1626;background:#fbf4e6;border-radius:99px;padding:8px 12px;box-shadow:0 8px 20px rgba(0,0,0,.4);white-space:nowrap;opacity:0;transform:translateX(-8px);transition:.4s;pointer-events:none}
+#vmu.ask .tip{opacity:1;transform:none;pointer-events:auto;cursor:pointer}
+@media (max-width:900px){#vmu{bottom:calc(92px + env(safe-area-inset-bottom,0px));left:12px}#vmu button{width:42px;height:42px}}
+</style>
+<div id="vmu"><button type="button" aria-label="Включить музыку" aria-pressed="false"><span class="bars"><i></i><i></i><i></i><i></i></span></button><span class="tip">♪ Включить музыку</span></div>
+<script>
+(function(){const w=document.getElementById("vmu");if(!w)return;const b=w.querySelector("button");let a=null,on=false;
+function ensure(){if(!a){a=new Audio("img/music.mp3");a.loop=true;a.volume=0;a.preload="auto";}return a;}
+function fade(to,cb){const s=a.volume,t0=performance.now(),d=900;(function f(n){const k=Math.min(1,(n-t0)/d);a.volume=s+(to-s)*k;k<1?requestAnimationFrame(f):cb&&cb();})(t0);}
+function play(){ensure();a.play().then(()=>{on=true;w.classList.add("on");b.setAttribute("aria-pressed","true");b.setAttribute("aria-label","Выключить музыку");fade(.35);try{sessionStorage.setItem("vmu","1")}catch(e){}}).catch(()=>{});}
+function stop(){if(!a)return;on=false;w.classList.remove("on");b.setAttribute("aria-pressed","false");b.setAttribute("aria-label","Включить музыку");fade(0,()=>a.pause());try{sessionStorage.setItem("vmu","0")}catch(e){}}
+function tog(){w.classList.remove("ask");on?stop():play();}
+b.addEventListener("click",tog);w.querySelector(".tip").addEventListener("click",tog);
+let asked=false;try{asked=sessionStorage.getItem("vmu")!==null}catch(e){}
+if(!asked){setTimeout(()=>{if(!on)w.classList.add("ask");setTimeout(()=>w.classList.remove("ask"),6000);},5000);}
+document.addEventListener("visibilitychange",()=>{if(!a||!on)return;document.hidden?a.pause():a.play().catch(()=>{});});
 })();
 </script>
 <style id="vbtn">
