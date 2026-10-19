@@ -1,0 +1,284 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>ИИдея в Telegram</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800;900&family=Golos+Text:wght@400;500;600;700&display=swap">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* Layout: «шкатулка с драгоценностями» — чёрный бархат, золото и у каждого направления свой цветной самоцвет-подсветка; один экран = один выбор */
+:root{
+  --velvet:#07070B; --plate:#121219; --plate-2:#191922; --edge:#2B2A33;
+  --text:#F2ECE0; --dim:#A39D90; --gold:#E2B866; --gold-hi:#FFE3A6; --gold-deep:#8A5C1A;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--velvet)}
+body{color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden;
+  background:radial-gradient(120% 60% at 50% -10%,rgba(226,184,102,.16),transparent 60%),var(--velvet);min-height:100vh}
+.app{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 120px}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px;border-radius:10px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+p{margin:0}
+.view{display:grid;gap:22px;animation:rise .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:.3;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* шапка */
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0}
+.brand i{width:34px;height:34px;border-radius:50%;background:url(v/med-journal.webp) center/cover;box-shadow:0 0 16px rgba(226,184,102,.5)}
+.brand b{font-family:var(--f-display);font-size:19px;font-weight:600;letter-spacing:.02em}
+.brand b span{color:var(--gold)}
+.back{display:inline-flex;width:auto;flex:none;white-space:nowrap;align-items:center;gap:6px;border:1px solid var(--edge);background:var(--plate);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600}
+.hi{font-size:14px;color:var(--dim)}
+
+/* герой */
+.hero{display:grid;gap:10px}
+.hero h1{font-size:clamp(26px,7.4vw,34px);font-weight:900;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;background:linear-gradient(100deg,var(--gold-hi),var(--gold) 40%,#F59BD0 70%,#8FD3FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--dim);font-size:15.5px;max-width:40ch}
+
+/* до/после */
+.ba{display:grid;gap:12px}
+.stage{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:26px;overflow:hidden;border:1px solid rgba(255,227,166,.35);box-shadow:0 20px 50px -20px rgba(226,184,102,.45);touch-action:pan-y;user-select:none}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.stage .b{clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.stage .line{position:absolute;top:0;bottom:0;left:var(--p);width:3px;margin-left:-1.5px;background:var(--gold-hi);box-shadow:0 0 16px rgba(255,227,166,.9);pointer-events:none}
+.stage .line::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#1C1405;background:radial-gradient(130% 160% at 50% 0%,#FFF1C4,#EFC266 35%,#B8822E);box-shadow:0 4px 0 #4A3110,0 0 22px rgba(226,184,102,.7)}
+.stage .lab{position:absolute;top:12px;padding:5px 11px;border-radius:999px;font-size:13px;font-weight:600;background:rgba(7,7,11,.72);pointer-events:none}
+.stage .l{left:12px}.stage .r{right:12px;color:var(--gold-hi)}
+.stage input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize}
+.strip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.thumb{flex:0 0 74px;scroll-snap-align:start;border:2px solid transparent;border-radius:14px;padding:0;background:none;display:grid;gap:4px;font-size:11.5px;text-align:center;line-height:1.2;color:var(--dim)}
+.thumb img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:11px;display:block}
+.thumb[aria-pressed="true"]{border-color:var(--gold-hi);color:var(--text)}
+.note{font-size:12.5px;color:var(--dim)}
+
+/* кнопки */
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:18px;padding:16px 18px;font-family:var(--f-display);font-weight:800;font-size:15px;color:#1C1405;
+  background:linear-gradient(110deg,#FFF1C4,#EFC266 30%,#B8822E 55%,#EFC266 80%,#FFF1C4);background-size:220% 100%;animation:flow 6s linear infinite;box-shadow:0 5px 0 #4A3110,0 0 26px rgba(226,184,102,.35)}
+.cta:active{transform:translateY(4px);box-shadow:0 1px 0 #4A3110}
+@keyframes flow{to{background-position:-220% 0}}
+.ghost{border:1px solid var(--edge);background:var(--plate);color:var(--text);border-radius:16px;padding:13px 16px;font-weight:600;font-size:15px}
+
+/* секции */
+.sec{display:grid;gap:12px}
+.sec h2{font-size:20px;font-weight:800}
+.sec .sub{color:var(--dim);font-size:14px;margin-top:-6px}
+
+/* самоцветы-направления */
+.gems{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gem{position:relative;overflow:hidden;display:grid;gap:2px;align-content:start;text-align:left;border:1px solid color-mix(in srgb,var(--c) 40%,var(--edge));border-radius:20px;padding:12px 12px 14px;
+  background:radial-gradient(90% 80% at 15% 0%,color-mix(in srgb,var(--c) 26%,transparent),transparent 70%),var(--plate);transition:transform .15s}
+.gem:active{transform:scale(.97)}
+.gem img{width:72px;height:72px;margin:-6px 0 0 -8px;object-fit:cover;mix-blend-mode:lighten;-webkit-mask-image:radial-gradient(circle,#000 56%,transparent 72%);mask-image:radial-gradient(circle,#000 56%,transparent 72%)}
+.gem b{font-size:15px;line-height:1.25}
+.gem span{font-size:12.5px;color:var(--dim)}
+.gem .n{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;color:color-mix(in srgb,var(--c) 80%,#fff);background:color-mix(in srgb,var(--c) 18%,transparent);border-radius:999px;padding:2px 8px}
+
+/* подарок */
+.gift{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 96px;gap:12px;align-items:center;text-align:left;border:1px solid rgba(245,155,208,.45);border-radius:22px;padding:16px;
+  background:linear-gradient(120deg,rgba(245,155,208,.18),rgba(143,211,255,.12) 60%,transparent),var(--plate)}
+.gift b{font-family:var(--f-display);font-size:16px;font-weight:800;display:block}
+.gift span{font-size:13.5px;color:var(--dim)}
+.gift .pile{position:relative;height:96px}
+.gift .pile img{position:absolute;width:58px;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:2px solid rgba(255,255,255,.8);box-shadow:0 8px 16px rgba(0,0,0,.5)}
+.gift .pile img:nth-child(1){left:0;top:12px;transform:rotate(-10deg)}
+.gift .pile img:nth-child(2){left:20px;top:0;transform:rotate(4deg)}
+.gift .pile img:nth-child(3){left:38px;top:16px;transform:rotate(12deg)}
+
+/* медальоны */
+.meds{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 6px;scroll-snap-type:x mandatory}
+.meds::-webkit-scrollbar{display:none}
+.med{flex:0 0 84px;scroll-snap-align:start;display:grid;gap:6px;justify-items:center;text-align:center;border:0;background:none;padding:0;font-size:12px;line-height:1.2;color:var(--dim)}
+.med img{width:76px;height:76px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,227,166,.45),0 8px 18px rgba(0,0,0,.6),0 0 22px rgba(226,184,102,.35)}
+
+/* миры */
+.worlds{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;padding-bottom:6px}
+.worlds::-webkit-scrollbar{display:none}
+.world{flex:0 0 72%;scroll-snap-align:start;display:grid;text-align:left;border-radius:20px;overflow:hidden;border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:var(--plate);padding:0}
+.world .img{aspect-ratio:4/3;max-width:100%;position:relative;overflow:hidden}
+.world .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.world .t{padding:12px 14px 14px;display:grid;gap:3px;border-top:3px solid var(--c)}
+.world small{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.world b{font-family:var(--f-display);font-size:15px}
+.world span{font-size:13px;color:var(--dim)}
+
+/* список задач */
+.list{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;text-align:left;border:1px solid var(--edge);border-radius:16px;padding:13px 14px;background:var(--plate)}
+.row b{font-size:15.5px;line-height:1.3;font-weight:600}
+.row small{grid-column:1;font-size:12.5px;color:var(--dim)}
+.row i{grid-column:2;grid-row:1/3;font-style:normal;color:var(--c,var(--gold));font-size:20px}
+.dirhead{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center}
+.dirhead img{width:76px;height:76px;object-fit:cover;mix-blend-mode:lighten;-webkit-mask-image:radial-gradient(circle,#000 56%,transparent 72%);mask-image:radial-gradient(circle,#000 56%,transparent 72%)}
+.dirhead h1{font-size:24px}
+.dirhead p{color:var(--dim);font-size:14px}
+
+/* задача */
+.task h1{font-size:22px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 10px;background:var(--plate-2);color:var(--dim)}
+.pill.free{background:#1E3B2E;color:#9CF0C8}
+.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;border:1px solid rgba(255,227,166,.3);border-radius:20px;padding:16px;background:radial-gradient(90% 90% at 0% 0%,rgba(226,184,102,.12),transparent 60%),var(--plate)}
+.num{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;color:#1C1405;background:radial-gradient(130% 160% at 50% 0%,#FFF1C4,#EFC266 35%,#B8822E)}
+.step .in{display:grid;gap:10px;min-width:0}
+.step h2{font-size:17px}
+.fld{display:grid;gap:4px;font-size:13.5px;color:var(--dim)}
+.fld input{font:inherit;font-size:16px;color:var(--text);background:var(--velvet);border:1px solid var(--edge);border-radius:12px;padding:12px}
+pre.out{white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;background:var(--velvet);border:1px solid var(--edge);border-radius:12px;padding:12px;margin:0;max-height:240px;overflow:auto}
+details{border-top:1px solid var(--edge)}
+details summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:48px;font-weight:600}
+details summary::after{content:"+";color:var(--gold);font-size:22px}
+details[open] summary::after{content:"−"}
+details>*:not(summary){margin-bottom:14px}
+ol.steps{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--dim)}
+ol.steps b{color:var(--text)}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold-hi);color:#1C1405;font-weight:700;border-radius:999px;padding:10px 18px;box-shadow:0 10px 24px rgba(0,0,0,.5);z-index:20}
+
+/* подарок-страница */
+.gl{display:grid;gap:10px}
+.gi{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;text-align:left;border:1px solid var(--edge);border-radius:16px;padding:8px;background:var(--plate)}
+.gi .ph{width:64px;aspect-ratio:4/5;border-radius:10px;object-fit:cover;background:linear-gradient(135deg,#2b2233,#3a2a18)}
+.gi b{font-size:15px}
+.gi small{display:block;font-size:12.5px;color:var(--dim)}
+</style>
+
+<div class="app" id="app"></div>
+
+<script>
+const D={"QUICK":[["Работа","Почта съедает полдня","2 часа разбора","10 минут","Ты — опытный ассистент руководителя.\nВот входящие письма: [вставьте].\n1) Раздели их на «ответить сегодня», «делегировать», «в архив».\n2) Для срочных напиши ответы от моего имени: до 5 предложений, вежливо, без канцелярита.\n3) В конце — список задач, которые из писем вытекают, со сроками."],["Работа","Отчёт к утру, а сил ноль","3 часа","20 минут","Ты — аналитик, который пишет отчёты для занятых руководителей.\nДанные и заметки: [вставьте].\nСтруктура: итог в 3 строках → цифры в таблице → что сработало → риски → план на неделю.\nПравило: каждый вывод опирается на цифру. Без воды и общих фраз."],["Работа","Совещание было, итогов нет","час на протокол","5 минут","Вот заметки или расшифровка встречи: [вставьте].\nСделай протокол: принятые решения; задачи в таблице «что — кто — до когда»; вопросы без ответа.\nОформи как письмо участникам: тема, 3 строки вступления, протокол."],["Работа","Страшно сообщить начальнику о проблеме","вечер нервов","3 минуты","Помоги написать руководителю о проблеме: [ситуация].\nСхема: факт → причина → последствия, если ничего не делать → 2 варианта решения с плюсами и минусами → что предлагаю я.\nТон: спокойный и взрослый, без оправданий и паники. До 120 слов."],["Работа","Excel-формулы как китайская грамота","час в поиске","2 минуты","Ты — эксперт по Excel и Google Таблицам.\nСтолбцы в моей таблице: [опишите].\nНужно получить: [что посчитать].\nДай готовую формулу, объясни её по частям простыми словами и покажи, куда вставить. Предупреди о частых ошибках."],["Работа","Презентация к утру","бессонная ночь","30 минут","Ты — консультант, который строит презентации по принципу «вывод — в заголовке».\nТема: [тема]. Аудитория: [кто]. Цель: [что они должны решить].\nСделай 10 слайдов: заголовок-вывод, 3 тезиса, идея визуала. Слайд 2 — главная мысль одной фразой. Последний — конкретная просьба."],["Деньги","Не понимаю, на чём заработать с ИИ","месяцы сомнений","1 вечер","Ты — карьерный стратег, который знает рынок ИИ-услуг в России.\nМои навыки: [навыки]. Время: [часов в неделю]. Бюджет: [сумма].\nПредложи 5 услуг под меня: кому продавать, где искать клиентов, сколько брать, сложность входа.\nВыбери одну лучшую и распиши, что сделать в ближайшие 7 дней."],["Деньги","Карточка товара не продаёт","час на товар","1 минута","Ты — копирайтер маркетплейсов с опытом на Wildberries и Ozon.\nТовар: [название, характеристики, для кого].\nНапиши: заголовок до 60 знаков с главным запросом; 5 выгод (не свойств!); описание до 1000 знаков; 15 ключевых запросов.\nУбери клише вроде «высокое качество»."],["Деньги","Блог пустует, посты не пишутся","неделя мук","15 минут","Ты — контент-стратег.\nНиша: [ниша]. Площадка: Telegram. Моя аудитория: [кто].\nСделай план на 14 дней: тема, крючок первой фразой, суть в 2 строках, призыв.\nПропорция: 60% польза, 25% личное, 15% продажа. Не повторяй форматы два дня подряд."],["Деньги","Злой отзыв клиента","испорченный день","2 минуты","Клиент написал: [текст отзыва].\nНапиши ответ по схеме: благодарность за прямоту → признание конкретики → что уже сделали → предложение решения → приглашение в личный диалог.\nНикаких «нам очень жаль, что у вас сложилось впечатление». До 80 слов."],["Деньги","Стесняюсь продавать свои услуги","упущенные клиенты","5 минут","Я делаю: [услуга] для [кого].\nНапиши 3 сообщения потенциальному клиенту:\n1) первое касание — про его задачу, не про меня;\n2) через 2 дня — полезный совет без продажи;\n3) через 5 дней — конкретное предложение с ценой и сроком.\nБез давления и шаблонных «уникальных предложений»."],["Дом","Холодильник полный, а готовить нечего","30 минут думать","1 минута","Ты — шеф, который готовит из того, что есть.\nПродукты: [список]. Время: до 30 минут. Техника: [плита/духовка/мультиварка].\nПредложи 3 блюда без похода в магазин: название, почему это вкусно, пошаговый рецепт и одна хитрость шефа."],["Дом","Меню и список покупок на неделю","2 часа","3 минуты","Составь меню на 7 дней для [кол-во] человек, бюджет [сумма] ₽, ограничения: [аллергии/предпочтения].\nПравило: готовим 3 раза в неделю, остальное — остатки и заготовки.\nВ конце — список покупок по отделам магазина с примерной ценой."],["Дом","Бардак, и непонятно, с чего начать","потерянные выходные","2 минуты","Ты — организатор пространства.\nКвартира: [комнаты, что беспокоит].\nСоставь план «7 дней по 20 минут»: зона на день, что разобрать, что выбросить, куда переложить.\nПервый день должен быть самым лёгким, чтобы появился азарт."],["Дом","Ребёнок не понимает домашку","слёзы и ссоры","5 минут","Ты — добрый репетитор для [класс].\nТема: [тема].\nОбъясни так, чтобы понял 10-летний: аналогия из жизни → правило в одной фразе → разбор примера по шагам.\nДай 3 задачи по возрастающей сложности, ответы спрячь в конце."],["Дом","Сломалась техника","вызов мастера","5 минут","Техника: [что, модель]. Симптомы: [что происходит].\nНазови 5 самых частых причин от вероятной к редкой. Для каждой: как проверить самому безопасно и сколько примерно стоит ремонт.\nЧётко отметь, когда сразу выключать и звать мастера."],["Жизнь","Нужна претензия или заявление","консультация юриста","10 минут","Ты — юрист по защите прав потребителей в РФ.\nСитуация: [опишите, даты, суммы].\nСоставь претензию в [организация]: шапка, обстоятельства, ссылки на закон, требование, срок ответа, подпись.\nВ конце отдельно — что проверить у живого юриста перед отправкой."],["Жизнь","Поздравление, а в голове пусто","час мучений","1 минута","Напиши поздравление для [кто] с [повод].\nЧто я о нём знаю: [интересы, общие истории, фразочки].\n3 варианта: трогательный (до 60 слов), смешной с личной деталью, короткий для открытки.\nЗапрет: «счастья, здоровья, успехов» и прочие дежурные слова."],["Жизнь","Отпуск хочется, планировать лень","дни поиска","10 минут","Ты — тревел-эксперт.\nКуда: [место]. Даты: [даты]. Бюджет: [сумма]. Кто едет: [состав, возраст].\nСделай план по дням: утро, день, вечер; где поесть недорого и вкусно; что купить билетом заранее; чек-лист вещей.\nОтметь, что стоит перепроверить на официальных сайтах."],["Жизнь","Тревога, и мысли ходят по кругу","бессонная ночь","5 минут","Мне тревожно из-за: [ситуация].\nПомоги разобрать это как спокойный, бережный собеседник: факты и интерпретации отдельно; что я контролирую, а что нет; один маленький шаг на завтра.\nБез банальностей и советов «просто не думай». Если это похоже на что-то серьёзное, скажи, к какому специалисту обратиться."],["Жизнь","Учу язык, а практики нет","годы зубрёжки","15 минут в день","Будь моим собеседником на [язык], мой уровень — [A2/B1/B2].\nТема разговора: [тема].\nЗадавай по одному вопросу, отвечай коротко и естественно, как носитель.\nПосле каждого моего ответа — блок «Исправления»: ошибка → как правильно → почему."],["Творчество","Хочу фото как в журнале","5 000 ₽ и день в студии","5 минут","Используй моё фото как референс лица, черты не меняй.\nОбраз: [стиль, одежда].\nСцена: [место], свет: мягкий ключевой сбоку, лёгкий контровой.\nКамера: портретный объектив 85 мм, малая глубина резкости.\nСтиль: журнальная ретушь без «пластика», кожа с текстурой. Формат 4:5."],["Творчество","Песня в подарок","дорого и долго","5 минут","Напиши текст песни для Suno.\nПовод: [день рождения/свадьба], для: [имя, кем приходится]. Детали: [3–5 фактов, шутки, общие воспоминания].\nСтруктура с метками [Verse], [Chorus], [Bridge]. Припев — 4 строки, легко подпевать, с именем.\nОтдельной строкой — стиль для Suno: жанр, темп, вокал, инструменты."],["Творчество","Нужен ролик для соцсетей","день монтажа","20 минут","Ты — сценарист вертикальных видео.\nТема: [тема]. Цель: [подписка/продажа/охват].\nСценарий на 30 секунд: крючок в первые 2 секунды; 4 кадра с описанием картинки и движения камеры; текст закадра; субтитры; финальный призыв.\nДобавь к каждому кадру готовый промпт для Kling или Veo."]],"LIFE":[{"id":"lf-work","t":"На работе","ic":"case","lead":"Черновики, сводки, шаблоны — всё, что делается «на автомате», отдаём машине.","items":[["Ответить на сложное письмо","ChatGPT · Claude","Помоги ответить на это письмо: [текст]. Мне нужно [отказать / перенести срок / напомнить об оплате]. Дай 3 варианта: мягкий, нейтральный, твёрдый — до 120 слов каждый."],["Отчёт из таблицы","Claude · ChatGPT","Я прикрепляю таблицу. Найди 5 главных выводов, 3 тревожных сигнала и 3 рекомендации. Сделай понятные графики и отчёт на одну страницу для руководителя."],["Протокол встречи","ChatGPT · Gemini","Вот расшифровка встречи: [текст]. Составь протокол: решения, задачи с ответственными и сроками, открытые вопросы. Коротко, списками."],["Презентация за вечер","Claude · ChatGPT","Сделай структуру презентации на 10 слайдов про [тема] для [аудитория]: заголовок, 3 тезиса и идея картинки для каждого слайда."],["Резюме под вакансию","ChatGPT · Claude","Вот мой опыт: [опыт]. Вот вакансия: [текст]. Составь резюме на одну страницу под неё, с 5 достижениями в цифрах, и короткое сопроводительное письмо."],["Подготовка к переговорам","Claude","Я иду на переговоры о [повышение / цене / сроках]. Сыграй роль собеседника, задай мне 5 самых неудобных вопросов и подскажи сильные ответы."],["Формула в Excel","ChatGPT · Gemini","В столбце A [что], в B [что]. Напиши формулу Excel, которая [что посчитать], и объясни, как её вставить."],["Перевод и тон","любой чат","Переведи на [язык] деловым, но тёплым тоном, сохрани смысл и структуру: [текст]."],["Исследование рынка","Perplexity","Собери обзор [тема] в России за 2026 год: размер, рост, топ-5 игроков, тренды. Каждую цифру — со ссылкой на источник."],["Поручить агенту","ChatGPT · Claude","Найди 10 поставщиков [товар] в [город], сравни по цене, срокам и отзывам, сведи в таблицу со ссылками и выдели 3 лучших."]]},{"id":"lf-home","t":"Дома","ic":"home","lead":"Меню, покупки, уроки, ремонт: освобождаем голову от бытового шума.","items":[["Меню на неделю + список покупок","ChatGPT · Claude","Составь меню на 7 дней для семьи из [N] человек: завтрак, обед, ужин. Бюджет [сумма] ₽, готовить не больше 40 минут, без [продукты]. В конце — общий список покупок по отделам магазина."],["Что приготовить из того, что есть","любой чат","В холодильнике есть: [продукты]. Предложи 3 блюда на ужин за 30 минут с пошаговыми рецептами."],["Семейный бюджет","Claude · ChatGPT","Наш доход [сумма], расходы: [список]. Разбери бюджет, найди 5 мест, где можно сэкономить без потери качества жизни, и предложи план накоплений на [цель]."],["План уборки","любой чат","Составь план уборки квартиры [N комнат] на неделю по 20 минут в день, чтобы к выходным всё было чисто. Распредели задачи между [кто живёт дома]."],["Помощь с уроками","ChatGPT · Claude","Объясни ребёнку [класс] тему [тема] простыми словами, с примером из жизни. Затем дай 3 задачи для проверки, не показывая ответы сразу."],["Сказка на ночь","любой чат","Придумай добрую сказку на 5 минут для ребёнка [возраст] по имени [имя], где он [что сделал за день], с мягкой моралью про [тема]."],["Ремонт и интерьер","Nano Banana · GPT Image","Вот фото моей комнаты. Покажи, как она будет выглядеть в стиле [стиль] с [цвет] стенами. Планировку и окна не меняй."],["Что сломалось","ChatGPT (фото)","Вот фото [техника/кран/розетка]. Что могло сломаться, что можно безопасно починить самому, а когда нужно звать мастера?"],["Растения и питомцы","любой чат","У моего [растения/питомца] [симптомы]. Что может быть причиной и что сделать дома? Когда срочно к специалисту?"],["Праздник дома","любой чат","Спланируй детский день рождения дома для [N] детей [возраст]: 4 игры, простое меню, сценарий на 2 часа и список покупок."]]},{"id":"lf-life","t":"В жизни","ic":"heart","lead":"Консультант, тренер и собеседник, который не устаёт от вопросов.","items":[["Путешествие под ключ","Perplexity · ChatGPT","Спланируй поездку в [город] на [N] дней для [кто едет], бюджет [сумма]. По дням: что посмотреть, где поесть, как добраться. Проверь цены и часы работы по источникам."],["Разобраться в документе","Claude","Прочитай этот договор/документ. Объясни простыми словами мои права и обязанности, сроки и штрафы, и что может быть мне невыгодно."],["Тренировки дома","любой чат","Составь программу тренировок дома на 4 недели, 3 раза в неделю по 30 минут, без инвентаря, для уровня [новичок]. Объясни технику каждого упражнения."],["Подготовиться к врачу","ChatGPT · Claude","Помоги подготовиться к приёму у [врач]: мои симптомы [какие]. Составь список вопросов врачу и что взять с собой. Диагноз не ставь."],["Выбрать покупку","Perplexity","Помоги выбрать [что] до [сумма] ₽: сравни 5 моделей по важным для меня параметрам [какие], с отзывами и ссылками."],["Подарок со смыслом","любой чат","Придумай 10 идей подарка для [кто], [возраст], увлекается [чем], бюджет [сумма]. Плюс одна идея, сделанная своими руками с помощью ИИ."],["Выучить язык","ChatGPT Voice","Будь моим преподавателем [язык], уровень [A1]. Каждый день 15 минут: 5 новых слов, мини-диалог голосом и проверка вчерашних слов."],["Принять решение","Claude","Я выбираю между [вариант А] и [вариант Б]. Задай мне 5 вопросов, чтобы понять мои приоритеты, затем разложи плюсы, минусы и риски каждого варианта."],["Поздравление и тост","любой чат","Напиши тёплое поздравление на [событие] для [кто] — до 80 слов, с [общее воспоминание], без банальностей."],["Своя песня в подарок","Suno","Style: тёплый акустический поп, женский вокал. Напиши песню о [человек и история] — куплет и припев, чтобы подарить на [праздник]."]]}],"GIFT":[["Обложка глянца","Сделай из моего фото обложку модного журнала: студийный свет, дорогой макияж, тёмный элегантный костюм, графитовый фон, место под заголовок сверху. Лицо не меняй, 4:5."],["Старый Голливуд","Портрет звезды Голливуда 1950-х: чёрно-белое фото, свет «бабочка», укладка эпохи, жемчуг, зерно плёнки. Черты лица сохрани."],["Полароид 90-х","Снимок на полароид из 90-х: вспышка, тёплые выцветшие цвета, джинсовая куртка, ковёр на стене, белая рамка. Лицо не меняй."],["3D-мультфильм","Преврати меня в персонажа 3D-мультфильма: большие выразительные глаза, мягкий свет, яркие цвета, узнаваемые черты, моя причёска и одежда."],["Аниме","Нарисуй меня в стиле японского аниме: чистые линии, вечерний город с огнями, ветер в волосах. Сохрани причёску и черты лица."],["Деловой портрет","Профессиональный портрет для резюме: пиджак, светлая рубашка, нейтральный серый фон, мягкий студийный свет, лёгкая улыбка. Лицо не меняй, 1:1."],["Фэнтези-странник","Я — эльф-странник в зелёном плаще, волшебный лес с золотыми огоньками, эпичный кинематографичный свет. Лицо узнаваемо."],["Осенний парк","Я гуляю в осеннем парке: тёплое пальто, шарф, золотые листья, контровой свет заката, малая глубина резкости. Лицо не меняй."],["Чёрное золото","Люксовый портрет в чёрно-золотой гамме: глянцевый чёрный фон, золотые блики, драматичный контровой свет, украшения из золота. Лицо не меняй."],["Нуар","Портрет в стиле нуар: чёрно-белый, жёсткие тени от жалюзи, шляпа, сигаретный дым как туман. Черты лица сохрани."],["Киберпанк","Я в киберпанк-городе ночью: неоновые вывески, дождь, отражения, светящиеся детали одежды, кинематографичный кадр. Лицо узнаваемо."],["Ренессанс","Портрет в стиле живописи эпохи Возрождения: масло, тёмный фон, мягкий свет из окна, бархатная одежда, золотая рама. Сохрани лицо."],["Масляная живопись","Преврати фото в картину маслом: видимые мазки, богатая фактура, тёплая палитра, классическое освещение."],["Акварель","Нарисуй мой портрет акварелью: мягкие размывы, фактура бумаги, нежные края, пастельная палитра."],["Комикс","Я — герой комикса: яркая обводка, точечный растр, динамичная поза, облачко с фразой «Вперёд!»."],["Пиксар-семья","Сделай из семейного фото кадр из 3D-мультфильма: все узнаваемы, тёплая гостиная, мягкий свет, радостные эмоции."],["Супергерой","Я в костюме супергероя на крыше небоскрёба на закате, плащ развевается, кинематографичный свет. Лицо не меняй."],["Космонавт","Портрет в скафандре на фоне Земли из космоса, отражение планеты в стекле шлема, реалистично. Лицо видно и узнаваемо."],["Средневековье","Я — рыцарь или королева в средневековом замке: доспехи или бархатное платье, свечи, гобелены. Лицо сохрани."],["Ретро 80-х","Фото в стиле 80-х: неоновые цвета, начёс, джинсовая куртка, фон с лазерными лучами, зерно плёнки."],["Студийный чёрно-белый","Строгий чёрно-белый портрет крупным планом: глубокие тени, высокий контраст, взгляд в камеру. Черты не меняй."],["Летний пляж","Я на пляже на закате: лёгкая одежда, морской ветер, золотой свет, брызги волн, атмосфера отпуска."],["Новогодний","Новогодний портрет: уютный свитер, гирлянды с мягким боке, ёлка, кружка какао, тёплый свет."],["Свадебный","Нежный свадебный портрет: светлый фон, мягкий рассеянный свет, лёгкая фата или бабочка, воздушная атмосфера."],["Детская сказка","Помести ребёнка с фото в иллюстрацию детской книги: акварельный лес, добрые звери, мягкие цвета. Черты лица сохрани."],["Пластилин","Сделай меня пластилиновым персонажем: фактура лепки, отпечатки пальцев, яркий фон, стиль покадровой анимации."],["Gaming-аватар","Аватар для стримера: я в игровых наушниках, неоновая подсветка RGB, тёмный фон, стиль 3D-рендера. Формат 1:1."],["Ретро-открытка","Винтажная осенняя открытка 1970-х: тёплое зерно, горчичные тона, виньетка, надпись «Тёплой осени!». Лицо не меняй."],["Минимализм","Минималистичный портрет: однотонный пастельный фон, много воздуха, мягкий свет, спокойная поза, 4:5."],["LinkedIn-баннер","Сделай баннер для профиля 4:1: я справа, слева место под текст, фон — абстрактные золотые линии на тёмном."]]};
+const SITE="https://claude.ai/artifact/UwNUP2nNwWaUARCyjGxoPK";
+const tg=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData!==undefined?window.Telegram.WebApp:null;
+if(tg){try{tg.ready();tg.expand();tg.setHeaderColor&&tg.setHeaderColor("#07070B");tg.setBackgroundColor&&tg.setBackgroundColor("#07070B")}catch(e){}}
+const haptic=t=>{try{tg&&tg.HapticFeedback&&tg.HapticFeedback.impactOccurred(t||"light")}catch(e){}};
+const open=u=>{try{if(tg&&tg.openLink)tg.openLink(u);else window.open(u,"_blank","noopener")}catch(e){location.href=u}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+
+/* направления — у каждого свой самоцвет */
+const DIRS=[
+ {id:"photo",n:"Фото и образы",s:"портрет, обложка",c:"#F59BD0"},
+ {id:"text",n:"Тексты",s:"посты, письма",c:"#8FD3FF"},
+ {id:"work",n:"Работа",s:"отчёты, таблицы",c:"#E2B866"},
+ {id:"biz",n:"Бизнес",s:"продажи, контент",c:"#7FE3B4"},
+ {id:"life",n:"Дом и жизнь",s:"меню, поездки",c:"#FFB38A"},
+ {id:"fun",n:"Творчество",s:"песни, ролики",c:"#C3A6FF"},
+ {id:"learn",n:"Обучение",s:"языки, уроки",c:"#9FE0FF"},
+ {id:"video",n:"Видео",s:"сценарии, кадры",c:"#FF8A8A"}
+];
+const DN=Object.fromEntries(DIRS.map(d=>[d.id,d]));
+/* сценарии: «было → стало» + «жизнь» */
+const QD={"Работа":"work","Деньги":"biz","Дом":"life","Жизнь":"life","Творчество":"fun"};
+const T=[];
+D.QUICK.forEach((q,i)=>{const dir=/фото/i.test(q[1])?"photo":/ролик/i.test(q[1])?"video":/язык/i.test(q[1])?"learn":QD[q[0]];T.push({id:"q"+i,dir,t:q[1],time:q[3],p:q[4]})});
+D.LIFE.forEach(g=>g.items.slice(0,5).forEach((x,i)=>T.push({id:g.id+i,dir:g.id==="lf-work"?"work":"life",t:x[0],time:"5–10 мин",p:x[2],tools:x[1]})));
+const TID=Object.fromEntries(T.map(t=>[t.id,t]));
+const BA=[["glyanec","Обложка глянца"],["studio","Студия"],["delovoy","Деловой"],["fentezi","Фэнтези"],["gollivud","Голливуд"],["zoloto","Чёрное золото"],["osen","Осень"],["kiber","Киберпанк"],["renessans","Ренессанс"],["kosmos","Космос"],["novyi-god","Новый год"]];
+const GMAP={"Обложка глянца":"glyanec","Старый Голливуд":"gollivud","Деловой портрет":"delovoy","Фэнтези-странник":"fentezi","Осенний парк":"osen","Чёрное золото":"zoloto","Киберпанк":"kiber","Ренессанс":"renessans","Космонавт":"kosmos","Новогодний":"novyi-god"};
+const MEDS=[["journal","Журнал трендов"],["prompt","Промпты"],["image","Изображения"],["video","Видео"],["toon","Мультики"],["music","Музыка"],["voice","Озвучка"],["code","Код"],["library","Библиотека"],["arena","Арена"]];
+const WORLDS=[
+ ["mama","Мамина мастерская","для мам","Развиваем малыша 1–5 лет","#F4A6B8","https://claude.ai/artifact/AYGU2ysfvQnMnaEe3nqG8k"],
+ ["hozyayka","Шпаргалка хозяйки","для дома","Пятна, стирка, уборка","#4FCFBF","https://claude.ai/artifact/7qP7T1DE8KHJ2droXaQ5G4"],
+ ["perelet","Перелётные","путешествия","Экскурсии и поездки с ценами","#FF6A4D","https://claude.ai/artifact/NbxB6f8KME4nMDyo6iaHcd"],
+ ["gdz","ГДЗ в клетку","школьникам","Задачи по шагам, 1–11 класс","#6FA8FF","https://claude.ai/artifact/UFbQXUDZiNhrTsmesyJAA1"],
+ ["cena","Цена слова","здоровье и форма","Начни не с понедельника","#D7FF3C","https://claude.ai/artifact/6gLqFf2oboznmip2waDzUc"],
+ ["klyuch","Ключ от всех дверей","развлекательный формат","Звёзды и Таро как игра","#B79CFF","https://claude.ai/artifact/DUDbiDA9scYtV5eFiDu4ND"],
+ ["visuall","VISUALL","для бизнеса","Реклама, после которой пишут","#E9C27A","https://svetayurkina-rgb.github.io/visuall-site/"]
+];
+const TOOLS={ChatGPT:"https://chatgpt.com",Claude:"https://claude.ai",Gemini:"https://gemini.google.com",GigaChat:"https://giga.chat","Алиса AI":"https://alice.yandex.ru"};
+
+/* навигация: стек экранов + кнопка «Назад» Telegram */
+const stack=[];
+const app=document.getElementById("app");
+function show(v,push=true){if(push)stack.push(v);draw();window.scrollTo(0,0);haptic()}
+function back(){if(stack.length>1){stack.pop();draw();window.scrollTo(0,0)}}
+if(tg&&tg.BackButton){tg.BackButton.onClick(back)}
+function draw(){const v=stack[stack.length-1];
+ if(tg&&tg.BackButton){stack.length>1?tg.BackButton.show():tg.BackButton.hide()}
+ if(tg&&tg.MainButton){tg.MainButton.hide();tg.MainButton.offClick&&tg.MainButton.offClick(mainCopy)}
+ app.innerHTML=v.v==="home"?home():v.v==="dir"?dirView(v.id):v.v==="task"?taskView(v.id):v.v==="gift"?giftView():"";
+ if(v.v==="home")startDemo();
+ if(v.v==="task"&&tg&&tg.MainButton){tg.MainButton.setText("Скопировать запрос");tg.MainButton.color="#E2B866";tg.MainButton.textColor="#1C1405";tg.MainButton.onClick(mainCopy);tg.MainButton.show()}
+}
+const topbar=()=>`<div class="top">${stack.length>1&&!tg?`<button type="button" class="back" data-back>← Назад</button>`:`<button type="button" class="brand" data-home><i></i><b><span>ИИ</span>дея</b></button>`}<span class="hi">${user&&user.first_name?`Привет, ${esc(user.first_name)}!`:"нейросети просто"}</span></div>`;
+
+function home(){
+ return `<div class="view">${topbar()}
+ <div class="hero"><h1>Одно селфи — <em>11 образов</em></h1><p>Готовые запросы к нейросетям: скопировали, вставили, получили результат. Бесплатно.</p></div>
+ <div class="ba"><div class="stage" id="stage" style="--p:50%"><img class="a" id="baA" src="v/ba-glyanec.webp" alt="После"><img class="b" src="v/ba-do.webp" alt="До: обычное селфи"><span class="line"></span><span class="lab l">до</span><span class="lab r" id="baL">Обложка глянца</span><input type="range" min="0" max="100" value="50" id="baR" aria-label="Сравнить до и после"></div>
+  <div class="strip" id="baS">${BA.map((b,i)=>`<button type="button" class="thumb" data-ba="${b[0]}" aria-pressed="${i===0}"><img src="v/ba-${b[0]}.webp" alt="" loading="lazy"><span>${b[1]}</span></button>`).join("")}</div>
+  <button type="button" class="cta" data-gift>Хочу так же — 30 образов</button>
+  <p class="note">Пример создан нейросетью. Модель вымышленная.</p></div>
+ <section class="sec"><h2>Что хотите сделать?</h2>
+  <div class="gems">${DIRS.map(d=>{const n=T.filter(t=>t.dir===d.id).length;return `<button type="button" class="gem" style="--c:${d.c}" data-dir="${d.id}"><span class="n">${n}</span><img src="v/ico-${d.id}.webp" alt=""><b>${d.n}</b><span>${d.s}</span></button>`}).join("")}</div></section>
+ <button type="button" class="gift" data-gift><span><b>Подарок: 30 образов</b><span>Промпты для фотосессии по одному селфи</span></span><span class="pile"><img src="v/ba-fentezi.webp" alt=""><img src="v/ba-glyanec.webp" alt=""><img src="v/ba-kosmos.webp" alt=""></span></button>
+ <section class="sec"><h2>Мастерские на сайте</h2><p class="sub">Уроки, инструменты и тренды — откроются на сайте ИИдеи</p>
+  <div class="meds">${MEDS.map(m=>`<button type="button" class="med" data-site="${m[0]}"><img src="v/med-${m[0]}.webp" alt=""><span>${m[1]}</span></button>`).join("")}</div></section>
+ <section class="sec"><h2>Другие миры автора</h2>
+  <div class="worlds">${WORLDS.map(w=>`<button type="button" class="world" style="--c:${w[4]}" data-open="${w[5]}"><span class="img"><img src="v/pr-${w[0]}.webp" alt="" loading="lazy"></span><span class="t"><small>${w[2]}</small><b>${w[1]}</b><span>${w[3]}</span></span></button>`).join("")}</div></section>
+ <button type="button" class="ghost" data-open="${SITE}">Открыть полный сайт ИИдеи ↗</button>
+ </div>`}
+
+function dirView(id){const d=DN[id];const list=T.filter(t=>t.dir===id);
+ return `<div class="view">${topbar()}
+ <div class="dirhead" style="--c:${d.c}"><img src="v/ico-${d.id}.webp" alt=""><div><h1>${d.n}</h1><p>${list.length} готовых запросов</p></div></div>
+ <div class="list">${list.map(t=>`<button type="button" class="row" style="--c:${d.c}" data-task="${t.id}"><b>${esc(t.t)}</b><small>≈ ${esc(t.time)} · бесплатно</small><i>→</i></button>`).join("")||`<p class="note">Скоро здесь появятся задачи.</p>`}</div></div>`}
+
+let cur=null;
+function fields(p){const f=[];(p.match(/\[[^\]]+\]/g)||[]).forEach(x=>{if(!f.includes(x))f.push(x)});return f}
+function build(){let o=cur.p;document.querySelectorAll("[data-f]").forEach(i=>{const v=i.value.trim();if(v)o=o.split(i.dataset.f).join(v)});return o}
+function taskView(id){const t=TID[id];cur=t;const d=DN[t.dir];const f=fields(t.p);const tools=t.tools?Object.keys(TOOLS).filter(k=>t.tools.includes(k)):[];const tl=(tools.length?tools:["ChatGPT","Claude","Gemini"]);
+ return `<div class="view task">${topbar()}
+ <div class="pills"><span class="pill" style="color:${d.c}">${d.n}</span><span class="pill free">бесплатно</span><span class="pill">≈ ${esc(t.time)}</span></div>
+ <h1>${esc(t.t)}</h1>
+ ${t.dir==="photo"?`<div class="stage" style="--p:50%;aspect-ratio:4/3"><img class="a" src="v/ba-delovoy.webp" alt=""><img class="b" src="v/ba-do.webp" alt=""><span class="line"></span><span class="lab l">до</span><span class="lab r">после</span><input type="range" min="0" max="100" value="50" class="baR2" aria-label="Сравнить"></div>`:""}
+ <div class="step"><span class="num">1</span><div class="in"><h2>${f.length?"Впишите своё":"Скопируйте запрос"}</h2>
+  ${f.map((x,i)=>`<label class="fld" for="f${i}">${esc(x.slice(1,-1))}<input id="f${i}" data-f="${esc(x)}" placeholder="впишите своё" autocomplete="off"></label>`).join("")}
+  <pre class="out" id="out">${esc(t.p)}</pre>
+  ${tg?"":`<button type="button" class="cta" data-copy>Скопировать запрос</button>`}</div></div>
+ <div class="step"><span class="num">2</span><div class="in"><h2>Вставьте в нейросеть</h2><div class="tools">${tl.map(k=>`<button type="button" class="ghost" data-open="${TOOLS[k]}">${k} ↗</button>`).join("")}</div><p class="note">Пустые поля останутся в [скобках] — их можно дописать прямо в чате.</p></div></div>
+ <details><summary>Если не получилось</summary><ol class="steps"><li><b>Слишком общо</b> — добавьте: для кого, зачем, что уже известно.</li><li><b>Выдумал факты</b> — попросите источники и проверьте важное.</li><li><b>Длинно</b> — напишите «короче в 2 раза, без вступлений».</li></ol></details>
+ <details><summary>Безопасность</summary><p class="note">Не вставляйте паспортные данные, пароли и чужие личные данные. ИИ ошибается — проверяйте цифры и факты.</p></details>
+ </div>`}
+
+function giftView(){return `<div class="view">${topbar()}
+ <div class="hero"><h1>30 образов по <em>одному селфи</em></h1><p>Откройте Gemini или ChatGPT, прикрепите своё фото и вставьте промпт. Используйте только своё фото или фото человека с его согласия.</p></div>
+ <div class="gl">${D.GIFT.map((g,i)=>{const k=GMAP[g[0]];return `<button type="button" class="gi" data-gt="${i}">${k?`<img class="ph" src="v/ba-${k}.webp" alt="" loading="lazy">`:`<span class="ph"></span>`}<span><b>${esc(g[0])}</b><small>Нажмите — промпт скопируется</small></span></button>`}).join("")}</div>
+ <div class="tools"><button type="button" class="ghost" data-open="https://gemini.google.com">Gemini ↗</button><button type="button" class="ghost" data-open="https://chatgpt.com">ChatGPT ↗</button></div></div>`}
+
+function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1600)}
+async function copyText(s){try{await navigator.clipboard.writeText(s);return true}catch(e){const ta=document.createElement("textarea");ta.value=s;document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}ta.remove();return ok}}
+async function mainCopy(){const ok=await copyText(build());haptic("medium");toast(ok?"Скопировано — вставьте в нейросеть":"Выделите текст и скопируйте")}
+
+document.addEventListener("click",async e=>{const t=e.target.closest("button");if(!t)return;
+ if(t.dataset.back!==undefined)return back();
+ if(t.dataset.home!==undefined){stack.length=0;return show({v:"home"})}
+ if(t.dataset.dir)return show({v:"dir",id:t.dataset.dir});
+ if(t.dataset.task)return show({v:"task",id:t.dataset.task});
+ if(t.dataset.gift!==undefined)return show({v:"gift"});
+ if(t.dataset.open)return open(t.dataset.open);
+ if(t.dataset.site)return open(SITE+"#"+t.dataset.site);
+ if(t.dataset.copy!==undefined)return mainCopy();
+ if(t.dataset.gt){const ok=await copyText(D.GIFT[+t.dataset.gt][1]);haptic("medium");return toast(ok?"Промпт скопирован":"Не удалось скопировать")}
+ if(t.dataset.ba){stopDemo=true;pickBA(t.dataset.ba);haptic()}
+});
+document.addEventListener("input",e=>{if(e.target.id==="baR"||e.target.classList.contains("baR2")){stopDemo=e.target.id==="baR"?true:stopDemo;e.target.closest(".stage").style.setProperty("--p",e.target.value+"%")}
+ if(e.target.dataset.f!==undefined){document.getElementById("out").textContent=build()}});
+function pickBA(k){const a=document.getElementById("baA");if(!a)return;a.src="v/ba-"+k+".webp";document.getElementById("baL").textContent=(BA.find(b=>b[0]===k)||[])[1];document.querySelectorAll("[data-ba]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.ba===k));const btn=document.querySelector(`[data-ba="${k}"]`);const s=document.getElementById("baS");if(btn&&s)s.scrollTo({left:btn.offsetLeft-s.offsetLeft-16,behavior:"smooth"})}
+
+/* автопоказ до/после, пока человек не тронул */
+let stopDemo=false,demoOn=false;
+function startDemo(){if(demoOn||matchMedia("(prefers-reduced-motion: reduce)").matches)return;demoOn=true;let i=0;
+ const st=()=>document.getElementById("stage");
+ const sweep=(to,ms)=>new Promise(r=>{const s=st();if(!s)return r();const from=parseFloat(s.style.getPropertyValue("--p"))||50;const t0=performance.now();const f=t=>{const s2=st();if(!s2)return r();const k=Math.min(1,(t-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;s2.style.setProperty("--p",(from+(to-from)*e)+"%");k<1?requestAnimationFrame(f):r()};requestAnimationFrame(f)});
+ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+ (async()=>{await wait(700);while(!stopDemo&&st()){await sweep(90,900);await wait(400);await sweep(10,1200);await wait(1100);if(stopDemo||!st())break;await sweep(50,600);await wait(700);i=(i+1)%BA.length;if(!stopDemo)pickBA(BA[i][0])}demoOn=false})()}
+
+show({v:"home"});
+</script>
+</body></html>

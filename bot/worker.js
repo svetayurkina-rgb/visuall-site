@@ -53,6 +53,7 @@ const T = {
 const MAIN_KB = { inline_keyboard: [
   [{ text: "🛒 Оформить заказ — 1 минута", callback_data: "order" }],
   [{ text: "📱 Каталог-приложение", web_app: { url: SITE } }],
+  [{ text: "✨ ИИдея — нейросети просто", web_app: { url: SITE + "iideya/" } }],
   [{ text: "🔮 Какой стиль ваш? Квиз", callback_data: "quiz" }, { text: "🎲 Удиви меня", callback_data: "rnd" }],
   [{ text: "🔥 Примеры работ", callback_data: "ex" }, { text: "💰 Цены", callback_data: "prices" }],
   [{ text: "🧮 Калькулятор", callback_data: "calc" }, { text: "🎟 Скидки до −20%", callback_data: "disc" }],
