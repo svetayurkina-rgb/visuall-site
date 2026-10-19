@@ -1,7 +1,7 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>ИИдея в Telegram</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800;900&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800;900&family=Montserrat:wght@200;600&family=Golos+Text:wght@400;500;600;700&display=swap">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 /* Layout: «шкатулка с драгоценностями» — чёрный бархат, золото и у каждого направления свой цветной самоцвет-подсветка; один экран = один выбор */
@@ -146,6 +146,12 @@ ol.steps b{color:var(--text)}
 .gi .ph{width:64px;aspect-ratio:4/5;border-radius:10px;object-fit:cover;background:linear-gradient(135deg,#2b2233,#3a2a18)}
 .gi b{font-size:15px}
 .gi small{display:block;font-size:12.5px;color:var(--dim)}
+.logo{display:grid;justify-items:center;gap:2px;text-align:center;margin-top:-6px}
+.logo video{width:min(220px,58vw);height:auto;display:block;mix-blend-mode:lighten}
+.logo .wm{font-family:"Montserrat",var(--f-body);font-weight:200;font-size:46px;line-height:1;letter-spacing:.04em;color:var(--gold-hi)}
+.logo .wm span{font-weight:600;color:var(--gold);text-shadow:0 0 24px rgba(226,184,102,.5)}
+.logo .tl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.hero{text-align:center;justify-items:center}
 </style>
 
 <div class="app" id="app"></div>
@@ -209,6 +215,7 @@ const topbar=()=>`<div class="top">${stack.length>1&&!tg?`<button type="button" 
 
 function home(){
  return `<div class="view">${topbar()}
+ <div class="logo"><video src="v/logo.mp4" poster="v/logo-poster.webp" muted loop playsinline autoplay preload="auto" aria-label="Логотип ИИдея"></video><div class="wm"><span>ИИ</span>дея</div></div>
  <div class="hero"><h1>Одно селфи — <em>11 образов</em></h1><p>Готовые запросы к нейросетям: скопировали, вставили, получили результат. Бесплатно.</p></div>
  <div class="ba"><div class="stage" id="stage" style="--p:50%"><img class="a" id="baA" src="v/ba-glyanec.webp" alt="После"><img class="b" src="v/ba-do.webp" alt="До: обычное селфи"><span class="line"></span><span class="lab l">до</span><span class="lab r" id="baL">Обложка глянца</span><input type="range" min="0" max="100" value="50" id="baR" aria-label="Сравнить до и после"></div>
   <div class="strip" id="baS">${BA.map((b,i)=>`<button type="button" class="thumb" data-ba="${b[0]}" aria-pressed="${i===0}"><img src="v/ba-${b[0]}.webp" alt="" loading="lazy"><span>${b[1]}</span></button>`).join("")}</div>
