@@ -216,7 +216,7 @@ const topbar=()=>`<div class="top">${stack.length>1&&!tg?`<button type="button" 
 function home(){
  return `<div class="view">${topbar()}
  <div class="logo"><video src="v/logo.mp4" poster="v/logo-poster.webp" muted loop playsinline autoplay preload="auto" aria-label="Логотип ИИдея"></video><div class="wm"><span>ИИ</span>дея</div></div>
- <div class="hero"><h1>Одно селфи — и вы <em>где угодно и кем угодно</em></h1><p>Звезда Голливуда, космонавт, героиня фэнтези или деловой портрет. Готовые запросы: скопировали, вставили, получили. Бесплатно.</p></div>
+ <div class="hero"><h1>Из одного селфи — <em>фото в любом образе</em></h1><p>На обложке журнала, в космосе, в старом Голливуде. Лицо остаётся вашим. Готовые запросы бесплатно: скопировали, вставили в нейросеть, получили фото.</p></div>
  <div class="ba"><div class="stage" id="stage" style="--p:50%"><img class="a" id="baA" src="v/ba-glyanec.webp" alt="После"><img class="b" src="v/ba-do.webp" alt="До: обычное селфи"><span class="line"></span><span class="lab l">до</span><span class="lab r" id="baL">Обложка глянца</span><input type="range" min="0" max="100" value="50" id="baR" aria-label="Сравнить до и после"></div>
   <div class="strip" id="baS">${BA.map((b,i)=>`<button type="button" class="thumb" data-ba="${b[0]}" aria-pressed="${i===0}"><img src="v/ba-${b[0]}.webp" alt="" loading="lazy"><span>${b[1]}</span></button>`).join("")}</div>
   <button type="button" class="cta" data-gift>Хочу так же — 30 образов</button>
