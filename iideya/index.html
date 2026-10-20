@@ -152,6 +152,15 @@ ol.steps b{color:var(--text)}
 .logo .wm span{font-weight:600;color:var(--gold);text-shadow:0 0 24px rgba(226,184,102,.5)}
 .logo .tl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-top:6px}
 .hero{text-align:center;justify-items:center}
+.ws{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;padding:4px 2px 8px}
+.ws::-webkit-scrollbar{display:none}
+.wcard{position:relative;flex:0 0 46%;scroll-snap-align:start;aspect-ratio:9/16;max-width:100%;border-radius:20px;overflow:hidden;border:1px solid rgba(255,227,166,.35);padding:0;background:#000;text-align:left;box-shadow:0 14px 30px -14px rgba(226,184,102,.4)}
+.wcard video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wshade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(7,7,11,.92))}
+.wmed{position:absolute;left:10px;bottom:44px;width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 1px rgba(255,227,166,.5),0 0 18px rgba(226,184,102,.5)}
+.wcard b{position:absolute;left:12px;right:10px;bottom:12px;font-family:var(--f-display);font-size:14px;line-height:1.2}
+.rv{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .7s}
+.rv.pre{transform:translateY(26px);opacity:.35}
 </style>
 
 <div class="app" id="app"></div>
@@ -209,6 +218,7 @@ function draw(){const v=stack[stack.length-1];
  if(tg&&tg.MainButton){tg.MainButton.hide();tg.MainButton.offClick&&tg.MainButton.offClick(mainCopy)}
  app.innerHTML=v.v==="home"?home():v.v==="dir"?dirView(v.id):v.v==="task"?taskView(v.id):v.v==="gift"?giftView():"";
  if(v.v==="home")startDemo();
+ wire();
  if(v.v==="task"&&tg&&tg.MainButton){tg.MainButton.setText("Скопировать запрос");tg.MainButton.color="#E2B866";tg.MainButton.textColor="#1C1405";tg.MainButton.onClick(mainCopy);tg.MainButton.show()}
 }
 const topbar=()=>`<div class="top">${stack.length>1&&!tg?`<button type="button" class="back" data-back>← Назад</button>`:`<button type="button" class="brand" data-home><i></i><b><span>ИИ</span>дея</b></button>`}<span class="hi">${user&&user.first_name?`Привет, ${esc(user.first_name)}!`:"нейросети просто"}</span></div>`;
@@ -225,7 +235,7 @@ function home(){
   <div class="gems">${DIRS.map(d=>{const n=T.filter(t=>t.dir===d.id).length;return `<button type="button" class="gem" style="--c:${d.c}" data-dir="${d.id}"><span class="n">${n}</span><img src="v/ico-${d.id}.webp" alt=""><b>${d.n}</b><span>${d.s}</span></button>`}).join("")}</div></section>
  <button type="button" class="gift" data-gift><span><b>Подарок: 30 образов</b><span>Промпты для фотосессии по одному селфи</span></span><span class="pile"><img src="v/ba-fentezi.webp" alt=""><img src="v/ba-glyanec.webp" alt=""><img src="v/ba-kosmos.webp" alt=""></span></button>
  <section class="sec"><h2>Мастерские на сайте</h2><p class="sub">Уроки, инструменты и тренды — откроются на сайте ИИдеи</p>
-  <div class="meds">${MEDS.map(m=>`<button type="button" class="med" data-site="${m[0]}"><img src="v/med-${m[0]}.webp" alt=""><span>${m[1]}</span></button>`).join("")}</div></section>
+  <div class="ws">${MEDS.map(m=>`<button type="button" class="wcard" data-site="${m[0]}"><video class="lv" src="v/${m[0]}.mp4" poster="v/p-${m[0]}.webp" muted loop playsinline preload="none" aria-hidden="true"></video><span class="wshade"></span><img class="wmed" src="v/med-${m[0]}.webp" alt=""><b>${m[1]}</b></button>`).join("")}</div></section>
  <section class="sec"><h2>Другие миры автора</h2>
   <div class="worlds">${WORLDS.map(w=>`<button type="button" class="world" style="--c:${w[4]}" data-open="${w[5]}"><span class="img"><img src="v/pr-${w[0]}.webp" alt="" loading="lazy"></span><span class="t"><small>${w[2]}</small><b>${w[1]}</b><span>${w[3]}</span></span></button>`).join("")}</div></section>
  <button type="button" class="ghost" data-open="${SITE}">Открыть полный сайт ИИдеи ↗</button>
@@ -286,6 +296,12 @@ function startDemo(){if(demoOn||matchMedia("(prefers-reduced-motion: reduce)").m
  const wait=ms=>new Promise(r=>setTimeout(r,ms));
  (async()=>{await wait(700);while(!stopDemo&&st()){await sweep(90,900);await wait(400);await sweep(10,1200);await wait(1100);if(stopDemo||!st())break;await sweep(50,600);await wait(700);i=(i+1)%BA.length;if(!stopDemo)pickBA(BA[i][0])}demoOn=false})()}
 
+
+/* ролики играют, когда видны; блоки мягко выезжают при прокрутке */
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.play().catch(()=>{})}else v.pause()}),{threshold:.35});
+const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove("pre");rio.unobserve(e.target)}}),{threshold:.12});
+function wire(){document.querySelectorAll("video.lv").forEach(v=>vio.observe(v));
+ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.querySelectorAll(".view>.sec,.view>.gift,.view>.ba,.list>.row,.gl>.gi").forEach((el,i)=>{const r=el.getBoundingClientRect();if(r.top>innerHeight*.9){el.classList.add("rv","pre");rio.observe(el)}})}
 show({v:"home"});
 </script>
 </body></html>
