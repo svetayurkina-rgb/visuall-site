@@ -60,7 +60,7 @@ const MAIN_KB = { inline_keyboard: [
   [{ text: "💳 Оплата", callback_data: "pay" }, { text: "⏱ Сроки и правки", callback_data: "terms" }],
   [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
   [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
-  [{ text: "🎃 Тренды недели: Хэллоуин", url: SITE + "trends.html" }],
+  [{ text: "✍️ Мастерская: посты, акции, ответы", url: SITE + "tools.html" }],
   [{ text: "🎁 Бесплатно и полезно", callback_data: "free" }],
   [{ text: "✦ Atelier — готовые решения", callback_data: "shop" }],
   [{ text: "✦ Studio — постер за 5 минут", callback_data: "ap" }, { text: "Подписки", callback_data: "subs" }],
@@ -776,7 +776,7 @@ function smart(raw, user) {
   if (/(привет|здравств|добрый (день|вечер|утро)|доброе утро|hello|(?<![а-яa-z])hi(?![а-яa-z])|салют)/.test(t) && raw.length < 40) return [{ route: "menu" }];
   if (/(спасибо|благодар|(?<![а-яa-z])спс(?![а-яa-z]))/.test(t) && raw.length < 60) return [{ text: A.thanks(), kb: MAIN_KB }];
   if (/(срочн|сегодня|до завтра|за сутки|24 час|горит)/.test(t)) out.push({ text: A.urgent(), kb: kb([BACK]) });
-  if (/(тренд|хэллоуин|хеллоуин|halloween|новинк)/.test(t)) return [{ text: "🎃 <b>Тренды недели</b> — Хэллоуин, который продаёт: идеи маникюра и макияжа, десерты, напитки, акции и готовые тексты с промптами.", kb: kb([[{ text: "Смотреть тренды", url: SITE + "trends.html" }], BACK]) }];
+  if (/(мастерск|тренд|контент.?план|что (написать|выложить|постить)|придума\S* (пост|текст|акци)|текст\S* для пост|ответ\S* клиент)/.test(t)) return [{ text: "✍️ <b>Мастерская VISUALL</b> — бесплатно: готовые посты под ваш бизнес за минуту, контент-план на 30 дней, акции с условиями и ответы клиентам на «дорого» и «я подумаю». Заполняете один раз — дальше всё подставляется само.", kb: kb([[{ text: "Открыть Мастерскую", url: SITE + "tools.html" }], BACK]) }];
   if (/(бесплатн|даром|халяв)/.test(t)) return [{ route: "free" }];
   if (/(видео или|или видео|reels или|или постер|рилс или)/.test(t)) return [{ text: A.vidpost(), kb: kb([BACK]) }];
   if (/(сторис|stories|статус)/.test(t) && !/(instagram|инстаграм|инста(?![а-я])|ведени|под ключ)/.test(t)) return [{ text: A.stories(), kb: kb([BACK]) }];
@@ -849,7 +849,7 @@ async function route(env, chat, key, user, msgId) {
       return send(env, chat, "🔕 Готово, новости больше не присылаю. Меню всегда здесь: /start");
     case "rnd": return showRandom(env, chat);
     case "prices": return media(env, chat, "photo", "price-v.jpg", T.prices(), kb([BACK, [{ text: "🧮 Рассчитать заказ", callback_data: "calc" }]]));
-    case "free": return send(env, chat, `🎁 <b>Бесплатно и полезно</b>\n\n• <b>Мини-гайд «15 ошибок, которые съедают вашу рекламу»</b> — проверьте свою рекламу по списку за 10 минут\n• <b>Разбор вашей рекламы</b> — пришлите пост или постер, Светлана лично даст 3 конкретных совета\n• <b>Готовые тексты</b> для 50+ сфер — с юмором, тепло, профессионально\n• <b>Промпты для нейросетей</b> — чтобы сделать картинку для рекламы самой\n• <b>Studio</b> — соберите постер и посмотрите предпросмотр бесплатно`, kb([[{ text: "📘 Скачать мини-гайд", callback_data: "fg" }], [{ text: "🔍 Бесплатный разбор рекламы", callback_data: "audit" }], [{ text: "✍️ Тексты", url: SITE + "#texts" }, { text: "🪄 Промпты", url: SITE + "#prompts" }], [{ text: "✦ Studio — предпросмотр", callback_data: "ap" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
+    case "free": return send(env, chat, `🎁 <b>Бесплатно и полезно</b>\n\n• <b>Мастерская</b> — готовые посты под ваш бизнес за минуту, контент-план на 30 дней, акции и ответы клиентам\n• <b>Мини-гайд «15 ошибок, которые съедают вашу рекламу»</b> — проверьте свою рекламу по списку за 10 минут\n• <b>Разбор вашей рекламы</b> — пришлите пост или постер, Светлана лично даст 3 конкретных совета\n• <b>Готовые тексты</b> для 50+ сфер — с юмором, тепло, профессионально\n• <b>Промпты для нейросетей</b> — чтобы сделать картинку для рекламы самой\n• <b>Studio</b> — соберите постер и посмотрите предпросмотр бесплатно`, kb([[{ text: "✍️ Мастерская: посты и акции", url: SITE + "tools.html" }], [{ text: "📘 Скачать мини-гайд", callback_data: "fg" }], [{ text: "🔍 Бесплатный разбор рекламы", callback_data: "audit" }], [{ text: "✍️ Тексты", url: SITE + "#texts" }, { text: "🪄 Промпты", url: SITE + "#prompts" }], [{ text: "✦ Studio — предпросмотр", callback_data: "ap" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
     case "fg": await tg(env, "sendDocument", { chat_id: chat, document: FREE_GUIDE, caption: "📘 <b>15 ошибок, которые съедают вашу рекламу</b>\nОткройте свой последний рекламный пост и пройдитесь по списку — начните с первых пяти пунктов.", parse_mode: "HTML" });
       return send(env, chat, "Хотите, чтобы Светлана посмотрела именно вашу рекламу? Это бесплатно.", kb([[{ text: "🔍 Бесплатный разбор", callback_data: "audit" }], [{ text: "⬅️ Меню", callback_data: "menu" }]]));
     case "audit": { const s = await getS(env, user.id); s.step = "audit"; s.auditSent = 0; await setS(env, user.id, s);

@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Мастерская VISUALL — посты, акции и ответы клиентам за минуту</title>
+<meta name="description" content="Бесплатно для мастеров, самозанятых и малого бизнеса: готовые посты, контент-план на месяц, акции, ответы клиентам и проверка рекламы. Вы делаете своё дело — тексты сайт напишет сам.">
+<meta property="og:title" content="Мастерская VISUALL — вы делаете своё дело, остальное здесь">
+<meta property="og:description" content="Посты, контент-план, акции и ответы клиентам — готовые за минуту. Бесплатно.">
+<meta property="og:image" content="https://svetayurkina-rgb.github.io/visuall-site/img/shop/plan.jpg">
+<meta name="theme-color" content="#0b0a0d">
+<link rel="icon" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{--bg:#0b0a0d;--card:#131117;--card2:#17141c;--ink:#f3ece0;--mut:#a39a8c;--gold:#e2c48c;--gold2:#b8935a;--line:#2a252f;--ok:#9fd3a8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(120% 50% at 50% -10%,#211a24 0%,var(--bg) 60%) fixed}
+a{color:inherit}
+.wrap{max-width:780px;margin:0 auto;padding:18px 16px 110px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
+.brand{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.34em;font-size:16px;text-decoration:none}
+.brand small{display:block;font-family:'Manrope';letter-spacing:.3em;font-size:9px;color:var(--mut);margin-top:2px}
+.back{font-size:13px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:9px 14px;white-space:nowrap}
+.back:hover{color:var(--gold);border-color:var(--gold2)}
+.kick{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.kick::before{content:"";width:26px;height:1px;background:var(--gold)}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,8vw,64px);line-height:.98;margin:12px 0 16px;letter-spacing:-.01em}
+h1 i{color:var(--gold)}
+.lead{color:var(--mut);font-size:15px;line-height:1.6;margin:0 0 18px;max-width:600px}
+.lead b{color:var(--ink);font-weight:600}
+.chips-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
+.chips-row span{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:6px 12px;color:var(--mut)}
+.chips-row span b{color:var(--gold);font-weight:700}
+h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,5vw,38px);line-height:1.05;margin:0 0 6px}
+h2 i{color:var(--gold)}
+.sub{color:var(--mut);font-size:14px;line-height:1.55;margin:0 0 18px}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:22px;padding:20px 18px;position:relative}
+.card.gold{border-color:rgba(226,196,140,.4);box-shadow:0 24px 60px -30px rgba(226,196,140,.35)}
+.lbl{display:block;font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--mut);margin:18px 0 8px}
+.lbl:first-child{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips button{border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);border-radius:99px;padding:9px 14px;font:inherit;font-size:13.5px;cursor:pointer;transition:border-color .25s,color .25s,background .25s,transform .2s}
+.chips button:active{transform:scale(.96)}
+.chips button[aria-pressed=true]{border-color:var(--gold);color:#16110a;background:linear-gradient(110deg,#f3dfb4,#d6b06c)}
+input,textarea,select{width:100%;background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 13px;font:inherit;font-size:16px;outline:none;transition:border-color .25s}
+input:focus,textarea:focus,select:focus{border-color:var(--gold2)}
+input::placeholder,textarea::placeholder{color:#6b6359}
+textarea{min-height:96px;resize:vertical;line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.note{font-size:12px;color:var(--mut);line-height:1.5;margin:10px 0 0}
+.saved{display:inline-flex;align-items:center;gap:6px;color:var(--ok);font-size:12px;opacity:0;transition:opacity .4s}
+.saved.on{opacity:1}
+.tabs{position:sticky;top:0;z-index:20;margin:34px -16px 18px;padding:10px 16px;background:rgba(11,10,13,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;padding:10px 15px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.25s}
+.tabs button i{font-style:normal;font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold)}
+.tabs button[aria-selected=true]{border-color:var(--gold);background:rgba(226,196,140,.1);color:var(--gold)}
+.pane{display:none;animation:in .45s ease}
+.pane.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.go{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:99px;padding:16px 20px;margin-top:18px;font:inherit;font-weight:800;font-size:15px;color:#16110a;cursor:pointer;background:linear-gradient(110deg,#f6e3b8 0%,#d9b26e 30%,#fff1cc 50%,#c99a55 70%,#f3dcae 100%);background-size:200% 100%;animation:sh 6s ease-in-out infinite;box-shadow:0 14px 34px -14px rgba(217,178,110,.7);transition:transform .2s}
+.go:active{transform:scale(.98)}
+@keyframes sh{50%{background-position:100% 0}}
+.go svg{width:18px;height:18px}
+.res{margin-top:18px;display:grid;gap:12px}
+.out{background:#0f0d12;border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:16px;padding:16px 16px 12px;animation:in .5s ease backwards}
+.out:nth-child(2){animation-delay:.08s}.out:nth-child(3){animation-delay:.16s}
+.out h4{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.out h4 small{letter-spacing:.04em;text-transform:none;color:var(--mut);font-weight:500;font-size:12px}
+.txt{white-space:pre-wrap;font-size:14.5px;line-height:1.6;margin:0;outline:none;border-radius:8px}
+.txt:focus{background:rgba(255,255,255,.03)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.acts button,.acts a{border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;padding:8px 13px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:.25s}
+.acts button:hover,.acts a:hover{border-color:var(--gold2);color:var(--gold)}
+.acts .pri{border-color:var(--gold2);color:var(--gold)}
+.edit-hint{font-size:11.5px;color:var(--mut);margin:8px 0 0}
+.plan{display:grid;gap:8px}
+.week{font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--mut);margin:14px 0 2px}
+.day{display:grid;grid-template-columns:58px 1fr;gap:12px;background:#0f0d12;border:1px solid var(--line);border-radius:14px;padding:12px;animation:in .4s ease backwards}
+.day .d{text-align:center;border-right:1px solid var(--line);padding-right:10px}
+.day .d b{display:block;font-family:'Cormorant Garamond',serif;font-size:28px;line-height:1;color:var(--gold);font-weight:500}
+.day .d small{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em}
+.day .r{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:6px}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:3px 8px;background:rgba(226,196,140,.12);color:var(--gold)}
+.tag.f{background:rgba(255,255,255,.06);color:var(--mut)}
+.tag.task{background:rgba(159,211,168,.12);color:var(--ok)}
+.day b.t{display:block;font-size:14.5px;margin-bottom:4px}
+.day p{margin:0;font-size:13.5px;line-height:1.5;color:#d7cfc2;white-space:pre-wrap}
+.day button{margin-top:8px;border:0;background:none;color:var(--gold);font:inherit;font-size:12.5px;font-weight:700;padding:0;cursor:pointer}
+.sit{display:grid;gap:8px}
+.sit details{background:#0f0d12;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sit summary{list-style:none;cursor:pointer;padding:14px 16px;font-weight:700;font-size:14.5px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.sit summary::-webkit-details-marker{display:none}
+.sit summary::after{content:"+";font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1;color:var(--gold);transition:transform .3s}
+.sit details[open] summary::after{transform:rotate(45deg)}
+.sit summary small{display:block;font-weight:500;font-size:12px;color:var(--mut);margin-top:2px}
+.sit .body{padding:0 14px 14px;display:grid;gap:10px}
+.q{display:grid;gap:8px}
+.q label{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#0f0d12;border:1px solid var(--line);border-radius:14px;padding:13px 14px;font-size:14px;line-height:1.4;cursor:pointer}
+.q .yn{display:flex;gap:6px;flex:none}
+.q .yn button{border:1px solid var(--line);background:none;color:var(--mut);border-radius:99px;padding:7px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.q .yn button.y[aria-pressed=true]{border-color:var(--ok);color:var(--ok);background:rgba(159,211,168,.08)}
+.q .yn button.n[aria-pressed=true]{border-color:#e39a8c;color:#e39a8c;background:rgba(227,154,140,.08)}
+.score{display:flex;align-items:center;gap:16px}
+.ring{--p:0;width:86px;height:86px;border-radius:50%;flex:none;background:conic-gradient(var(--gold) calc(var(--p)*1%),#2a252f 0);display:grid;place-items:center;transition:--p .8s}
+.ring b{width:70px;height:70px;border-radius:50%;background:#0f0d12;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500}
+@property --p{syntax:"<number>";inherits:false;initial-value:0}
+.fix{margin:6px 0 0;padding-left:18px;font-size:13.5px;line-height:1.55;color:#d7cfc2}
+.fix li{margin-bottom:6px}
+.more{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:30px}
+.more a{display:block;text-decoration:none;background:#0f0d12;border:1px solid var(--line);border-radius:16px;padding:14px;transition:.25s}
+.more a:hover{border-color:var(--gold2);transform:translateY(-2px)}
+.more small{display:block;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.more b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;line-height:1.1;margin-bottom:4px}
+.more span{font-size:12.5px;color:var(--mut);line-height:1.4}
+.cta{margin-top:34px;text-align:center;border:1px solid rgba(226,196,140,.35);border-radius:26px;padding:28px 18px;background:radial-gradient(circle at 50% 0,rgba(226,196,140,.14),transparent 60%),var(--card)}
+.cta h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(26px,5vw,34px);line-height:1.05;margin:0 0 8px}
+.cta p{color:var(--mut);font-size:14px;line-height:1.55;margin:0 auto 16px;max-width:520px}
+.cta .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cta .go{width:auto;margin:0;padding:14px 22px}
+.cta .ghost{display:inline-flex;align-items:center;border:1px solid var(--gold2);color:var(--gold);border-radius:99px;padding:14px 20px;text-decoration:none;font-weight:700;font-size:14px}
+.cta small{display:block;margin-top:14px;color:var(--mut);font-size:12.5px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:#fbf4e6;color:#1c1626;font-weight:700;font-size:14px;border-radius:99px;padding:12px 18px;box-shadow:0 12px 30px rgba(0,0,0,.5);transition:.35s;z-index:50;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.empty{color:var(--mut);font-size:13.5px;text-align:center;padding:10px 0 0}
+footer{margin-top:30px;text-align:center;font-size:12px;color:var(--mut);line-height:1.7}
+footer a{color:var(--gold);text-decoration:none}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}.more{grid-template-columns:1fr}.day{grid-template-columns:48px 1fr;gap:10px}.day .d b{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="./">VISUALL<small>больше, чем дизайн</small></a>
+    <a class="back" href="./">← На сайт</a>
+  </div>
+
+  <div class="kick">Мастерская предпринимателя · бесплатно</div>
+  <h1>Вы делаете своё дело.<br><i>Тексты — здесь.</i></h1>
+  <p class="lead">Для мастеров, самозанятых и малого бизнеса. Один раз расскажите о себе — и получайте <b>готовые посты, план на месяц, акции и ответы клиентам</b>. Без маркетолога и без часов над пустым листом.</p>
+  <div class="chips-row"><span><b>1 минута</b> на пост</span><span><b>30 дней</b> контента</span><span><b>8</b> готовых акций</span><span><b>10</b> ответов клиентам</span></div>
+
+  <section class="card gold" id="profile">
+    <h2>Шаг 1. <i>Ваш бизнес</i></h2>
+    <p class="sub">Заполните один раз — всё остальное подставится само. Данные остаются только на вашем телефоне.</p>
+    <span class="lbl">Сфера</span>
+    <div class="chips" id="sph"></div>
+    <div class="grid2" style="margin-top:14px">
+      <div><span class="lbl">Название или имя</span><input id="pName" placeholder="Например: Студия «Лаванда»" autocomplete="organization"></div>
+      <div><span class="lbl">Главная услуга</span><input id="pSvc" placeholder="Например: маникюр с покрытием"></div>
+      <div><span class="lbl">Цена</span><input id="pPrice" placeholder="Например: 2 200 ₽"></div>
+      <div><span class="lbl">Как записаться</span><input id="pCt" placeholder="@ник или +7 900 000-00-00"></div>
+    </div>
+    <span class="lbl">Пишу от лица</span>
+    <div class="chips" id="voice"><button type="button" data-v="i">«Я» — работаю сама/сам</button><button type="button" data-v="we">«Мы» — команда, студия</button></div>
+    <p class="note"><span class="saved" id="saved">✓ Сохранено</span></p>
+  </section>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-t="post" aria-selected="true"><i>01</i>Пост</button>
+    <button role="tab" data-t="plan"><i>02</i>План на месяц</button>
+    <button role="tab" data-t="promo"><i>03</i>Акция</button>
+    <button role="tab" data-t="reply"><i>04</i>Ответы клиентам</button>
+    <button role="tab" data-t="check"><i>05</i>Проверка рекламы</button>
+  </nav>
+
+  <!-- 01 POST -->
+  <section class="pane on" id="t-post">
+    <h2>Пост <i>за минуту</i></h2>
+    <p class="sub">Выберите, зачем пост, — получите три готовых варианта. Текст можно поправить прямо здесь, нажав на него.</p>
+    <div class="card">
+      <span class="lbl">Цель поста</span>
+      <div class="chips" id="goal"></div>
+      <div id="goalExtra"></div>
+      <button class="go" id="mkPost" type="button">Написать пост <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="res" id="postRes"></div>
+  </section>
+
+  <!-- 02 PLAN -->
+  <section class="pane" id="t-plan">
+    <h2>Контент-план <i>на 30 дней</i></h2>
+    <p class="sub">Что и когда публиковать: польза, продажи, доверие и общение — в правильной пропорции. Половина — готовые тексты, остальное — простые задания «сфотографируйте…».</p>
+    <div class="card">
+      <span class="lbl">Как часто публикуете</span>
+      <div class="chips" id="freq"><button type="button" data-f="3" aria-pressed="true">3 раза в неделю</button><button type="button" data-f="5">5 раз в неделю</button><button type="button" data-f="7">Каждый день</button></div>
+      <button class="go" id="mkPlan" type="button">Составить план <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="res" id="planRes"></div>
+  </section>
+
+  <!-- 03 PROMO -->
+  <section class="pane" id="t-promo">
+    <h2>Акция, <i>которая работает</i></h2>
+    <p class="sub">Выберите механику — получите текст поста, сторис, заголовки для постера и честные условия. Совет: одна акция в месяц лучше, чем постоянные скидки.</p>
+    <div class="card">
+      <span class="lbl">Механика</span>
+      <div class="chips" id="mech"></div>
+      <p class="note" id="mechHint"></p>
+      <div class="grid2" style="margin-top:6px">
+        <div><span class="lbl">Что даёте</span><input id="offer" placeholder="−15%"></div>
+        <div><span class="lbl">До какого числа</span><input id="until" type="date"></div>
+      </div>
+      <button class="go" id="mkPromo" type="button">Собрать акцию <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="res" id="promoRes"></div>
+  </section>
+
+  <!-- 04 REPLY -->
+  <section class="pane" id="t-reply">
+    <h2>Ответы <i>клиентам</i></h2>
+    <p class="sub">Готовые фразы для сложных и частых ситуаций — вежливо, коротко и так, чтобы клиент записался. Нажмите на ситуацию.</p>
+    <div class="sit" id="sit"></div>
+  </section>
+
+  <!-- 05 CHECK -->
+  <section class="pane" id="t-check">
+    <h2>Проверка <i>вашей рекламы</i></h2>
+    <p class="sub">Откройте свой последний пост или постер и честно ответьте на 10 вопросов. Узнаете, что мешает клиентам написать, и как это исправить.</p>
+    <div class="q" id="quiz"></div>
+    <div class="res" id="checkRes"></div>
+  </section>
+
+  <div class="more">
+    <a href="poster.html"><small>Studio</small><b>Постер за 5 минут</b><span>Ваш текст и цены — в стиле дорогого бренда. Предпросмотр бесплатно.</span></a>
+    <a href="img/free/visuall-15-oshibok.pdf" target="_blank" rel="noopener"><small>PDF · бесплатно</small><b>15 ошибок в рекламе</b><span>Мини-гайд: проверьте свою рекламу за 10 минут.</span></a>
+    <a href="./#slogan"><small>Генератор</small><b>Слоган для бизнеса</b><span>Крутите барабан — забирайте слоган бесплатно.</span></a>
+    <a href="https://t.me/visuall_sveta_bot?start=audit" target="_blank" rel="noopener"><small>Разбор</small><b>Бесплатный разбор рекламы</b><span>Пришлите пост или постер в бот — Светлана подскажет, что исправить.</span></a>
+  </div>
+
+  <div class="cta">
+    <h3>Нет времени даже на это?</h3>
+    <p>Светлана сделает рекламу за вас: постер в стиле дорогого бренда — от 990 ₽ за 1 рабочий день, 2 круга правок бесплатно и подарок к каждому заказу.</p>
+    <div class="row"><a class="go" href="https://t.me/visuall_sveta_bot?start=o_poster" target="_blank" rel="noopener">Заказать в боте за минуту</a><a class="ghost" href="https://t.me/sveta_muzyka" target="_blank" rel="noopener">Написать Светлане</a></div>
+    <small>Светлана Музыка · +7 (925) 062-00-01 · Telegram @sveta_muzyka</small>
+  </div>
+
+  <footer>VISUALL · Мастерская предпринимателя<br>Тексты — заготовки: проверьте, что всё в них правда о вас, и поправьте под себя.<br><a href="./">Вернуться на сайт</a></footer>
+</div>
+<div class="toast" id="toast">Скопировано ✓</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const low=s=>s?s[0].toLowerCase()+s.slice(1):s;
+
+/* ===== Сферы ===== */
+const SPH={
+beauty:{n:"Красота",svc:"маникюр с покрытием",price:"2 200 ₽",cl:"клиентки",clG:"клиенток",what:"делаю маникюр",whatW:"делаем маникюр",
+ pains:["покрытие сколов уже через неделю","нет времени сидеть в салоне по три часа","страшно, что сделают не так, как на фото","вечная спешка — до себя руки не доходят"],
+ gains:["держится до 4 недель без сколов","стерильные инструменты из крафт-пакета — при вас","без спешки: это время только для вас","форму и цвет подбираем под руки и образ"],
+ tips:["Масло для кутикулы раз в день продлевает жизнь маникюру — и руки выглядят ухоженно даже через три недели.","Надевайте перчатки, когда моете посуду или убираетесь: бытовая химия — главный враг покрытия.","Обновляйте покрытие раз в 3–4 недели. Дольше — ноготь отрастает, и растёт риск отслойки и трещин.","Заусенец? Не срезайте сами — смажьте маслом и приходите на коррекцию, так не будет воспаления.","Крем для рук после каждого мытья — простая привычка, которая спасает кожу зимой.","Хотите честный цвет на фото? Снимайте маникюр у окна днём, без вспышки."],
+ proc:["обсуждаем форму, длину и дизайн","готовлю ногти и стерильные инструменты","наношу покрытие и проверяю каждую деталь"],
+ tags:"#маникюр #ногти #маникюрнадом #мастерманикюра"},
+food:{n:"Еда и десерты",svc:"торты на заказ",price:"от 2 400 ₽ за кг",cl:"гости",clG:"гостей",what:"готовлю десерты",whatW:"готовим десерты",
+ pains:["торт из магазина — приторный и безликий","страшно, что не успеют к празднику","непонятный состав, а есть будут дети","хочется красиво, но без переплаты за бренд"],
+ gains:["натуральные сливки и свежие ягоды","к точной дате и времени","дизайн под ваш праздник — по фото или идее","доставка или самовывоз — как удобнее"],
+ tips:["Торт лучше заказывать за 5–7 дней, а перед праздниками — за 2 недели: самые удобные даты разбирают первыми.","Достаньте торт из холодильника за 20–30 минут до подачи — вкус раскроется полностью.","Режьте торт ножом, смоченным в горячей воде, — срез будет ровным и красивым.","Сколько брать? Считайте 150–200 г торта на гостя.","Храните десерты в закрытом контейнере, чтобы они не впитывали запахи холодильника.","Заказываете на детский праздник? Заранее узнайте у гостей про аллергии — подберём безопасную начинку."],
+ proc:["обсуждаем вкус, вес и дизайн","готовлю из свежих продуктов к нужной дате","упаковываю и передаю или доставляю"],
+ tags:"#тортыназаказ #десерты #кондитер #торт"},
+kids:{n:"Обучение и дети",svc:"занятия по математике",price:"1 500 ₽ за урок",cl:"ученики",clG:"учеников",what:"занимаюсь с детьми",whatW:"занимаемся с детьми",
+ pains:["ребёнок боится контрольных","оценки падают, а дома — слёзы над домашкой","подготовка урывками, без системы","до экзамена мало времени"],
+ gains:["объясняю простым языком, без зубрёжки","план занятий под цель: оценки, ОГЭ или ЕГЭ","родители видят прогресс после каждого урока","онлайн или очно — как удобнее"],
+ tips:["20 минут повторения каждый день полезнее, чем три часа перед контрольной.","Попросите ребёнка объяснить тему вам — так знания закрепляются лучше всего.","Делайте домашнее задание в одно и то же время — привычка снимает споры.","Хвалите за усилия, а не только за оценки: так у ребёнка появляется желание стараться.","Повторите сложную тему за 10 минут до сна — память поработает на вас.","Разбейте подготовку к экзамену на недели и отмечайте пройденное — тревоги станет меньше."],
+ proc:["пробное занятие: смотрим уровень и цель","составляю план занятий","занимаемся и отмечаем прогресс"],
+ tags:"#репетитор #обучение #подготовкакэкзаменам #занятиясдетьми"},
+consult:{n:"Консультации",svc:"консультация",price:"3 000 ₽ за 60 минут",cl:"клиенты",clG:"клиентов",what:"консультирую",whatW:"консультируем",
+ pains:["вопрос мучает месяцами, а решиться страшно","советы знакомых только запутывают","непонятно, с чего начать","страшно, что не поймут или осудят"],
+ gains:["бережно и конфиденциально","конкретный план уже после первой встречи","онлайн из любого города","без воды и сложных терминов"],
+ tips:["Перед консультацией запишите три главных вопроса — встреча будет в разы полезнее.","Сложное решение? Разделите лист на «за» и «против» и вернитесь к нему через сутки.","Храните документы и переписку по важным вопросам — они могут пригодиться.","Маленький шаг сегодня лучше идеального плана на завтра.","Сомневаетесь в договоре — не подписывайте в день получения. Возьмите время прочитать.","Если тревожно, сделайте паузу: медленный вдох, задержка, длинный выдох — и только потом решение."],
+ proc:["короткая заявка: что вас беспокоит","встреча онлайн или очно","план действий и поддержка"],
+ tags:"#консультация #психолог #юрист #помощь"},
+house:{n:"Дом и ремонт",svc:"мелкий ремонт и сборка мебели",price:"от 1 500 ₽",cl:"клиенты",clG:"клиентов",what:"занимаюсь ремонтом",whatW:"занимаемся ремонтом",
+ pains:["мастер пропал посреди работы","после ремонта — грязь и мусор","цена выросла уже в процессе","неделями ждать замера"],
+ gains:["цену согласуем до начала работ","убираю за собой","приезжаю в оговорённое время","аккуратно, как для себя"],
+ tips:["Перед ремонтом сфотографируйте стены, где идёт проводка, — потом будет проще вешать полки.","Плитку покупайте с запасом около 10% — на подрезку и бой.","Капающий кран лучше чинить сразу: прокладка стоит копейки, а счёт за воду растёт.","Перед сверлением проверьте стену детектором проводки.","Шов в ванной почернел? Его можно заменить за пару часов — не ждите плесени.","Собираете мебель сами? Остались лишние болты — верный знак проверить шаги инструкции."],
+ proc:["вы присылаете фото или описание задачи","согласуем цену и время","делаю работу и убираю за собой"],
+ tags:"#мастерначас #ремонт #домашниймастер #сборкамебели"},
+auto:{n:"Авто",svc:"детейлинг и полировка",price:"от 5 000 ₽",cl:"автовладельцы",clG:"автовладельцев",what:"ухаживаю за машинами",whatW:"ухаживаем за машинами",
+ pains:["машина выглядит уставшей","после мойки остаются разводы","страшно, что поцарапают","нет времени стоять в очереди"],
+ gains:["бережные составы, безопасные для лака","запись на точное время, без очередей","фото до и после","защитное покрытие надолго"],
+ tips:["Зимой мойте машину раз в 1–2 недели: реагенты постепенно разъедают лак.","Не протирайте сухую грязную машину тряпкой — это верный путь к царапинам.","Проверяйте давление в шинах раз в месяц и после резкого похолодания.","Зимнюю незамерзайку заливайте заранее, до первых морозов.","Мелкий скол лучше закрыть сразу, пока не пошла ржавчина.","Летом ставьте машину в тень — пластик салона дольше сохранит вид."],
+ proc:["запись на удобное время","осматриваем машину и согласуем работы","выдаём машину и показываем результат"],
+ tags:"#детейлинг #автоуход #полировка #автомойка"},
+pets:{n:"Животные",svc:"груминг",price:"от 2 000 ₽",cl:"хвостатые клиенты",clG:"питомцев",what:"занимаюсь грумингом",whatW:"занимаемся грумингом",
+ pains:["питомец нервничает в салоне","колтуны и запах после прогулок","страшно доверить любимца чужим рукам","далеко ехать через весь город"],
+ gains:["бережно, без спешки и крика","мягкая косметика для чувствительной кожи","фото питомца во время процедуры","стрижка по стандарту породы или по вашему желанию"],
+ tips:["Длинную шерсть расчёсывайте 2–3 раза в неделю — и колтунов не будет.","После зимней прогулки мойте лапы: реагенты раздражают кожу.","Приучайте щенка к расчёске с первых недель — потом груминг будет без стресса.","Когти пора стричь, если они цокают по полу.","Не стригите собаку «под ноль» летом — шерсть защищает кожу от солнца.","Берите на груминг любимую игрушку питомца — ему будет спокойнее."],
+ proc:["знакомимся с питомцем","моем, сушим, стрижём","отдаём красивого и довольного"],
+ tags:"#груминг #грумер #стрижкасобак #зоосалон"},
+fit:{n:"Фитнес",svc:"персональная тренировка",price:"1 800 ₽",cl:"клиенты",clG:"клиентов",what:"тренирую",whatW:"тренируем",
+ pains:["абонемент куплен, а мотивации нет","страшно навредить спине","занимаюсь, а результата нет","неловко идти в зал новичком"],
+ gains:["программа под вашу цель и здоровье","техника под контролем — без травм","питание без жёстких диет","поддержка между тренировками"],
+ tips:["Лучшая тренировка — та, на которую вы пришли. Регулярность важнее рекордов.","Пейте воду до, во время и после занятия.","Сон 7–8 часов — такая же часть тренировки, как приседания.","Разминка 5–10 минут снижает риск травм.","Записывайте веса и подходы — прогресс будет видно наглядно.","Начните с 2–3 тренировок в неделю, а не с ежедневных: так проще не бросить."],
+ proc:["знакомимся: цель, здоровье, опыт","составляю программу","тренируемся и отслеживаем прогресс"],
+ tags:"#фитнес #персональныйтренер #тренировки #зож"},
+other:{n:"Другое",svc:"моя услуга",price:"",cl:"клиенты",clG:"клиентов",what:"помогаю людям",whatW:"помогаем людям",
+ pains:["непонятно, к кому обратиться, чтобы сделали хорошо","нет времени разбираться самому","боишься переплатить","устал от сюрпризов в процессе"],
+ gains:["быстро и аккуратно","объясняю всё понятно, без сюрпризов","цена известна заранее","делаю с душой — как для себя"],
+ tips:["Отвечайте на заявки как можно быстрее — пока клиент ждёт, он пишет другим.","Просите довольных клиентов об отзыве сразу после работы — потом забудут.","Пишите цену в рекламе: это экономит время и вам, и клиенту.","Один пост в неделю, но регулярно — лучше, чем десять за день и месяц тишины.","Фото работ снимайте у окна при дневном свете.","Закрепите наверху профиля пост с ценами и способом записи."],
+ proc:["вы рассказываете о задаче","согласуем цену и сроки","делаю работу и показываю результат"],
+ tags:"#услуги #самозанятый #мастер #малыйбизнес"}
+};
+const SPH_ORDER=["beauty","food","kids","consult","house","auto","pets","fit","other"];
+
+/* ===== Профиль ===== */
+let P={s:"beauty",name:"",svc:"",price:"",ct:"",v:"i"};
+try{Object.assign(P,JSON.parse(localStorage.getItem("vw_profile")||"{}"));}catch(e){}
+const S=()=>SPH[P.s]||SPH.other;
+const svc=()=>P.svc.trim()||S().svc;
+const price=()=>P.price.trim()||S().price;
+const ct=()=>P.ct.trim()||"[ваш @ник или телефон]";
+const W=(i,we)=>P.v==="we"?we:i;              // я / мы
+const nm=()=>P.name.trim();
+let saveT;function save(){try{localStorage.setItem("vw_profile",JSON.stringify(P));}catch(e){}const s=$("#saved");s.classList.add("on");clearTimeout(saveT);saveT=setTimeout(()=>s.classList.remove("on"),1500);}
+$("#sph").innerHTML=SPH_ORDER.map(k=>`<button type="button" data-s="${k}">${SPH[k].n}</button>`).join("");
+function paintProfile(){$$("#sph button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===P.s));$$("#voice button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===P.v));
+ $("#pSvc").placeholder="Например: "+S().svc;$("#pPrice").placeholder="Например: "+(S().price||"от 1 000 ₽");}
+$("#sph").onclick=e=>{const b=e.target.closest("button");if(!b)return;P.s=b.dataset.s;paintProfile();save();rerun();};
+$("#voice").onclick=e=>{const b=e.target.closest("button");if(!b)return;P.v=b.dataset.v;paintProfile();save();rerun();};
+[["pName","name"],["pSvc","svc"],["pPrice","price"],["pCt","ct"]].forEach(([id,k])=>{const el=$("#"+id);el.value=P[k]||"";el.addEventListener("input",()=>{P[k]=el.value;save();});el.addEventListener("change",()=>{if(id==="pPrice"){const v=el.value.trim();if(/^(от\s*)?\d[\d\s]*$/i.test(v)){const m=v.match(/^(от\s*)?([\d\s]+)$/i);el.value=(m[1]?"от ":"")+(+m[2].replace(/\s/g,"")).toLocaleString("ru-RU").replace(/[\u00a0\u202f]/g," ")+" ₽";P[k]=el.value;save();}}rerun();});});
+paintProfile();
+
+/* ===== Общие помощники ===== */
+const toast=(m="Скопировано ✓")=>{const t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1600);};
+function copy(s){const ok=()=>toast();if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(ok,()=>fb());else fb();function fb(){const ta=document.createElement("textarea");ta.value=s;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){}ta.remove();}}
+function track(k){try{const b=JSON.stringify({v:(localStorage.getItem("visuall_vid")||"tools000").slice(0,8),s:"tools"+Math.random().toString(36).slice(2,7),t:5,p:["tools"],e:[k],r:"",tg:""});navigator.sendBeacon&&navigator.sendBeacon("https://visuall-bot.svetayurkina.workers.dev/t",new Blob([b],{type:"text/plain"}));}catch(e){}}
+function posterUrl(o){const q=new URLSearchParams();for(const k in o)if(o[k])q.set(k,o[k]);return "poster.html?"+q.toString();}
+function outCard(title,note,text,extra=""){return `<div class="out"><h4>${esc(title)}${note?`<small>${esc(note)}</small>`:""}</h4><p class="txt" contenteditable="true" spellcheck="false">${esc(text)}</p><div class="acts"><button type="button" class="pri" data-copy>Скопировать</button>${extra}</div></div>`;}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(!b)return;const o=b.closest(".out,.day,.body-item");const t=o.querySelector(".txt");copy(t.innerText.trim());track("copy");});
+const priceLine=(pre="")=>price()?`${pre}${cap(svc())} — ${price()}.`:"";
+const sign=()=>nm()?`\n\n${nm()}`:"";
+const ctaList=()=>[`Запись: ${ct()}`,`Напишите «хочу» в личные сообщения — ${W("подберу","подберём")} удобное время. ${ct()}`,`Записаться можно здесь: ${ct()}`];
+
+/* ===== 01 ПОСТ ===== */
+const GOALS=[
+ {k:"new",n:"Новые клиенты"},{k:"slots",n:"Свободные окна"},{k:"promo",n:"Скидка или подарок"},{k:"newsvc",n:"Новая услуга"},
+ {k:"about",n:"О себе"},{k:"tip",n:"Полезный совет"},{k:"review",n:"Отзыв клиента"},{k:"gift",n:"Новый год: сертификат"}];
+let goal="new";
+$("#goal").innerHTML=GOALS.map(g=>`<button type="button" data-g="${g.k}" aria-pressed="${g.k===goal}">${g.n}</button>`).join("");
+function goalExtra(){const x=$("#goalExtra");
+ if(goal==="slots")x.innerHTML=`<span class="lbl">Когда свободно</span><input id="gx" placeholder="Например: среда 15:00, пятница 11:00">`;
+ else if(goal==="promo")x.innerHTML=`<span class="lbl">Что предлагаете</span><input id="gx" placeholder="Например: −15% на первый визит">`;
+ else if(goal==="newsvc")x.innerHTML=`<span class="lbl">Название новой услуги</span><input id="gx" placeholder="Например: японский маникюр">`;
+ else if(goal==="review")x.innerHTML=`<span class="lbl">Текст настоящего отзыва</span><textarea id="gx" placeholder="Вставьте отзыв, который вам написал клиент. Мы не придумываем отзывы — только оформляем настоящие."></textarea>`;
+ else x.innerHTML="";}
+$("#goal").onclick=e=>{const b=e.target.closest("button");if(!b)return;goal=b.dataset.g;$$("#goal button").forEach(x=>x.setAttribute("aria-pressed",x===b));goalExtra();$("#postRes").innerHTML="";};
+goalExtra();
+const gx=()=>{const el=$("#gx");return el?el.value.trim():"";};
+
+function posts(){const s=S(),pn=shuf(s.pains),ga=shuf(s.gains),tp=shuf(s.tips),c=shuf(ctaList()),tags=s.tags;
+ const v=[];
+ if(goal==="new"){
+  v.push(["Коротко",`${cap(pn[0])}? Знакомо.\n\n${W("Я делаю","Мы делаем")} ${low(svc())} так, чтобы ${low(ga[0])}.\n${priceLine()}\n\n${c[0]}`]);
+  v.push(["Подробно",`3 причины, почему ${s.cl} ${W("возвращаются ко мне","возвращаются к нам")}:\n\n✦ ${cap(ga[0])}\n✦ ${cap(ga[1])}\n✦ ${cap(ga[2])}\n\n${priceLine()}\n${c[1]}${sign()}\n\n${tags}`]);
+  v.push(["По-дружески",`${W("Ко мне","К нам")} часто приходят с одной фразой: «${cap(pn[1])}».\n\nЕсли это про вас — давайте исправим. ${cap(ga[1])}, а ${low(ga[3])}.\n\n${priceLine()}\n${c[2]}`]);
+ }else if(goal==="slots"){const when=gx()||"[впишите дни и время]";
+  v.push(["Коротко",`Освободилось время на этой неделе:\n${when}\n\n${priceLine()}\n${c[0]}`]);
+  v.push(["С выгодой",`Окошко для вас 🕊\n\n${when}\n\n${cap(svc())}: ${low(ga[0])}. ${priceLine()}\nНапишите «окно» — ${W("забронирую","забронируем")} время за вами. ${ct()}`]);
+  v.push(["Для сторис",`Свободно: ${when}\n${cap(svc())}${price()?" · "+price():""}\nЖмите «ответить» — и время ваше`]);
+ }else if(goal==="promo"){const off=gx()||"[ваше предложение]";
+  v.push(["Коротко",`${off} — для тех, кто давно собирался.\n\n${cap(svc())}: ${low(ga[0])}.\n${c[0]}`]);
+  v.push(["Подробно",`Небольшой подарок от ${W("меня","нас")}: ${off}.\n\nПочему стоит прийти:\n✦ ${cap(ga[0])}\n✦ ${cap(ga[1])}\n✦ ${cap(ga[2])}\n\n${priceLine("Обычная цена: ")}\nКоличество мест ограничено расписанием, поэтому лучше записаться заранее.\n${c[1]}${sign()}`]);
+  v.push(["Для сторис",`${off}\n${cap(svc())}\nУспейте записаться → ${ct()}`]);
+ }else if(goal==="newsvc"){const ns=gx()||"[название новой услуги]";
+  v.push(["Анонс",`Новинка: ${low(ns)} ✨\n\n${W("Долго готовилась","Долго готовились")} и наконец-то ${W("рада","рады")} предложить её вам. Это для тех, кому важно, чтобы ${low(ga[0])}.\n\nЗапись уже открыта: ${ct()}`]);
+  v.push(["С пользой",`Теперь ${W("я делаю","мы делаем")} ещё и ${low(ns)}.\n\nКому подойдёт:\n— если ${low(pn[0])}\n— если ${low(pn[1])}\n\nПервым клиентам — приятный бонус. Подробности и запись: ${ct()}`]);
+  v.push(["Для сторис",`Новая услуга: ${ns}\nХотите попробовать первыми? Напишите «хочу»`]);
+ }else if(goal==="about"){const me=nm()?(W("Меня зовут ","Мы — ")+nm()+"."):W("Давайте знакомиться.","Давайте знакомиться.");
+  v.push(["Знакомство",`${me} ${W("Я","Мы")} ${W(s.what,s.whatW)} и ${W("знаю","знаем")}, как важно, чтобы ${low(ga[0])}.\n\nКак проходит работа:\n1. ${cap(s.proc[0])}\n2. ${cap(s.proc[1])}\n3. ${cap(s.proc[2])}\n\nБуду ${W("рада","рады")} знакомству: ${ct()}`]);
+  v.push(["Почему мне доверяют",`Почему ${s.cl} ${W("выбирают меня","выбирают нас")}:\n\n— ${cap(ga[0])}\n— ${cap(ga[1])}\n— ${cap(ga[2])}\n\n${W("Мне","Нам")} важно, чтобы после встречи у вас не осталось вопросов — только хорошее настроение.\n${c[0]}`]);
+  v.push(["Задание + текст",`📸 Прикрепите своё фото за работой.\n\nЭто ${W("я","мы")} 🙂 ${cap(W(s.what,s.whatW))} и каждый день ${W("стараюсь","стараемся")}, чтобы ${low(ga[1])}.\nЗадавайте любые вопросы в комментариях — ${W("отвечу","ответим")} всем!`]);
+ }else if(goal==="tip"){
+  v.push(["Совет",`Полезное от ${W("мастера","нас")}:\n\n${tp[0]}\n\nСохраните, чтобы не забыть 🤍\n${priceLine()} ${c[0]}`]);
+  v.push(["Два совета",`2 простых совета, о которых часто забывают:\n\n1. ${tp[1]}\n2. ${tp[2]}\n\nА если нужна помощь специалиста — ${W("пишите","пишите")}: ${ct()}`]);
+  v.push(["Вопрос аудитории",`${tp[3]}\n\nА вы так делаете? Напишите в комментариях «да» или «нет» 👇`]);
+ }else if(goal==="review"){const r=gx();
+  if(!r){$("#postRes").innerHTML=`<p class="empty">Вставьте текст настоящего отзыва в поле выше — и мы красиво его оформим.</p>`;return null;}
+  v.push(["Отзыв",`Такие слова — лучшая награда 🤍\n\n«${r}»\n\nСпасибо за доверие! ${priceLine()}\n${c[0]}`]);
+  v.push(["Отзыв + история",`Делюсь отзывом — с разрешения клиента:\n\n«${r}»\n\nИменно ради этого ${W("я и работаю","мы и работаем")}: чтобы ${low(ga[0])}.\nХотите так же? ${ct()}`]);
+  v.push(["Для сторис",`Отзыв ★★★★★\n«${r.length>140?r.slice(0,137)+"…":r}»\nЗапись → ${ct()}`]);
+ }else if(goal==="gift"){
+  v.push(["Сертификат",`Не знаете, что подарить на Новый год? 🎁\n\nПодарочный сертификат на ${low(svc())} — подарок, который точно пригодится. Красиво оформлен, действует несколько месяцев.\n\n${priceLine()}\nЗаказать сертификат: ${ct()}`]);
+  v.push(["Подробно",`Подарок, о котором мечтают, — но сами себе не покупают.\n\n✦ ${cap(ga[0])}\n✦ ${cap(ga[1])}\n✦ Сертификат на любую сумму или услугу\n\n${W("Отправлю","Отправим")} в электронном виде за 15 минут или ${W("подготовлю","подготовим")} в красивом конверте.\n${c[1]}`]);
+  v.push(["Для сторис",`Сертификат на ${low(svc())} 🎄\nЛучший подарок к Новому году\nНапишите «подарок» → ${ct()}`]);
+ }
+ return v;}
+function makePost(){const v=posts();if(!v)return;track("post-"+goal);
+ const ttl=gx()&&goal!=="review"&&goal!=="slots"?gx():cap(svc());
+ const pu=posterUrl({title:ttl.slice(0,40),sub:goal==="slots"?"есть свободные окна":S().gains[0],prices:price()?cap(svc())+" — "+price():"",contact:P.ct.trim(),badge:goal==="promo"?(gx().match(/[−-]\s?\d+\s?%/)||[""])[0]:goal==="newsvc"?"New":""});
+ $("#postRes").innerHTML=v.map(([t,tx],i)=>outCard("Вариант "+(i+1),t,tx,`<a href="${pu}">Сделать постер</a>`)).join("")+`<button class="go" style="background:none;border:1px solid var(--gold2);color:var(--gold);animation:none;box-shadow:none" type="button" id="againPost">Ещё варианты ↻</button><p class="edit-hint">Нажмите на текст, чтобы поправить его. Проверьте, что всё в тексте — правда о вас.</p>`;
+ $("#againPost").onclick=makePost;$("#postRes").scrollIntoView({behavior:"smooth",block:"start"});}
+$("#mkPost").onclick=makePost;
+
+/* ===== 02 ПЛАН ===== */
+let freq=3;
+$("#freq").onclick=e=>{const b=e.target.closest("button");if(!b)return;freq=+b.dataset.f;$$("#freq button").forEach(x=>x.setAttribute("aria-pressed",x===b));};
+const DAYS=["вс","пн","вт","ср","чт","пт","сб"];
+function planItems(){const s=S(),tp=shuf(s.tips),pn=shuf(s.pains),ga=shuf(s.gains);let ti=0,pi=0,gi=0;
+ const nx=(a,k)=>a[(k)%a.length];
+ const R={
+  tip:()=>({r:"Польза",f:"Пост",t:"Полезный совет",x:`${nx(tp,ti++)}\n\nСохраните, чтобы не забыть 🤍`,task:false}),
+  sell:()=>({r:"Продажа",f:"Пост + сторис",t:"Ваша главная услуга",x:`${cap(svc())}: ${low(nx(ga,gi++))}.\n${priceLine()}\nЗапись: ${ct()}`,task:false}),
+  ba:()=>({r:"Работа",f:"Карусель",t:"До и после",x:"📸 Сфотографируйте результат работы (с разрешения клиента). Подпись: «Было — стало. Что скажете?» + цена услуги.",task:true}),
+  about:()=>({r:"Доверие",f:"Фото",t:"Кто за этим стоит",x:`📸 Ваше фото за работой.\nПодпись: ${W("«Это я 🙂","«Это мы 🙂")} ${W(s.what,s.whatW)} и ${W("стараюсь","стараемся")}, чтобы ${low(nx(ga,gi++))}. Задавайте вопросы!»`,task:true}),
+  ask:()=>({r:"Общение",f:"Сторис-опрос",t:"Вопрос подписчикам",x:`Опрос в сторис: «Бывало, что ${low(nx(pn,pi++))}?» — варианты «Да, постоянно» / «Нет, повезло». Ответившим можно написать лично.`,task:false}),
+  bts:()=>({r:"Закулисье",f:"Reels / видео",t:"Как проходит работа",x:`🎬 Снимите 3 коротких кадра по 2–3 секунды: ${s.proc.join(" → ")}. Наложите трек из библиотеки приложения. Подпись: «Как это происходит».`,task:true}),
+  rev:()=>({r:"Отзыв",f:"Пост",t:"Отзыв клиента",x:"⭐ Попросите клиента об отзыве (готовая фраза — во вкладке «Ответы клиентам») и опубликуйте его скриншот с благодарностью. Только настоящие отзывы!",task:true}),
+  myth:()=>({r:"Польза",f:"Карусель",t:"Ответ на частый вопрос",x:`Возьмите вопрос, который вам задают чаще всего, и ответьте на него в 3 слайдах. Например: «Сколько стоит ${low(svc())} и от чего зависит цена?»`,task:true}),
+  slots:()=>({r:"Продажа",f:"Сторис",t:"Свободные окна",x:`Свободно на этой неделе: [дни и время].\n${cap(svc())}${price()?" · "+price():""}\nЖмите «ответить» — и время ваше`,task:false}),
+  pin:()=>({r:"Продажа",f:"Закреп",t:"Пост-визитка",x:`${nm()?nm()+" · ":""}${cap(svc())}\n\n✦ ${cap(ga[0])}\n✦ ${cap(ga[1])}\n${priceLine()}\nКак записаться: ${ct()}\n\nЗакрепите этот пост наверху профиля.`,task:false}),
+ };
+ const seq=["pin","tip","ba","sell","about","ask","tip","bts","slots","rev","myth","sell","tip","ba","ask","about","sell","bts","tip","rev","slots","myth","ba","sell","tip","ask","bts","about","sell","rev"];
+ return seq.map(k=>R[k]());}
+function makePlan(){track("plan-"+freq);const items=planItems();
+ const pat={3:[1,3,5],5:[1,2,3,4,5],7:[0,1,2,3,4,5,6]}[freq];
+ const out=[];let d=new Date();d.setHours(12,0,0,0);let k=0,wk=-1,html="";
+ for(let i=0;i<30&&k<items.length;i++){const dd=new Date(d.getTime()+i*864e5);if(pat.indexOf(dd.getDay())<0)continue;
+  const w=Math.floor(i/7);if(w!==wk){wk=w;html+=`<div class="week">Неделя ${w+1}</div>`;}
+  const it=items[k++];out.push(`${dd.getDate()}.${String(dd.getMonth()+1).padStart(2,"0")} (${DAYS[dd.getDay()]}) · ${it.r} · ${it.f}\n${it.t}\n${it.x}`);
+  html+=`<div class="day" style="animation-delay:${Math.min(k,12)*40}ms"><div class="d"><b>${dd.getDate()}</b><small>${DAYS[dd.getDay()]}</small></div><div><div class="r"><span class="tag">${it.r}</span><span class="tag f">${it.f}</span>${it.task?'<span class="tag task">задание</span>':'<span class="tag task" style="background:rgba(226,196,140,.08);color:var(--gold)">готовый текст</span>'}</div><b class="t">${esc(it.t)}</b><p class="txt">${esc(it.x)}</p><button type="button" data-copy>Скопировать</button></div></div>`;}
+ const all=`Контент-план на 30 дней — ${nm()||S().n}\n(составлено в Мастерской VISUALL)\n\n`+out.join("\n\n");
+ $("#planRes").innerHTML=`<div class="acts" style="border:0;margin:0;padding:0"><button type="button" class="pri" id="cpAll">Скопировать весь план</button><button type="button" id="dlAll">Скачать файлом</button><button type="button" id="rePlan">Другие темы ↻</button></div><div class="plan">${html}</div>`;
+ $("#cpAll").onclick=()=>{copy(all);track("plan-copy");};
+ $("#dlAll").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([all],{type:"text/plain;charset=utf-8"}));a.download="kontent-plan-30-dney.txt";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);track("plan-dl");};
+ $("#rePlan").onclick=makePlan;$("#planRes").scrollIntoView({behavior:"smooth",block:"start"});}
+$("#mkPlan").onclick=makePlan;
+
+/* ===== 03 АКЦИЯ ===== */
+const MECH=[
+ {k:"friend",n:"Приведи друга",o:"−15% вам и другу",h:"Самая честная реклама — рекомендация. Клиент приводит друга, и выгоду получают оба."},
+ {k:"hot",n:"Горящие окна",o:"−10%",h:"Заполняет пустые места в расписании. Публикуйте за 1–2 дня до свободного времени."},
+ {k:"first",n:"Первый визит",o:"−20% на первый визит",h:"Снимает страх «а вдруг не понравится» и помогает впервые попробовать вашу услугу."},
+ {k:"pack",n:"Пакет услуг",o:"3 визита по цене 2,5",h:"Клиент платит заранее и возвращается — вы получаете стабильную запись."},
+ {k:"gift",n:"Подарок к услуге",o:"уход в подарок",h:"Подарок воспринимается ценнее скидки, а стоит вам обычно меньше."},
+ {k:"cert",n:"Сертификат к Новому году",o:"сертификат на любую сумму",h:"В декабре ищут подарки. Сертификат продаёт вашу услугу новым людям руками ваших клиентов."},
+ {k:"bday",n:"День рождения",o:"−15% в неделю дня рождения",h:"Приятно клиенту и даёт повод написать ему лично."},
+ {k:"rev",n:"Отзыв — бонус",o:"−10% на следующий визит",h:"Бонус — за любой честный отзыв, а не только за пятёрку. Так отзывы будут настоящими."}];
+let mech="friend";
+$("#mech").innerHTML=MECH.map(m=>`<button type="button" data-m="${m.k}" aria-pressed="${m.k===mech}">${m.n}</button>`).join("");
+const M=()=>MECH.find(m=>m.k===mech);
+function mechUI(){$("#mechHint").textContent=M().h;$("#offer").placeholder=M().o;}
+$("#mech").onclick=e=>{const b=e.target.closest("button");if(!b)return;mech=b.dataset.m;$$("#mech button").forEach(x=>x.setAttribute("aria-pressed",x===b));mechUI();$("#promoRes").innerHTML="";};
+mechUI();
+{const d=new Date(Date.now()+7*864e5);$("#until").value=d.toISOString().slice(0,10);}
+const MONTHS=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+function untilTxt(){const v=$("#until").value;if(!v)return "";const d=new Date(v+"T12:00");return `${d.getDate()} ${MONTHS[d.getMonth()]}`;}
+function makePromo(){track("promo-"+mech);const s=S(),ga=shuf(s.gains),off=$("#offer").value.trim()||M().o,u=untilTxt(),till=u?` до ${u}`:"",sv=low(svc());
+ let head=[],post="",st="",rules=[];
+ switch(mech){
+ case "friend":head=["Приходите вдвоём",`${cap(off)}`,"Красота — вместе"];post=`Приходите вместе с подругой или другом — и получите ${off}!\n\nКак это работает:\n1. Запишитесь на ${sv} и назовите имя друга.\n2. Друг записывается от вас.\n3. Скидку получаете оба.\n\n${cap(ga[0])}. ${priceLine()}\nАкция действует${till||" ограниченное время"}. Запись: ${ct()}`;st=`Вдвоём выгоднее 👭\n${cap(off)}\n${cap(svc())}${till}\nЖмите «ответить»`;rules=["Скидка для нового клиента и того, кто его пригласил.","Друг должен назвать ваше имя при записи.","Не суммируется с другими акциями."];break;
+ case "hot":head=["Горящее окно",`${cap(svc())} ${off}`,"Освободилось время"];post=`Освободилось время — отдаю его со скидкой ${off}.\n\nСвободно: [впишите дни и время]\n\n${cap(svc())}: ${low(ga[0])}.\nНапишите «окно» — ${W("забронирую","забронируем")} время за вами. ${ct()}`;st=`🔥 Горящее окно\n[день и время]\n${cap(svc())} ${off}\nЖмите «ответить»`;rules=["Скидка только на указанное время.","Количество окон ограничено расписанием.","Действует для новых и постоянных клиентов."];break;
+ case "first":head=["Первый визит",`${cap(off)}`,"Давно хотели попробовать?"];post=`Давно хотели попробовать, но сомневались? Самое время: ${off}.\n\n✦ ${cap(ga[0])}\n✦ ${cap(ga[1])}\n✦ ${cap(ga[2])}\n\n${priceLine("Обычная цена: ")}\nПредложение действует${till||" ограниченное время"}. Запись: ${ct()}`;st=`Первый раз у ${W("меня","нас")}?\n${cap(off)}\nЗапись → ${ct()}`;rules=["Только для тех, кто приходит впервые.","Одна скидка на одного человека.","Не суммируется с другими акциями."];break;
+ case "pack":head=["Выгоднее пакетом",`${cap(off)}`,"Забота по расписанию"];post=`Для тех, кто приходит регулярно: ${off}.\n\nПочему это удобно:\n— цена фиксируется заранее\n— время закрепляется за вами\n— ${low(ga[0])}\n\n${priceLine("Разовый визит: ")}\nОформить пакет: ${ct()}`;st=`Пакет: ${off}\n${cap(svc())}\nУдобно и выгодно → ${ct()}`;rules=["Пакет оплачивается сразу.","Срок использования — [например, 3 месяца].","Пакет можно подарить другому человеку."];break;
+ case "gift":head=["Подарок к визиту",`${cap(off)} в подарок`,"Приятный бонус"];post=`При записи${till} — ${off} в подарок 🎁\n\n${cap(svc())}: ${low(ga[0])}, а ${low(ga[1])}.\n${priceLine()}\nСкажите «подарок» при записи: ${ct()}`;st=`🎁 ${cap(off)} в подарок\nпри записи${till}\n${ct()}`;rules=["Подарок — при записи в период акции.","Один подарок на один визит.","Подарок не обменивается на деньги."];break;
+ case "cert":head=["Лучший подарок","Подарочный сертификат",`Подарите ${sv}`];post=`Не знаете, что подарить? 🎄\n\nПодарочный сертификат на ${sv} — подарок, который точно пригодится. ${cap(off)}.\n\n✦ Красиво оформлен — в электронном виде или в конверте\n✦ ${cap(ga[0])}\n\nЗаказать${till?" до "+u:""}: ${ct()}`;st=`Сертификат на ${sv} 🎁\nЛучший подарок к Новому году\nНапишите «подарок»`;rules=["Срок действия сертификата — [например, 3 месяца].","Сертификат можно использовать один раз или частями — [укажите].","Возврату и обмену на деньги не подлежит — [укажите ваши условия]."];break;
+ case "bday":head=["С днём рождения!",`${cap(off)}`,"Подарок от нас"];post=`У вас день рождения? Поздравляем! 🎉\n\n${cap(off)} на ${sv}.\nПросто напишите ${W("мне","нам")} и покажите дату рождения при записи.\n\n${cap(ga[0])}. ${ct()}`;st=`🎂 День рождения?\n${cap(off)}\nНапишите ${W("мне","нам")} → ${ct()}`;rules=["Скидка действует за 7 дней до и 7 дней после дня рождения.","Нужно показать документ с датой рождения.","Один раз в год."];break;
+ case "rev":head=["Ваше мнение важно","Отзыв = бонус",`${cap(off)}`];post=`${W("Мне","Нам")} очень важно ваше мнение!\n\nОставьте честный отзыв о визите — и получите ${off}.\nНеважно, какую оценку поставите: любой отзыв помогает ${W("мне","нам")} становиться лучше.\n\nОставить отзыв: ${ct()}`;st=`Оставьте отзыв ⭐\nПолучите ${off}\n${ct()}`;rules=["Бонус — за любой честный отзыв, независимо от оценки.","Один бонус на один визит.","Действует на следующий визит."];break;}
+ const pu=posterUrl({title:head[0],sub:post.split("\n")[0].slice(0,46),prices:price()?cap(svc())+" — "+price():"",contact:P.ct.trim(),badge:(off.match(/[−-]\s?\d+\s?%/)||[""])[0]});
+ const where="✦ Пост в ленту + закреп на время акции\n✦ Сторис 2–3 раза: в начале, в середине и за день до конца\n✦ Статус в WhatsApp и Telegram\n✦ Личные сообщения постоянным клиентам\n✦ Районные чаты — в разрешённые для рекламы дни\n\nКак понять, что сработало: спрашивайте каждого нового клиента «Откуда вы о нас узнали?» и записывайте.";
+ $("#promoRes").innerHTML=outCard("Пост",M().n,post,`<a href="${pu}">Сделать постер</a>`)+outCard("Сторис","коротко",st)+outCard("Заголовки для постера","3 варианта",head.join("\n"))+outCard("Условия","честно и понятно",rules.map(r=>"— "+r).join("\n"))+outCard("Где разместить","чек-лист",where);
+ $("#promoRes").scrollIntoView({behavior:"smooth",block:"start"});}
+$("#mkPromo").onclick=makePromo;
+
+/* ===== 04 ОТВЕТЫ ===== */
+function sits(){const s=S(),ga=s.gains,sv=low(svc()),pr=price();return [
+ ["Сколько стоит?","первый вопрос в директ",[
+  `Здравствуйте! ${cap(sv)}${pr?" — "+pr:" — [цена]"}. В стоимость входит: [что входит]. ${cap(ga[0])}.\nКогда вам удобно? ${W("Подберу","Подберём")} время 🙂`,
+  `Добрый день! Цена — ${pr||"[цена]"}. Если подскажете, что именно хотите, ${W("назову","назовём")} точную стоимость. Есть время на этой неделе: [дни]. Записать вас?`]],
+ ["«Дорого»","клиент сомневается в цене",[
+  `Понимаю вас! В цену входит ${low(ga[0])} и ${low(ga[1])} — поэтому результат держится, а не приходится переделывать.\nМогу предложить [вариант дешевле / пакет со скидкой], если так удобнее.`,
+  `Спасибо, что сказали честно. ${W("Я","Мы")} не ${W("экономлю","экономим")} на материалах и времени — от этого зависит результат. Если бюджет ограничен, ${W("подскажу","подскажем")}, с чего лучше начать.`]],
+ ["«Я подумаю»","клиент не решается",[
+  `Конечно, подумайте! Чтобы было проще, ${W("сохраню","сохраним")} для вас время [день и время] до завтра. Если появятся вопросы — пишите, ${W("отвечу","ответим")} 🙂`,
+  `Хорошо! Можно спросить, что вызывает сомнения: цена, время или результат? ${W("Постараюсь","Постараемся")} помочь — без давления 🙂`]],
+ ["Напоминание о записи","накануне визита",[
+  `Здравствуйте! Напоминаю: вы записаны завтра в [время] на ${sv}.\nАдрес: [адрес]. Если планы изменились — напишите, пожалуйста, ${W("перенесу","перенесём")} 🙏`,
+  `Добрый вечер! Жду вас завтра в [время] 🙂 Подтвердите, пожалуйста, что всё в силе — ответьте «да».`]],
+ ["Клиент отменяет запись","как ответить без обиды",[
+  `Спасибо, что предупредили! Давайте подберём другое время. Свободно: [дни и время]. Какой вариант удобнее?`,
+  `Ничего страшного, всякое бывает! Когда будете готовы — напишите, ${W("найду","найдём")} для вас время 🙂`]],
+ ["Попросить отзыв","после визита",[
+  `Спасибо, что выбрали ${W("меня","нас")}! ${W("Мне","Нам")} очень важно ваше мнение — напишите, пожалуйста, пару слов о визите. Это займёт минуту, а ${W("мне","нам")} поможет стать лучше 🤍`,
+  `Как вам результат? Буду ${W("рада","рады")} честному отзыву — можно прямо сюда, ответным сообщением. Если что-то не понравилось — тоже скажите, ${W("исправлю","исправим")}.`]],
+ ["Негативный отзыв","спокойно и по делу",[
+  `Спасибо, что написали. ${W("Мне","Нам")} жаль, что визит не оправдал ожиданий. Давайте разберёмся: напишите, пожалуйста, в личные сообщения — ${W("предложу","предложим")} решение.`,
+  `Благодарю за честный отзыв. ${W("Я","Мы")} уже ${W("разбираюсь","разбираемся")}, что пошло не так, чтобы такого не повторилось. ${W("Свяжусь","Свяжемся")} с вами лично.`]],
+ ["Вернуть клиента","давно не приходил",[
+  `Здравствуйте! Давно вас не видели 🙂 Как дела? Если захотите снова на ${sv} — для вас ${W("сохраню","сохраним")} удобное время. Свободно: [дни].`,
+  `Добрый день! Скучаем 🤍 Специально для постоянных клиентов — [небольшой бонус] до [дата]. Записать вас?`]],
+ ["Нет свободного времени","нужное время занято",[
+  `К сожалению, это время уже занято. Могу предложить: [вариант 1] или [вариант 2]. Или ${W("поставлю","поставим")} вас в лист ожидания — напишу, если освободится окно.`,
+  `Это время забрали, но есть [день и время] — подойдёт? Если нет, ${W("напишу","напишем")} вам первой, как только что-то освободится.`]],
+ ["Попросить предоплату","чтобы бронь была честной",[
+  `Чтобы закрепить время за вами, ${W("беру","берём")} предоплату [сумма]. Она входит в стоимость услуги. Реквизиты: [номер / СБП]. Если отмените запись не позднее чем за [24 часа], ${W("верну","вернём")} предоплату.`,
+  `Бронь подтверждается предоплатой [сумма] — так время точно останется вашим. После оплаты ${W("пришлю","пришлём")} подтверждение 🙂`]]];}
+function makeSits(){$("#sit").innerHTML=sits().map(([t,s,arr],i)=>`<details><summary><span>${esc(t)}<small>${esc(s)}</small></span></summary><div class="body">${arr.map((x,j)=>`<div class="out body-item" style="animation:none"><h4>Вариант ${j+1}</h4><p class="txt" contenteditable="true" spellcheck="false">${esc(x)}</p><div class="acts"><button type="button" class="pri" data-copy>Скопировать</button></div></div>`).join("")}</div></details>`).join("");
+ $$("#sit details").forEach(d=>d.addEventListener("toggle",()=>{if(d.open)track("reply");}));}
+makeSits();
+
+/* ===== 05 ПРОВЕРКА ===== */
+const QS=[
+ ["За 3 секунды понятно, что вы предлагаете?","Одна реклама — одна мысль. Главную услугу — крупно, остальное — в описание."],
+ ["Указана цена или «от … ₽»?","Без цены многие просто не пишут: неловко спрашивать или страшно, что дорого."],
+ ["Заголовок говорит о выгоде клиента, а не о вас?","Не «Студия красоты», а «Маникюр, который держится 4 недели»."],
+ ["Есть одно понятное действие: «напишите», «запишитесь»?","Когда вариантов много, человек не выбирает ни один. Оставьте одно действие."],
+ ["Контакт читается с экрана телефона без увеличения?","Уменьшите рекламу до размера превью — номер и ник должны читаться."],
+ ["Есть доказательство: настоящий отзыв, «до/после», фото работы?","Любой может написать «лучший мастер». Одно реальное подтверждение убеждает сильнее."],
+ ["Есть повод написать сейчас: свободные окна, сезон, срок акции?","Дайте честную причину действовать сейчас, а не «когда-нибудь»."],
+ ["Фото светлое и чёткое, без лишнего на фоне?","Снимайте у окна днём на однотонном фоне — даже на телефон."],
+ ["Ваша реклама в одном стиле: те же цвета и шрифты?","2 цвета, 1–2 шрифта — и клиенты начинают узнавать вас в ленте."],
+ ["Есть версия для сторис (вертикальная)?","Горизонтальная картинка обрезается в сторис. Нужны форматы 4:5 и 9:16."]];
+const ans={};
+$("#quiz").innerHTML=QS.map(([q],i)=>`<label><span>${i+1}. ${esc(q)}</span><span class="yn"><button type="button" class="y" data-q="${i}" data-a="1">Да</button><button type="button" class="n" data-q="${i}" data-a="0">Нет</button></span></label>`).join("");
+$("#quiz").onclick=e=>{const b=e.target.closest("button");if(!b)return;e.preventDefault();const i=+b.dataset.q;ans[i]=+b.dataset.a;b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderCheck();};
+function renderCheck(){const n=Object.keys(ans).length;if(n<QS.length){$("#checkRes").innerHTML=`<p class="empty">Ответили на ${n} из ${QS.length}</p>`;return;}
+ track("check");const yes=Object.values(ans).filter(Boolean).length,p=yes*10;
+ const verdict=yes>=9?"Отличная реклама! Осталось только регулярно её показывать.":yes>=6?"Хорошая основа. Исправьте пункты ниже — и откликов станет больше.":"Реклама теряет клиентов. Хорошая новость: всё исправимо за вечер.";
+ const fixes=QS.map((q,i)=>ans[i]?null:q[1]).filter(Boolean);
+ $("#checkRes").innerHTML=`<div class="card gold"><div class="score"><div class="ring" id="ring"><b>${yes}/10</b></div><div><b style="font-size:16px">${verdict}</b><p class="note" style="margin-top:6px">Каждое «нет» — это клиенты, которые увидели рекламу, но не написали.</p></div></div>${fixes.length?`<span class="lbl" style="margin-top:16px">Что исправить</span><ul class="fix">${fixes.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}<div class="acts"><a class="pri" href="https://t.me/visuall_sveta_bot?start=audit" target="_blank" rel="noopener">Бесплатный разбор от Светланы</a><a href="poster.html">Сделать постер правильно</a></div></div>`;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{const r=$("#ring");r&&r.style.setProperty("--p",p);}));}
+renderCheck();
+
+/* ===== Вкладки ===== */
+function tab(t){$$("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===t));$$(".pane").forEach(p=>p.classList.toggle("on",p.id==="t-"+t));try{history.replaceState(null,"","#"+t);}catch(e){}}
+$("#tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;tab(b.dataset.t);b.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});const top=$("#tabs").getBoundingClientRect().top+scrollY-4;if(scrollY>top)scrollTo({top,behavior:"smooth"});};
+const h=location.hash.slice(1);if(["post","plan","promo","reply","check"].includes(h))tab(h);
+
+/* при смене профиля — обновить уже показанные результаты */
+function rerun(){makeSits();if($("#postRes .out"))makePost();if($("#planRes .day"))makePlan();if($("#promoRes .out"))makePromo();}
+track("open");
+})();
+</script>
+</body>
+</html>
