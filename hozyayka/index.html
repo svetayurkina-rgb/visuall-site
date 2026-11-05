@@ -1,0 +1,1039 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Шпаргалка хозяйки</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: illustration-first. Home = full-bleed storybook hero with rising bubbles + poster grid of scene covers (featured wide tile).
+   Category = cover header + rich rows. Solution = full-bleed scene with title on it, needs as chips, big numbered steps. */
+:root{
+  --bg:#eef6f2; --paper:#ffffff; --ink:#0f3433; --muted:#5d7472; --line:#d5e6df;
+  --mint:#2aa596; --mint-deep:#0d6e66; --mint-soft:#d5efe7; --butter:#ffd84d; --butter-ink:#4d3b00;
+  --coral:#c4551a; --coral-soft:#ffeadc; --shade:rgba(8,40,38,.82);
+  --shadow:0 18px 40px -22px rgba(13,80,72,.55); --shadow-s:0 6px 18px -10px rgba(13,80,72,.45);
+  --display:"Nunito","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Manrope","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1716; --paper:#14231f; --ink:#e7f4f0; --muted:#9fb8b2; --line:#24403a;
+  --mint:#4fcfbf; --mint-deep:#7fe0d3; --mint-soft:#173a35; --butter:#f2cc3f; --butter-ink:#2b2100;
+  --coral:#ffab78; --coral-soft:#35200f; --shade:rgba(4,16,15,.86);
+  --shadow:0 18px 40px -22px rgba(0,0,0,.9); --shadow-s:0 6px 18px -10px rgba(0,0,0,.8); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1716; --paper:#14231f; --ink:#e7f4f0; --muted:#9fb8b2; --line:#24403a;
+  --mint:#4fcfbf; --mint-deep:#7fe0d3; --mint-soft:#173a35; --butter:#f2cc3f; --butter-ink:#2b2100;
+  --coral:#ffab78; --coral-soft:#35200f; --shade:rgba(4,16,15,.86);
+  --shadow:0 18px 40px -22px rgba(0,0,0,.9); --shadow-s:0 6px 18px -10px rgba(0,0,0,.8); color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 56px}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--butter);outline-offset:3px}
+.view{animation:in .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes in{from{opacity:.4;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* top bar — sits between the app's corner buttons */
+.bar{display:flex;justify-content:center;align-items:center;height:56px}
+.logo{display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;font:900 15px var(--display);letter-spacing:.02em;color:var(--mint-deep)}
+.logo .dot{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0 18%,var(--butter) 19% 100%);box-shadow:inset -3px -4px 0 rgba(0,0,0,.08)}
+
+/* HERO */
+.hero{position:relative;border-radius:34px;overflow:hidden;box-shadow:var(--shadow);isolation:isolate;min-height:440px;display:flex;align-items:flex-end}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:42% 30%;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(6,40,36,.55) 62%,rgba(6,34,32,.9) 100%)}
+.hero .in{padding:28px 26px 26px;color:#fff;max-width:640px}
+.kicker{display:inline-block;font:800 12px var(--body);letter-spacing:.14em;text-transform:uppercase;background:var(--butter);color:#4d3b00;border-radius:999px;padding:6px 12px;margin-bottom:12px}
+.hero h1{font:900 clamp(34px,7vw,64px)/1 var(--display);letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;text-shadow:0 4px 24px rgba(0,0,0,.25)}
+.hero h1 span{color:var(--butter)}
+.hero p{margin:0;font-size:16px;opacity:.92;max-width:42ch}
+.bubbles{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bubbles i{position:absolute;bottom:-60px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);
+  background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.95) 0 8%,rgba(255,255,255,.12) 22%,rgba(170,240,255,.18) 55%,rgba(255,200,240,.28) 80%,rgba(255,255,255,.05));
+  animation:rise linear infinite}
+@keyframes rise{0%{transform:translate(0,0)}50%{transform:translate(18px,-260px)}100%{transform:translate(-10px,-560px)}}
+@media (min-width:760px){.hero{min-height:500px}.hero>img{object-position:50% 35%}.hero .in{padding:40px}}
+
+/* search */
+.search{position:relative;margin:-26px 14px 0;z-index:2;display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:20px;padding:0 18px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.search svg{flex:none;color:var(--mint)}
+#q{flex:1;min-width:0;border:0;background:transparent;font:600 16px var(--body);color:var(--ink);padding:17px 0;outline:none}
+#q::placeholder{color:var(--muted);font-weight:500}
+@media (min-width:760px){.search{max-width:620px;margin:-30px auto 0}}
+
+.h3{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:34px 2px 14px}
+.h3 h2{font:900 24px/1.1 var(--display);margin:0;letter-spacing:-.01em}
+.h3 span{color:var(--muted);font-size:14px;font-weight:600}
+
+/* poster grid */
+.posters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.posters{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+.poster{position:relative;border:0;padding:0;border-radius:26px;overflow:hidden;cursor:pointer;aspect-ratio:4/5;box-shadow:var(--shadow-s);background:var(--mint-soft);text-align:left;isolation:isolate;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.poster.wide{grid-column:1/-1;aspect-ratio:21/9}
+@media (max-width:640px){.poster.wide{aspect-ratio:4/3}}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.poster::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(5,35,32,.78) 100%)}
+.poster:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.poster:hover img{transform:scale(1.06)}
+.poster .lab{position:absolute;left:14px;right:14px;bottom:13px;color:#fff}
+.poster b{display:block;font:900 clamp(19px,2.6vw,26px)/1.05 var(--display);letter-spacing:-.01em;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.poster.wide b{font-size:clamp(26px,4.4vw,40px)}
+.poster small{display:block;margin-top:4px;font-size:13px;font-weight:600;opacity:.9}
+.poster .cnt{position:absolute;top:12px;right:12px;font:800 12px var(--body);background:rgba(255,255,255,.88);color:#0f3433;border-radius:999px;padding:5px 10px;backdrop-filter:blur(6px)}
+.poster.wide .cnt{background:var(--butter);color:#4d3b00}
+
+.safe{display:flex;align-items:center;gap:16px;width:100%;margin-top:14px;border:0;cursor:pointer;text-align:left;background:var(--coral-soft);color:var(--coral);border-radius:26px;padding:18px 20px}
+.safe .sh{flex:none;width:52px;height:52px;border-radius:16px;background:var(--coral);color:var(--coral-soft);display:grid;place-items:center}
+.safe b{display:block;font:900 19px var(--display);color:var(--ink)}
+.safe span{font-size:14px;font-weight:600}
+.safe .arr{margin-left:auto;flex:none}
+
+/* category page */
+.cover{position:relative;border-radius:30px;overflow:hidden;min-height:260px;display:flex;align-items:flex-end;isolation:isolate;box-shadow:var(--shadow)}
+.cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.cover::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(5,35,32,.85) 100%)}
+.cover .in{padding:22px 22px 20px;color:#fff}
+.cover h1{font:900 clamp(30px,6vw,52px)/1.02 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance;text-shadow:0 3px 18px rgba(0,0,0,.3)}
+.cover p{margin:6px 0 0;opacity:.9;font-weight:600}
+@media (min-width:760px){.cover{min-height:340px}.cover .in{padding:32px}}
+.back{display:inline-flex;align-items:center;gap:6px;margin:0 0 12px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:9px 16px 9px 11px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:var(--shadow-s)}
+.back:hover{border-color:var(--mint)}
+.rows{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.row{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:10px 16px 10px 10px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.row:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.row img{flex:none;width:96px;height:72px;border-radius:16px;object-fit:cover}
+.row .t{flex:1;min-width:0}
+.row .t b{display:block;font:800 17px/1.25 var(--display)}
+.row .t small{display:block;margin-top:3px;color:var(--muted);font-size:13px;font-weight:600}
+.arr{flex:none;width:34px;height:34px;border-radius:50%;background:var(--mint-soft);color:var(--mint-deep);display:grid;place-items:center}
+
+/* solution */
+.scene{position:relative;border-radius:30px;overflow:hidden;aspect-ratio:4/3;max-height:560px;width:100%;display:flex;align-items:flex-end;isolation:isolate;box-shadow:var(--shadow)}
+.scene>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.scene::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(5,35,32,.85) 100%)}
+.scene .in{padding:20px 22px;color:#fff}
+.scene .tag{display:inline-block;font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.9);color:#0d6e66;border-radius:999px;padding:5px 10px;margin-bottom:8px}
+.scene h1{font:900 clamp(26px,5.4vw,46px)/1.05 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance;text-shadow:0 3px 18px rgba(0,0,0,.35)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:20px;margin-top:16px}
+.lbl{font:800 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mint-deep);margin:0 0 12px}
+.need{display:flex;flex-wrap:wrap;gap:8px}
+.need span{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:700;background:var(--mint-soft);border-radius:12px;padding:7px 12px}
+.need span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--mint)}
+.cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+.cols>*{min-width:0}
+@media (max-width:760px){.cols{grid-template-columns:minmax(0,1fr)}}
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px;align-items:start;font-size:16.5px}
+ol.steps li::before{content:counter(s);width:42px;height:42px;border-radius:14px;background:var(--butter);color:#4d3b00;display:grid;place-items:center;font:900 20px var(--display);box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+ol.steps li span{padding-top:8px}
+.side{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.note{border-radius:22px;padding:16px 18px;font-size:15px}
+.note b{display:block;font:900 17px var(--display);margin-bottom:4px}
+.note.tip{background:var(--butter);color:#4d3b00}
+.note.warn{background:var(--coral-soft);color:var(--coral)}
+.note.warn b{color:var(--coral)}
+.more{margin-top:34px}
+
+.rule{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:22px;margin-top:16px}
+.rule ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.rule li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
+.rule li i{flex:none;width:28px;height:28px;border-radius:9px;background:var(--coral);color:var(--coral-soft);display:grid;place-items:center;font-style:normal;font-weight:900}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.bubbles{display:none}}
+
+/* lifehack of the day */
+.daily{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;margin-top:30px;background:var(--butter);color:#4d3b00;border-radius:28px;padding:20px 22px;overflow:hidden;isolation:isolate}
+.daily::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.35);z-index:-1}
+.daily .bulb{width:56px;height:56px;border-radius:18px;background:#fff;display:grid;place-items:center;color:#c99a00;box-shadow:0 6px 14px -8px rgba(0,0,0,.35)}
+.daily small{display:block;font:800 11px var(--body);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.daily b{display:block;font:900 20px/1.15 var(--display);margin:2px 0 4px}
+.daily p{margin:0;font-size:15px}
+.daily .more-btn{grid-column:1/-1;justify-self:start;border:0;cursor:pointer;background:#4d3b00;color:var(--butter);border-radius:999px;padding:9px 16px;font-weight:800;font-size:14px}
+
+/* hack carousel */
+.strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 14px;margin:0 -2px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.hk{flex:0 0 min(250px,72%);scroll-snap-align:start;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px}
+.hk .n{font:900 13px var(--display);color:var(--mint-deep);background:var(--mint-soft);border-radius:999px;align-self:flex-start;padding:3px 10px}
+.hk b{font:900 17px/1.2 var(--display)}
+.hk p{margin:0;font-size:14px;color:var(--muted)}
+.hk.all{background:var(--mint);border-color:var(--mint);color:#fff;justify-content:center;align-items:flex-start;cursor:pointer;text-align:left}
+.hk.all b{font-size:20px}
+.hk.all span{font-weight:700;opacity:.9}
+.linkbtn{background:none;border:0;color:var(--mint-deep);font-weight:800;font-size:14px;cursor:pointer;padding:0}
+
+/* tools */
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.tools{grid-template-columns:minmax(0,1fr)}}
+.tool{display:flex;align-items:center;gap:14px;text-align:left;border:1px solid var(--line);background:var(--paper);border-radius:22px;padding:10px 14px 10px 10px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.tool:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.tool img{flex:none;width:72px;height:72px;border-radius:16px;object-fit:cover}
+.tool .t{flex:1;min-width:0}
+.tool b{display:block;font:900 17px/1.2 var(--display)}
+.tool small{display:block;color:var(--muted);font-size:13px;font-weight:600;margin-top:2px}
+
+/* hacks page */
+.hgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+@media (max-width:640px){.hgrid{grid-template-columns:minmax(0,1fr)}}
+.hgrid .hk{flex:none}
+.hgrid .hk:nth-child(5n+1){background:var(--mint-soft);border-color:transparent}
+.hgrid .hk:nth-child(5n+3){background:var(--butter);border-color:transparent;color:#4d3b00}
+.hgrid .hk:nth-child(5n+3) p{color:#5e4a00}
+.hgrid .hk:nth-child(5n+3) .n{background:#fff;color:#4d3b00}
+
+/* plan */
+.prog{display:flex;align-items:center;gap:12px;margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:14px 18px}
+.prog .bar2{flex:1;height:12px;border-radius:99px;background:var(--mint-soft);overflow:hidden}
+.prog .bar2 i{display:block;height:100%;background:var(--mint);border-radius:99px;transition:width .3s}
+.prog b{font:900 18px var(--display);font-variant-numeric:tabular-nums}
+.prog button{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;cursor:pointer;color:var(--muted)}
+.pgroup{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:18px}
+.pgroup h3{margin:0 0 10px;font:900 20px var(--display);display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.pgroup h3 small{font:700 13px var(--body);color:var(--muted)}
+.chk{display:flex;align-items:center;gap:12px;padding:9px 2px;border-top:1px dashed var(--line);cursor:pointer;font-weight:600}
+.chk:first-of-type{border-top:0}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:26px;height:26px;border-radius:9px;border:2px solid var(--mint);display:grid;place-items:center;cursor:pointer;margin:0;background:var(--paper)}
+.chk input:checked{background:var(--mint)}
+.chk input:checked::after{content:"";width:7px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.chk input:checked+span{color:var(--muted);text-decoration:line-through}
+
+/* kit */
+.kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+@media (max-width:640px){.kit{grid-template-columns:minmax(0,1fr)}}
+.kc{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.kc b{font:900 19px var(--display)}
+.kc .need span{font-size:13px;padding:5px 10px}
+.kc .no{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:var(--coral);background:var(--coral-soft);border-radius:12px;padding:8px 10px;font-weight:600}
+.kc .no i{font-style:normal;font-weight:900}
+.hk.found{flex:none}
+.badge{display:inline-block;font:800 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;font-style:normal;background:var(--butter);color:#4d3b00;border-radius:999px;padding:2px 8px;margin-bottom:4px}
+.deeprow{border-color:var(--butter);box-shadow:inset 4px 0 0 var(--butter)}
+.leadp{font-size:18px;line-height:1.5;margin:18px 4px 0;font-weight:500;max-width:62ch}
+.mats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.mats{grid-template-columns:minmax(0,1fr)}}
+.mat{display:flex;flex-direction:column;gap:5px;background:var(--bg);border-radius:16px;padding:12px 14px;font-size:14px}
+.mat b{font:900 16px var(--display)}
+.mat .ok{color:var(--mint-deep);font-weight:600}
+.mat .bad{color:var(--coral);font-weight:600}
+.mtabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.mtab{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:2px solid var(--line);background:var(--paper);border-radius:18px;padding:12px 14px;cursor:pointer;transition:all .2s}
+.mtab b{font:900 16px/1.2 var(--display)}
+.mtab small{font-size:12.5px;color:var(--muted);font-weight:600}
+.mtab[aria-selected="true"]{background:var(--mint);border-color:var(--mint);color:#fff}
+.mtab[aria-selected="true"] small{color:#fff;opacity:.9}
+.mview{animation:in .3s ease-out}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.meta span{font-size:13px;font-weight:800;background:var(--butter);color:#4d3b00;border-radius:999px;padding:5px 11px}
+.meta span+span{background:var(--mint-soft);color:var(--ink)}
+.why{margin-top:16px;border-radius:26px;padding:20px 22px;background:var(--mint);color:#fff}
+.why .lbl{color:#fff;opacity:.85}
+.why p:last-child{margin:0;font-size:17px;font-weight:600;line-height:1.5}
+.mist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.mist li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
+.mist i{flex:none;width:26px;height:26px;border-radius:8px;background:var(--coral-soft);color:var(--coral);display:grid;place-items:center;font-style:normal;font-weight:900;font-size:13px}
+/* placeholder until the illustration is generated */
+.ph{display:block;background:
+ radial-gradient(circle at 22% 30%,rgba(255,255,255,.75) 0 7%,rgba(255,255,255,0) 8%),
+ radial-gradient(circle at 70% 64%,rgba(255,255,255,.55) 0 11%,rgba(255,255,255,0) 12%),
+ radial-gradient(circle at 84% 22%,rgba(255,255,255,.6) 0 4%,rgba(255,255,255,0) 5%),
+ linear-gradient(135deg,var(--mint-soft),#c9ece2 45%,#fff0b3)}
+.row .ph{flex:none;width:96px;height:72px;border-radius:16px}
+.tool .ph{flex:none;width:72px;height:72px;border-radius:16px}
+.poster .ph,.cover>.ph,.scene>.ph{position:absolute;inset:0;z-index:-2}
+.scene:has(>.ph)::after,.cover:has(>.ph)::after,.poster:has(>.ph)::after{background:linear-gradient(180deg,rgba(0,0,0,0) 20%,rgba(5,60,55,.75) 100%)}
+/* shop */
+.shopband{display:flex;align-items:center;gap:16px;width:100%;margin-top:14px;text-align:left;cursor:pointer;background:var(--butter);color:#4d3b00;border:0;border-radius:26px;padding:12px 18px 12px 12px;box-shadow:var(--shadow-s);transition:transform .2s}
+.shopband:hover{transform:translateY(-2px)}
+.shopband img,.shopband .ph{flex:none;width:96px;height:72px;border-radius:16px;object-fit:cover}
+.shopband .t{flex:1;min-width:0}
+.shopband b{display:block;font:900 19px/1.15 var(--display)}
+.shopband small{display:block;font-size:13px;font-weight:600;opacity:.85;margin-top:3px}
+.shopband .badge{background:#fff}
+.shopband .arr{background:#fff;color:#4d3b00}
+.chips2{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:18px;padding-bottom:4px}
+.chips2::-webkit-scrollbar{display:none}
+.chip2{flex:none;border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer}
+.chip2[aria-pressed="true"]{background:var(--mint);border-color:var(--mint);color:#fff}
+.shopgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.shopgrid{grid-template-columns:minmax(0,1fr)}}
+.prod{background:var(--paper);border:1px solid var(--line);border-radius:24px;overflow:hidden;display:flex;flex-direction:column}
+.pimg{position:relative;aspect-ratio:4/3;isolation:isolate}
+.pimg img,.pimg .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.price{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.92);color:#0d6e66;border-radius:999px;padding:5px 11px;font:900 14px var(--display);letter-spacing:.06em}
+.price i{font-style:normal;opacity:.25}
+.pbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.plabel{border:2px dashed var(--mint);border-radius:16px;padding:10px 14px;background:var(--mint-soft)}
+.plabel small{display:block;font:800 10.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mint-deep)}
+.plabel b{display:block;font:900 22px/1.1 var(--display);letter-spacing:.02em;margin-top:2px;overflow-wrap:anywhere}
+.plabel span{display:block;font-size:13.5px;font-weight:600;color:var(--muted);margin-top:3px}
+.pw{margin:0;font-size:15px}
+.pw b{color:var(--mint-deep)}
+.prod .note{margin:0}
+.prod .linkbtn{text-align:left;margin-top:2px}
+
+.chip2 .cnt2{font-style:normal;font-weight:800;font-size:12px;margin-left:6px;opacity:.7}
+
+.scene.short{aspect-ratio:16/7}
+@media (max-width:640px){.scene.short{aspect-ratio:16/9}}
+</style>
+
+<div class="wrap"><div id="app"></div></div>
+
+<script>
+const CATS=[
+{id:"stains",cat:"Пятна",cover:"stains",pos:"50% 45%",sub:"Вино, ягоды, ручка, кровь, жир",wide:true,items:[
+ {t:"Красное вино",img:"wine",need:["соль или крахмал","холодная вода","перекись водорода 3% (для белого)","кислородный пятновыводитель"],
+  steps:["Не трите! Промокните салфеткой от краёв к центру.","Свежее пятно засыпьте солью на 10 минут, чтобы она впитала вино, стряхните.","Промойте с изнанки холодной водой.","Белая ткань: капните перекись 3%, подождите 10–15 минут, постирайте.","Цветная: замочите на час в кислородном пятновыводителе по инструкции, затем стирка."],
+  tip:"Горячая вода «запекает» пятна от вина и ягод. Первые шаги — только холодной.",warn:"Перекись может осветлить цветную ткань. Для цветного берите кислородный пятновыводитель и проверьте на шве."},
+ {t:"Банан на белой футболке",img:"banana",need:["хозяйственное мыло","кислородный отбеливатель","перекись 3%"],
+  steps:["Соскребите остатки банана ложкой.","Действуйте сразу: банановое пятно темнеет, когда окисляется на воздухе.","Промойте холодной водой с изнанки, натрите хозяйственным мылом, оставьте на 30 минут.","Если след остался, замочите на 2–3 часа в кислородном отбеливателе (вода 40°) и постирайте."],
+  tip:"Старое тёмное пятно от банана берёт перекись: нанесите на 15 минут, затем стирка. Подходит для белого хлопка."},
+ {t:"Клубника и другие ягоды",img:"berries",need:["холодная вода","лимонный сок или лимонная кислота","кислородный отбеливатель"],
+  steps:["Смойте сок холодной водой с изнанки.","На белое: лимонный сок или раствор 1 ч. л. лимонной кислоты на стакан воды, на 10 минут.","Промойте и постирайте с кислородным отбеливателем."],
+  tip:"Старый способ для белого хлопка: натянуть ткань над миской и пролить через пятно крутой кипяток. Для цветного и синтетики не подходит."},
+ {t:"Жирное пятно",img:"stains",need:["средство для посуды","крахмал, тальк или детская присыпка"],
+  steps:["Засыпьте свежее пятно крахмалом на 15–20 минут, чтобы он впитал жир, стряхните.","Нанесите каплю средства для посуды, вотрите пальцами или мягкой щёткой.","Оставьте на 15 минут и постирайте при максимальной для ткани температуре."],
+  tip:"Средство для посуды создано растворять жир, поэтому оно работает лучше многих пятновыводителей."},
+ {t:"Кофе и чай",need:["холодная вода","средство для посуды","уксус 9%","кислородный пятновыводитель"],
+  steps:["Промойте холодной водой с изнанки.","Смесь: 1 ч. л. средства для посуды + 1 ст. л. уксуса на стакан воды, нанесите на 15 минут.","Промойте и постирайте; старые пятна — замочить в кислородном пятновыводителе."],
+  tip:"Если кофе был с молоком, сначала уберите жирную часть средством для посуды."},
+ {t:"Кровь",need:["только холодная вода","соль","перекись 3% (для белого)","хозяйственное мыло"],
+  steps:["Только холодная вода: горячая сворачивает белок, и пятно въедается навсегда.","Замочите в холодной воде с 1 ст. л. соли на литр на час.","Остатки на белом — перекись, на цветном — хозяйственное мыло, потом стирка."],
+  tip:"Свежую кровь на матрасе снимет кашица из крахмала с холодной водой: нанесите, дайте высохнуть, смахните."},
+ {t:"Пот и жёлтые подмышки",need:["сода","перекись 3%","средство для посуды","старая зубная щётка"],
+  steps:["Смешайте 2 ст. л. соды, 1 ст. л. перекиси и пару капель средства для посуды в кашицу.","Нанесите на подмышки, потрите щёткой, оставьте на час.","Постирайте как обычно."],
+  warn:"Способ для белых вещей.",tip:"Чтобы пятна не появлялись, дайте дезодоранту высохнуть 5 минут, прежде чем одеваться."},
+ {t:"Шариковая ручка",need:["медицинский спирт или антисептик","ватные диски","бумажное полотенце"],
+  steps:["Подложите под пятно сложенное бумажное полотенце.","Смочите ватный диск спиртом и промакивайте пятно, не растирая. Чернила переходят на полотенце.","Меняйте диск и полотенце, пока чернила отходят.","Застирайте средством для посуды и постирайте."],
+  warn:"Спирт проверьте на шве: на ацетате и некоторых синтетиках он может повредить ткань."},
+ {t:"Трава",need:["медицинский спирт","кислородный пятновыводитель","перекись 3% (для белого)"],
+  steps:["Протрите пятно спиртом, он растворяет зелёный пигмент.","Нанесите кислородный пятновыводитель на 15–30 минут.","Постирайте. На белом остатки снимет перекись."]},
+ {t:"Тональный крем и помада",need:["мицеллярная вода","средство для посуды","кислородный пятновыводитель"],
+  steps:["Тональный крем: промакивайте мицеллярной водой ватным диском, она растворяет косметику.","Помада жирная: сначала средство для посуды на 10 минут, потрите.","Затем пятновыводитель и стирка."],
+  tip:"Не трите помаду тряпкой — размажете. Сначала соскребите излишки краем ложки."},
+ {t:"Жвачка и воск от свечи",need:["пакет и морозилка или лёд","утюг","бумажные полотенца"],
+  steps:["Жвачка: положите вещь в пакет и в морозилку на 1–2 часа (или приложите лёд). Застывшая жвачка откалывается ногтем.","Воск: соскребите что можно, проложите пятно бумажными полотенцами с двух сторон и прогладьте тёплым утюгом. Меняйте бумагу, пока воск впитывается.","Жирный след после воска уберите средством для посуды."]},
+ {t:"Шоколад",need:["ложка","холодная вода","средство для посуды","кислородный пятновыводитель"],
+  steps:["Дайте шоколаду застыть и соскребите ложкой.","Промойте холодной водой с изнанки.","Средство для посуды на 10 минут, затем пятновыводитель и стирка."]},
+ {t:"Свёкла и борщ",need:["холодная вода","лимонная кислота","кислородный отбеливатель"],
+  steps:["Сразу промойте холодной водой.","Белое: раствор 1 ч. л. лимонной кислоты на стакан воды на 15 минут.","Замочите в кислородном отбеливателе и постирайте."]},
+ {t:"Ржавчина на ткани",need:["лимон или лимонная кислота","марля","утюг"],
+  steps:["Положите на пятно ломтик лимона в марле и прогладьте горячим утюгом через ткань. Повторите 2–3 раза.","Или замочите пятно на 30 минут в растворе 1 ст. л. лимонной кислоты на стакан горячей воды.","Промойте и постирайте."],warn:"Для белых и прочных тканей. На цветном сначала проверьте на шве."},
+ {t:"Неизвестное старое пятно",need:["холодная вода","средство для посуды","кислородный пятновыводитель","спирт","перекись (только белое)"],
+  steps:["Идите от мягкого к сильному и после каждого шага проверяйте результат.","1) Холодная вода с изнанки.","2) Средство для посуды на 15 минут.","3) Замачивание в кислородном пятновыводителе на ночь.","4) Спирт на ватном диске.","5) Для белого — перекись 3%.","Не сушите вещь на батарее и не гладьте, пока пятно не ушло: жар закрепляет его."],
+  tip:"Этот порядок подходит почти для любого пятна, если вы не знаете, что это было."}
+]},
+{id:"laundry",cat:"Стирка",cover:"berries",pos:"40% 45%",sub:"Белое, свитера, пуховик, запахи",items:[
+ {t:"Белое посерело",need:["кислородный отбеливатель","таз или стиральная машина"],
+  steps:["Замочите вещи на 2–6 часов в тёплой воде (40–60°, смотрите ярлык) с кислородным отбеливателем по инструкции.","Постирайте как обычно, добавив отбеливатель в порошок.","Дальше стирайте белое отдельно от светлого и цветного."],
+  tip:"Серость часто от лишнего порошка и перегруза барабана: вещам нужно место, чтобы прополоскаться."},
+ {t:"Как не полинять",need:["салфетки-ловушки цвета","жидкое средство для цветного"],
+  steps:["Сортируйте: белое, светлое, тёмное, яркое отдельно.","Новую яркую вещь первый раз стирайте отдельно или с салфеткой-ловушкой.","Стирайте при 30°, выворачивайте вещи наизнанку."],
+  tip:"Если вещь всё же покрасила другие — не сушите их, сразу замочите в кислородном отбеливателе (для белого) или средстве от окрашивания."},
+ {t:"Свитер сел после стирки",need:["тёплая вода","кондиционер для волос или детский шампунь","полотенце"],
+  steps:["Замочите свитер на 30 минут в тёплой воде с 2 ст. л. кондиционера для волос: он размягчает волокна.","Не полоскайте, отожмите в полотенце, не выкручивая.","Аккуратно растяните до нужного размера и сушите горизонтально на полотенце."],
+  tip:"Шерсть стирайте в режиме «Шерсть» или руками при 30°, со средством для шерсти, и сушите лёжа."},
+ {t:"Катышки",need:["машинка для катышков","мешок для стирки"],
+  steps:["Снимайте катышки машинкой на сухой вещи, натянув ткань на ровной поверхности.","Стирайте такие вещи наизнанку и в мешке.","Не стирайте свитера вместе с джинсами и полотенцами — они трут ткань."]},
+ {t:"Пуховик в машинке",need:["жидкое средство для пуха","2–3 теннисных мяча"],
+  steps:["Застегните молнии, выверните наизнанку.","Режим «Пух» или «Деликатный» 30°, жидкое средство, дополнительное полоскание.","Положите в барабан теннисные мячи — они разбивают комки пуха.","Сушите горизонтально и встряхивайте каждые пару часов, пока не высохнет полностью."],
+  warn:"Порошок оставляет на пуховике разводы. Только жидкое средство."},
+ {t:"Кроссовки",need:["мешок для стирки","старое полотенце","бумага"],
+  steps:["Выньте стельки и шнурки, стряхните грязь, подошву потрите щёткой.","В мешок, вместе с полотенцем, режим 30°, низкий отжим.","Сушите с бумагой внутри, меняя её. Не на батарее — клей отходит."],
+  warn:"Кожаные кроссовки в машинке не стирают. Проверьте ярлык."},
+ {t:"Запах из стиральной машины",need:["лимонная кислота 100 г или средство для машины","тряпка"],
+  steps:["Протрите резиновую манжету изнутри, там копятся вода и ворс.","Вытащите и промойте лоток для порошка.","Раз в месяц включайте пустую стирку на 90° со 100 г лимонной кислоты.","Раз в 3 месяца чистите фильтр насоса (внизу спереди), подставив тряпку и миску."],
+  tip:"После стирки оставляйте дверцу и лоток приоткрытыми, чтобы всё просыхало."},
+ {t:"Полотенца жёсткие и плохо впитывают",need:["сода"],
+  steps:["Уберите кондиционер: он покрывает ворс плёнкой, и полотенца хуже впитывают.","Стирайте при 60° с половинной дозой порошка.","Раз в месяц добавляйте в барабан 2–3 ст. л. соды.","Перед сушкой встряхните, чтобы ворс поднялся."]},
+ {t:"Сколько класть порошка",need:[],
+  steps:["Смотрите таблицу на упаковке: доза зависит от загрузки и жёсткости воды.","Для обычной стирки 4–5 кг часто хватает одной мерной ложки.","Лишний порошок не отстирывает лучше: он плохо выполаскивается и даёт разводы, запах и раздражение кожи.","Для тёмного и шерсти берите жидкое средство."]}
+]},
+{id:"windows",cat:"Окна и зеркала",cover:"windows",pos:"60% 50%",sub:"Стёкла, рамы, жалюзи",items:[
+ {t:"Как помыть окна без разводов",img:"windows",need:["ведро тёплой воды","средство для посуды","нашатырь или уксус","микрофибра","сгон"],
+  steps:["Сначала протрите рамы и подоконник, иначе грязь потечёт на чистое стекло.","В 3 л тёплой воды добавьте 1 ч. л. средства для посуды. Вымойте стекло губкой или мопом.","Сгоном снимайте воду сверху вниз полосами внахлёст, лезвие вытирайте после каждой полосы.","Для блеска: 1 ст. л. нашатыря или 2 ст. л. уксуса на 1 л воды, протрите и сразу отполируйте сухой микрофиброй."],
+  tip:"Не мойте окна на прямом солнце: вода высыхает раньше, чем вы её снимете, и остаются разводы.",warn:"Нашатырь и уксус не смешивайте в одном растворе и не добавляйте к хлорке."},
+ {t:"Зеркала без разводов",need:["две салфетки из микрофибры","средство для стёкол или вода с уксусом"],
+  steps:["Протрите зеркало сухой салфеткой от пыли.","Брызгайте средство на салфетку, а не на зеркало: так не будет потёков.","Протрите влажной салфеткой зигзагом сверху вниз, сразу отполируйте сухой."],
+  tip:"Чтобы зеркало в ванной не запотевало, натрите его тонким слоем пены для бритья и отполируйте досуха."},
+ {t:"Засохшие следы от дождя и птиц",need:["пульверизатор с водой","скребок для стекла"],
+  steps:["Обильно намочите пятно, подождите 5 минут.","Счистите скребком под углом 30°, держа стекло мокрым.","Домойте как обычно."]},
+ {t:"Пожелтевшие пластиковые рамы и подоконники",need:["сода","средство для посуды","меламиновая губка"],
+  steps:["Смешайте 2 ст. л. соды с ложкой средства для посуды до кашицы.","Нанесите на 15 минут, потрите мягкой губкой.","Остатки снимите меламиновой губкой, смойте водой."],
+  warn:"Не используйте ацетон, растворители и металлические губки: пластик помутнеет."},
+ {t:"Следы от скотча и наклеек",need:["фен","растительное масло","средство для посуды"],
+  steps:["Подогрейте наклейку феном 30 секунд и снимите.","Остатки клея смажьте растительным маслом, через 10 минут сотрите.","Смойте масло средством для посуды."]},
+ {t:"Жалюзи",need:["старый носок или перчатка","мыльная вода","ванна"],
+  steps:["Горизонтальные: наденьте носок на руку, смочите мыльной водой и протирайте каждую ламель, зажав её между пальцами.","Сильно грязные снимите и замочите в ванне с мыльной водой на 20 минут, ополосните душем.","Тканевые вертикальные пылесосьте насадкой-щёткой."]},
+ {t:"Сетки от комаров",need:["душ","мягкая щётка","средство для посуды"],
+  steps:["Снимите сетку и отнесите в ванну.","Намыльте мягкой щёткой, смойте душем.","Поставьте сохнуть вертикально."]}
+]},
+{id:"bath",cat:"Ванная и туалет",cover:"bath",pos:"30% 50%",sub:"Налёт, плесень, засоры",items:[
+ {t:"Пожелтевшая раковина",img:"sink",need:["сода","перекись 3%","лимонная кислота","кислородный отбеливатель","меламиновая губка"],
+  steps:["Узнайте, что за желтизна. Рыжие потёки — это ржавчина или налёт, их снимает кислота. Общая желтизна — въевшаяся грязь, её снимает щёлочь или отбеливатель.","Налёт: 2 ст. л. лимонной кислоты на стакан горячей воды, смочите салфетки, накройте жёлтое на 30–60 минут, ототрите.","Общая желтизна: закройте слив, налейте горячую воду с 2–3 ложками кислородного отбеливателя на 2–3 часа или на ночь.","Остатки — кашица из соды с перекисью и меламиновая губка."],
+  warn:"Акриловые раковины и ванны нельзя тереть порошками, металлическими губками и крепкими кислотами — только гели для акрила."},
+ {t:"Ванна и плитка",img:"bath",need:["средство для ванной или раствор лимонной кислоты","губка","старая зубная щётка"],
+  steps:["Сбрызните поверхности средством сверху вниз, подождите 5–10 минут.","Пройдитесь губкой, швы плитки — зубной щёткой.","Смойте душем и вытрите насухо: так налёт копится гораздо медленнее."]},
+ {t:"Известковый налёт на кранах",img:"faucet",need:["лимонная кислота или уксус 9%","салфетки или пакет","резинка"],
+  steps:["Краны и смесители: оберните салфеткой, смоченной уксусом, на 30–60 минут.","Лейку душа опустите в пакет с уксусом, закрепите резинкой и оставьте на ночь.","Смойте водой, отполируйте сухой тряпкой."],
+  tip:"Протирайте кран насухо после использования — налёт почти перестанет появляться."},
+ {t:"Ржавчина",img:"faucet",need:["лимонная или щавелевая кислота","гель от ржавчины","щётка"],
+  steps:["Свежие рыжие потёки: паста из лимонной кислоты с каплей воды, на 30 минут, ототрите.","Старая ржавчина: специальный гель от ржавчины на 10–15 минут, по инструкции.","Хорошо смойте и вытрите."],
+  tip:"Ржавые потёки появляются от подтекающего крана. Пока его не починить, они будут возвращаться."},
+ {t:"Плесень в швах плитки",need:["средство против плесени или хлорный гель","щётка","перчатки"],
+  steps:["Откройте дверь и включите вытяжку.","Нанесите средство на швы на 15–30 минут.","Потрите щёткой, смойте и вытрите насухо.","Если плесень проросла вглубь и не отмывается, затирку лучше обновить."],
+  warn:"После хлорного средства не используйте в тот же день кислотные средства от налёта."},
+ {t:"Чёрные силиконовые швы",need:["хлорный гель","ватные диски или жгуты из ваты"],
+  steps:["Скрутите вату в жгуты, пропитайте хлорным гелем и уложите на шов.","Оставьте на ночь, утром смойте.","Если чернота осталась — плесень под силиконом. Шов нужно вырезать и нанести заново."]},
+ {t:"Унитаз",img:"toilet",need:["гель для унитаза","ёршик","средство от налёта и камня"],
+  steps:["Нанесите гель под ободок, оставьте на 10–15 минут.","Пройдитесь ёршиком, особенно под ободком, смойте.","Снаружи сиденье, крышку, кнопку и основание протрите дезинфицирующим средством отдельной тряпкой.","Мочевой камень: вычерпайте воду, нанесите кислотный гель или раствор лимонной кислоты на ночь."],
+  warn:"Хлорный гель и кислотный гель от камня используйте в разные дни. Смешивать их нельзя."},
+ {t:"Засор в раковине",need:["вантуз","мокрая тряпка","средство для труб"],
+  steps:["Закройте отверстие перелива мокрой тряпкой, иначе вантуз не сработает.","Налейте немного воды, чтобы вантуз был в ней, и сделайте 10–15 резких качков.","Не помогло — выкрутите сифон под раковиной (подставьте ведро) и промойте его.","Средство для труб используйте строго по инструкции, одно за раз."],
+  tip:"Раз в неделю пускайте горячую воду на 2–3 минуты: жир не успевает застывать в трубах."},
+ {t:"Запах из слива",need:["вода","перчатки"],
+  steps:["Если раковиной давно не пользовались, просто пустите воду: в сифоне высох водяной затвор, через него идёт запах из канализации.","Если не помогло — промойте сифон, там копятся волосы и мыло.","Проверьте трап в душе: решётку снимите и вычистите волосы."]},
+ {t:"Душевая кабина и стеклянная шторка",need:["сгон","раствор лимонной кислоты","микрофибра"],
+  steps:["После каждого душа снимайте воду со стекла сгоном — это 30 секунд.","Раз в неделю: раствор 1 ст. л. лимонной кислоты на 500 мл воды, на 10 минут, смыть и вытереть."]},
+ {t:"Шторка для ванной",need:["стиральная машина","2 полотенца"],
+  steps:["Пластиковую шторку стирайте в машине при 30–40° вместе с полотенцами — они оттирают налёт.","Без отжима, сушите расправленной на карнизе."]}
+]},
+{id:"kitchen",cat:"Кухня",cover:"kitchen",pos:"45% 50%",sub:"Плита, духовка, чайник",items:[
+ {t:"Плита и жир на фасадах",img:"kitchen",need:["сода","средство для посуды","горячая вода","меламиновая губка"],
+  steps:["Горячая вода с хорошей порцией средства для посуды растворяет свежий жир.","Старый жир: сода с каплей воды, на 15 минут, затем губка.","Решётки плиты замочите в горячей воде с содой на ночь."]},
+ {t:"Духовка",need:["сода","вода","уксус","скребок","перчатки"],
+  steps:["Смешайте полстакана соды с водой до густой пасты.","Намажьте стенки и дно холодной духовки, не трогая нагреватели. Оставьте на ночь.","Утром снимите пасту влажной губкой и скребком.","Сбрызните остатки раствором уксуса с водой 1:1 — сода зашипит, протрите начисто."],
+  tip:"Если в духовке есть пиролиз или каталитическая очистка, пользуйтесь ими по инструкции — это проще."},
+ {t:"Микроволновка за 10 минут",need:["миска воды","лимон или 2 ст. л. уксуса"],
+  steps:["Поставьте миску воды с лимоном или уксусом на 5 минут на полную мощность.","Не открывайте ещё 5 минут — пар размягчит грязь.","Протрите изнутри губкой."]},
+ {t:"Накипь в чайнике",need:["лимонная кислота 1–2 ст. л."],
+  steps:["Налейте полный чайник воды, добавьте 1–2 ст. л. лимонной кислоты.","Вскипятите и оставьте на 20 минут.","Вылейте, ополосните и прокипятите чистую воду 1–2 раза."],
+  tip:"Если вода жёсткая, делайте так раз в 2–4 недели — накипь не успевает нарасти толстым слоем."},
+ {t:"Неприятный запах в холодильнике",need:["сода","тёплая вода","активированный уголь или кофейная гуща"],
+  steps:["Найдите и выбросьте источник, проверьте ящики и уплотнитель двери.","Вымойте полки раствором 2 ст. л. соды на литр тёплой воды, вытрите насухо.","Прочистите дренажное отверстие на задней стенке ватной палочкой.","Поставьте открытую баночку соды или сухой кофейной гущи на полку."]},
+ {t:"Нагар на сковороде",need:["соль","сода","кастрюля большего размера"],
+  steps:["Чугун и нержавейка: насыпьте крупную соль и прокалите, потрите бумажным полотенцем.","Снаружи: прокипятите сковороду в большой кастрюле с водой и 3–4 ст. л. соды 20–30 минут, затем ототрите.","Чугун после мытья высушите на огне и смажьте тонким слоем масла."],
+  warn:"Антипригарное покрытие нельзя тереть солью, абразивом и металлом — только мягкая губка."},
+ {t:"Фильтр вытяжки",need:["большая кастрюля или раковина","кипяток","сода"],
+  steps:["Снимите металлический фильтр.","Положите в раковину, засыпьте 3–4 ст. л. соды и залейте кипятком, оставьте на 20 минут.","Потрите щёткой, промойте и высушите.","Угольные фильтры не моют — их меняют по инструкции."],
+  tip:"Многие металлические фильтры можно мыть в посудомойке. Проверьте инструкцию."},
+ {t:"Раковина из нержавейки",need:["сода","мягкая губка","микрофибра"],
+  steps:["Посыпьте влажную раковину содой и потрите губкой вдоль полос шлифовки.","Смойте и вытрите досуха микрофиброй: блеск появляется именно после сухой полировки."],
+  tip:"Капля растительного масла на сухой салфетке придаст стали блеск и защитит от пятен воды."},
+ {t:"Деревянная разделочная доска",need:["крупная соль","половинка лимона","масло для дерева"],
+  steps:["Посыпьте доску солью и потрите половинкой лимона — уходят запах и пятна.","Ополосните и сушите стоя, не в посудомойке.","Раз в месяц смазывайте пищевым маслом для дерева."]},
+ {t:"Губки и тряпки",need:[],
+  steps:["Отжимайте и сушите губку после каждого мытья: во влажной губке быстро плодятся бактерии.","Меняйте губку раз в 1–2 недели.","Тряпки стирайте при 60° и выше, не держите мокрыми в комке."]},
+ {t:"Мусорное ведро",need:["сода","средство для посуды"],
+  steps:["Раз в неделю мойте ведро горячей водой со средством для посуды.","Высушите и насыпьте на дно 1–2 ст. л. соды — она впитывает влагу и запах."]}
+]},
+{id:"floors",cat:"Полы, ковры, мебель",cover:"vacuum",pos:"35% 55%",sub:"Ламинат, ковёр, диван, пыль",items:[
+ {t:"Мытьё полов без разводов",need:["тёплая вода","средство для пола (немного)","швабра с микрофиброй","два ведра"],
+  steps:["Сначала пропылесосьте: песок с мокрой тряпкой царапает и оставляет полосы.","Средства лейте вдвое меньше, чем кажется нужным. Разводы почти всегда от лишнего моющего.","Мойте от дальнего угла к двери, часто полощите тряпку.","Второе ведро с чистой водой — для полоскания. Помутнела вода — меняйте.","Последний проход — хорошо отжатой микрофиброй."],
+  tip:"Для плитки и линолеума добавьте в воду для последнего прохода 2 ст. л. уксуса на ведро — снимает мыльную плёнку."},
+ {t:"Ламинат и паркет",need:["почти сухая швабра","средство для ламината"],
+  steps:["Тряпка должна быть влажной, а не мокрой: вода в стыках вздувает ламинат.","Лужи вытирайте сразу.","Паркет под маслом мойте только специальным средством для масла."],
+  warn:"Паровые швабры для ламината и паркета не подходят."},
+ {t:"Швы плитки на полу",need:["сода","кислородный отбеливатель","зубная щётка"],
+  steps:["Смешайте соду с кислородным отбеливателем и водой до пасты.","Нанесите на швы на 15 минут.","Потрите зубной щёткой, смойте."]},
+ {t:"Линолеум и следы от обуви",need:["тёплая вода с мылом","меламиновая губка или ластик"],
+  steps:["Мойте тёплой водой с мылом, без абразивов.","Чёрные следы от подошв сотрите меламиновой губкой или белым ластиком."]},
+ {t:"Освежить ковёр",need:["сода","сито","пылесос"],
+  steps:["Пропылесосьте ковёр.","Через сито посыпьте содой, оставьте на 1–2 часа (можно на ночь).","Тщательно пропылесосьте ещё раз."],
+  tip:"Вмятины от ножек мебели: положите кубик льда, дайте растаять и расчешите ворс щёткой."},
+ {t:"Пятно на ковре",need:["белая тряпка","средство для посуды","холодная вода"],
+  steps:["Промакивайте, не трите, от краёв к центру.","Нанесите раствор 1 ч. л. средства для посуды на стакан холодной воды, промакивайте.","Затем промокните чистой водой и сухим полотенцем, придавив сверху книгой."]},
+ {t:"Тканевый диван",need:["пылесос с насадкой","средство по ярлыку","мягкая щётка"],
+  steps:["Найдите ярлык под подушками. Буква W — можно чистить водой, S — только сухой химчисткой или растворителем, WS — оба способа, X — только пылесос.","Пропылесосьте, особенно складки.","Пятна: мыльная пена на щётке, затем промокнуть чистой влажной тряпкой.","Освежить: посыпать содой на 30 минут и пропылесосить."]},
+ {t:"Шерсть домашних животных",need:["резиновая перчатка","ролик","турбощётка"],
+  steps:["Наденьте слегка влажную резиновую перчатку и проведите по дивану — шерсть скатается в комки.","Ковры: резиновая щётка-скребок или турбощётка пылесоса.","Одежда: липкий ролик."]},
+ {t:"Пыль: как реже её вытирать",need:["микрофибра","увлажнитель"],
+  steps:["Вытирайте пыль сверху вниз: сначала шкафы и полки, потом столы и пол.","Только влажной микрофиброй: сухая тряпка поднимает пыль в воздух.","Держите влажность 40–60% — пыль меньше летает."],
+  tip:"Застелите верх кухонных шкафов пищевой плёнкой или бумагой: раз в пару месяцев просто снимите её вместе с пылью."}
+]},
+{id:"iron",cat:"Глажка",cover:"shirt",pos:"55% 50%",sub:"Рубашки, брюки, утюги",items:[
+ {t:"Как погладить рубашку",img:"shirt",need:["утюг с паром","пульверизатор","гладильная доска"],
+  steps:["Гладьте чуть влажную рубашку — сразу после стирки или сбрызнув водой.","Порядок: воротник (с изнанки, от уголков к центру) → манжеты → рукава → кокетка → перёд и спинка.","Рукава разложите по шву и гладьте, не доходя до сгиба, если не нужна стрелка.","Возле пуговиц гладьте с изнанки на полотенце.","Сразу повесьте на плечики и застегните верхнюю пуговицу."],
+  tip:"Начинайте с вещей для низкой температуры (синтетика, шёлк), потом хлопок и лён: утюг не надо ждать, пока остынет."},
+ {t:"Температура по ярлыку",need:[],
+  steps:["Одна точка в утюге на ярлыке — до 110°: синтетика, шёлк, вискоза, акрил.","Две точки — до 150°: шерсть, полиэстер, смесовые ткани.","Три точки — до 200°: хлопок и лён.","Перечёркнутый утюг — не гладить, только отпаривать."]},
+ {t:"Брюки со стрелками",need:["марля или тонкий хлопок","пульверизатор"],
+  steps:["Выверните и прогладьте карманы и пояс.","Сложите брючину так, чтобы внутренний и внешний швы совпали.","Гладьте через влажную марлю, прижимая утюг, а не возя им.","Дайте остыть на доске пару минут, потом повесьте."]},
+ {t:"Блестящие следы на тёмном",need:["марля","вода с уксусом 1:1"],
+  steps:["Тёмное и шерсть гладьте только с изнанки или через ткань.","Если блеск появился, прогладьте через марлю, смоченную раствором уксуса.","Дайте вещи провисеть и проветриться."]},
+ {t:"Без утюга",need:["горячий душ","плечики","фен"],
+  steps:["Повесьте вещь в ванной, включите горячий душ на 10–15 минут и закройте дверь — складки разгладятся паром.","Мелкие заломы: сбрызните водой и подсушите феном, натягивая ткань.","Можно разгладить влажным полотенцем, натянув вещь на ровной поверхности."]},
+ {t:"Пригар на подошве утюга",need:["карандаш для чистки утюга","старая хлопковая ткань","сода"],
+  steps:["Нагрейте утюг и проведите карандашом по подошве по инструкции, затем по старой ткани.","Холодную подошву с покрытием чистят кашицей соды и мягкой тряпкой.","Ножом и металлическими губками не скоблите."],warn:"Карандашом работайте над тканью у открытого окна — он дымит."},
+ {t:"Накипь в утюге",need:["инструкция утюга","дистиллированная вода"],
+  steps:["Используйте функцию самоочистки по инструкции, обычно раз в месяц.","Если вода жёсткая, многие производители советуют смешивать водопроводную и дистиллированную воду 1:1.","Уксус и лимонную кислоту заливайте только если это разрешает инструкция."]},
+ {t:"Какой утюг выбрать",img:"irons",need:[],
+  steps:["Подошва: керамика скользит и меньше прилипает, нержавейка надёжная и не царапается.","Паровой удар от 150 г/мин и постоянный пар от 35 г/мин справляются с мятым хлопком и льном.","Мощность 2200–2600 Вт — быстро нагревается и не остывает при паре.","Защита от накипи и система «антикапля» — обязательно, иначе капли на одежде.","Если гладите много, присмотритесь к парогенератору: он гладит почти вдвое быстрее, но больше и дороже."],
+  tip:"Для рубашек полезен заострённый нос подошвы — легче пройти у пуговиц."},
+ {t:"Утюг или отпариватель",need:[],
+  steps:["Отпариватель: платья, пиджаки, шторы, вещи с принтом и деликатные ткани. Быстро и без доски.","Утюг: рубашки с чётким воротником, брюки со стрелками, постельное бельё.","Идеально иметь оба, но если один — для рубашек и брюк нужен утюг."]}
+]},
+{id:"tech",cat:"Техника",cover:"vacuum",pos:"50% 60%",sub:"Пылесосы, швабры, уход",wide:true,items:[
+ {t:"Какой пылесос выбрать",img:"vacuum",need:[],
+  steps:["Вертикальный беспроводной — для ежедневной быстрой уборки в квартире. Смотрите на время работы от 40 минут и съёмный аккумулятор.","Робот-пылесос — поддерживает чистоту, пока вас нет. Берите с картой помещения и, если ламинат, с влажной уборкой. Углы и длинный ворс он не заменит.","Классический с мешком или контейнером — мощный, для ковров и большого дома.","Моющий пылесос — для глубокой чистки ковров и мягкой мебели, используется реже."],
+  tip:"Аллергикам нужен HEPA-фильтр класса H13 и контейнер, который вытряхивается без облака пыли. Хозяевам кошек и собак — турбощётка."},
+ {t:"Нужен ли пароочиститель",img:"steam",need:[],
+  steps:["Хорош для швов плитки, плиты, сантехники и дезинфекции без химии.","Не подходит для ламината, паркета, лакированной мебели и пластика, который боится жара."]},
+ {t:"Какую швабру выбрать",need:[],
+  steps:["Плоская швабра с микрофиброй — лучший выбор для большинства полов: меньше воды, нет разводов.","Швабра с ведром-отжимом — удобно не трогать тряпку руками.","Паровая швабра — для плитки и керамогранита, не для ламината.","Берите 2–3 сменные насадки и стирайте их при 60° без кондиционера."]},
+ {t:"Уход за робот-пылесосом",need:["ножницы","сухая салфетка"],
+  steps:["Перед уборкой уберите с пола провода, носки и шнурки.","Раз в неделю срезайте намотанные волосы с щёток и вытряхивайте фильтр.","Раз в месяц протирайте датчики и колёса сухой салфеткой."]},
+ {t:"Уход за пылесосом",need:[],
+  steps:["Вытряхивайте контейнер после каждой уборки — полный контейнер снижает тягу.","Фильтры промывайте или меняйте по инструкции.","Щётку освобождайте от волос: тяга падает, а мотор перегревается."]},
+ {t:"Уход за посудомойкой",need:["специальная соль","ополаскиватель","средство для чистки машины"],
+  steps:["Раз в неделю вынимайте и промывайте фильтр на дне.","Следите за солью и ополаскивателем — без них остаются белые разводы.","Раз в месяц запускайте пустую мойку на самом горячем режиме со средством для чистки."]}
+]}
+];
+
+const HACKS=[
+ ["Носок на руку","Старый носок, надетый на руку, — лучшая тряпка для жалюзи, плинтусов и рёбер батарей."],
+ ["Наволочка для вентилятора","Наденьте наволочку на лопасть и стяните — вся пыль останется внутри, а не на полу."],
+ ["Зубная щётка","Старая щётка дочищает швы плитки, основания кранов, ручки и решётку слива."],
+ ["Плёнка на шкафы","Застелите верх кухонных шкафов пищевой плёнкой. Раз в пару месяцев снимите её вместе с жирной пылью."],
+ ["Пена для бритья","Тонкий слой на зеркале в ванной — и оно не запотевает несколько недель."],
+ ["Сода в обувь","Насыпьте соду в старые носки и положите в обувь на ночь — запах уйдёт."],
+ ["Кофейная гуща","Сухая гуща в блюдце впитывает запахи в холодильнике и в шкафу."],
+ ["Бумага в ящике для овощей","Бумажное полотенце на дне ящика впитывает влагу — овощи дольше не гниют, ящик чище."],
+ ["Лёд для ковра","Кубик льда в вмятине от мебели: дайте растаять и расчешите ворс."],
+ ["Масло от наклеек","Растительное масло растворяет клей от ценников и наклеек на стекле и пластике."],
+ ["Резиновая перчатка","Влажная резиновая перчатка собирает шерсть с дивана лучше ролика."],
+ ["Вертикально и горизонтально","Окно снаружи мойте горизонтальными движениями, изнутри — вертикальными. Сразу видно, с какой стороны развод."],
+ ["Сверху вниз","Убирайте сверху вниз и от дальнего угла к двери — пыль и грязь не попадут на чистое."],
+ ["Правило двух минут","Если дело занимает меньше двух минут — сделайте сразу. Так не копятся мелочи."],
+ ["Корзина «не на месте»","Ходите по квартире с корзиной и собирайте всё лишнее, а раскладывайте в конце, по комнатам."],
+ ["Таймер на 15 минут","Уборка спринтом: поставьте таймер и убирайте одну зону. Когда время конечно, работа идёт быстрее."],
+ ["Сначала нанести, потом другое","Нанесите средство в ванной и, пока оно действует, протирайте пыль. Вернётесь — грязь уже размякла."],
+ ["Переноска для средств","Сложите средства и тряпки в одну корзину с ручкой и носите по комнатам."],
+ ["Сода на дно ведра","Ложка соды на дне мусорного ведра впитывает влагу и запах."],
+ ["Ватные палочки","Щель между плитой и столешницей, края раковины, кнопки — всё дочищается палочкой."],
+ ["Лимон и соль","Половинка лимона с солью убирает запах и пятна с деревянной доски."],
+ ["Микрофибра без кондиционера","Кондиционер забивает волокна, и тряпка перестаёт собирать пыль. Стирайте микрофибру без него."],
+ ["Сухой кран — без налёта","Вытирайте кран насухо после использования, и налёт почти перестанет появляться."],
+ ["Сгон после душа","30 секунд со сгоном после душа заменяют получасовую борьбу с налётом в конце недели."],
+ ["Пакеты в коробке","Пустая коробка от салфеток — удобное хранилище для пакетов: тянете по одному."],
+ ["Мел в шкафу","Несколько кусочков мела в мешочке впитывают сырость в шкафу и кладовке."],
+ ["Дверца стиралки открыта","Оставляйте дверцу и лоток машинки приоткрытыми — не будет запаха и плесени."],
+ ["Фольга вместо ёршика","Скомканная фольга оттирает решётку гриля и чугун (но не антипригар)."],
+ ["Сначала пыль, потом пылесос","Пыль с полок падает на пол — поэтому сначала вытирайте, а потом пылесосьте."],
+ ["Губка сушится стоя","Ставьте губку вертикально или на решётку — она быстрее сохнет и меньше пахнет."]
+];
+
+const PLAN=[
+ {t:"Каждый день",s:"10–15 минут",items:["Помыть посуду или загрузить посудомойку","Протереть столешницу, плиту и раковину","Разобрать корзину «не на месте»","Вынести мусор","Протереть раковину и кран в ванной насухо"]},
+ {t:"Раз в неделю",s:"1–2 часа",items:["Пропылесосить и помыть полы","Протереть пыль сверху вниз","Помыть ванну, раковину, унитаз","Протереть зеркала","Поменять полотенца","Помыть микроволновку","Ревизия холодильника: выбросить просроченное"]},
+ {t:"Раз в две недели",s:"",items:["Сменить постельное бельё","Помыть мусорное ведро","Протереть ручки дверей и выключатели"]},
+ {t:"Раз в месяц",s:"",items:["Почистить духовку","Помыть фильтр вытяжки","Стиралка: пустая стирка 90° с лимонной кислотой","Промыть фильтр посудомойки","Протереть плинтусы и двери","Постирать шторку в ванной","Убрать накипь в чайнике"]},
+ {t:"Раз в сезон",s:"",items:["Помыть окна","Постирать шторы","Пропылесосить и перевернуть матрас","Почистить ковры содой","Разобрать шкафы и отдать лишнее","Разморозить холодильник (если не No Frost)","Почистить фильтр насоса стиралки"]}
+];
+
+const KIT=[
+ {n:"Пищевая сода",f:["жир","нагар","запахи","мягкий абразив"],no:"Алюминиевая посуда темнеет, лак и глянец царапаются."},
+ {n:"Лимонная кислота",f:["накипь","известковый налёт","ржавчина"],no:"Мрамор и натуральный камень — разъедает."},
+ {n:"Уксус 9%",f:["налёт","блеск стёкол","запахи"],no:"Камень, мрамор. Никогда не смешивать с хлоркой."},
+ {n:"Перекись водорода 3%",f:["кровь","белые вещи","пятна на белом"],no:"Цветные ткани без проверки — может осветлить."},
+ {n:"Кислородный отбеливатель",f:["белое и цветное","замачивание","старые пятна"],no:"Шерсть и шёлк."},
+ {n:"Хлорный отбеливатель",f:["плесень","дезинфекция","белый хлопок"],no:"Цветное, кислоты, нашатырь. Только с проветриванием."},
+ {n:"Хозяйственное мыло",f:["застирывание","пятна от фруктов","ручная стирка"],no:"Шерсть и шёлк — сушит волокна."},
+ {n:"Средство для посуды",f:["жир на ткани","кухня","универсальная мойка"],no:"Не лейте много на полы — будут разводы."},
+ {n:"Нашатырный спирт",f:["стёкла","зеркала","блеск"],no:"Никогда не смешивать с хлоркой."},
+ {n:"Медицинский спирт",f:["ручка","трава","клей","стекло"],no:"Лакированная мебель, ацетат."},
+ {n:"Меламиновая губка",f:["следы обуви","налёт","пластик"],no:"Глянец, лак, тефлон. Работать в перчатках."},
+ {n:"Микрофибра",f:["пыль","стёкла","полировка"],no:"Стирать без кондиционера."},
+ {n:"Сгон для стекла",f:["окна","душевая кабина","зеркала"],no:"Держите лезвие чистым — иначе полосы."}
+];
+
+const DEEP_KITCHEN=[
+ {t:"Жирные кухонные фасады",deep:true,lead:"Липкий слой на фасадах — это не просто жир. Он окислился, смешался с пылью и стал похож на тонкий лак. Поэтому одной водой его не взять.",
+  materials:[["Глянец, акрил","Микрофибра, средство для посуды, вода","Сода, меламин, абразив — останутся царапины"],["Матовая плёнка ПВХ","Средство для посуды, паста из масла и соды, меламин","Пар, кипяток, ацетон — плёнка отклеится"],["Крашеный МДФ (эмаль)","Мыльная вода, паста из масла и соды мягкой губкой","Спирт, растворители, металлические губки"],["Дерево и шпон","Почти сухая тряпка, мыльный раствор, потом воск или масло","Много воды, пар, уксус"]],
+  methods:[
+   {name:"Быстро",time:"5 минут",level:"Свежие брызги",need:["горячая вода","средство для посуды","микрофибра"],
+    steps:["В миске горячей воды разведите 1 ч. л. средства для посуды.","Отожмите в растворе микрофибру и протирайте фасад сверху вниз.","Сразу вытрите насухо второй салфеткой — так не будет мутных разводов."]},
+   {name:"Масло и сода",time:"15 минут",level:"Липкий налёт",need:["растительное масло 1 ст. л.","сода 2 ст. л.","мягкая губка","средство для посуды"],
+    steps:["Смешайте масло и соду в густую пасту.","Нанесите губкой на липкие места и мягко потрите круговыми движениями.","Оставьте на 5–10 минут: масло размягчит старый жир.","Смойте горячей водой со средством для посуды и вытрите насухо."]},
+   {name:"Паром",time:"20 минут",level:"Много фасадов",need:["отпариватель или пароочиститель","микрофибра"],
+    steps:["Направьте пар на участок 2–3 секунды с расстояния 10–15 см.","Сразу стирайте размякший жир микрофиброй.","Двигайтесь сверху вниз, участок за участком."],
+    warn:"Только для пластика, глянца и стекла. Плёнку ПВХ и шпон пар отклеит."}
+  ],
+  why:"Старый жир растворяется в жире. Растительное масло размягчает окислившийся слой, сода работает как мягкий абразив и щёлочь, а средство для посуды смывает всё вместе.",
+  mistakes:["Брызгать средство прямо на фасад: оно стекает в торцы и швы, и МДФ разбухает.","Тереть металлической губкой или чистящим порошком: царапины потом собирают жир ещё быстрее.","Мыть по кругу всю кухню одной тряпкой: жир просто размазывается."],
+  hacks:["Ручки и уголки дочищайте старой зубной щёткой, смоченной мыльной водой.","Оставляйте вытяжку включённой ещё 10 минут после готовки: меньше жира оседает на фасадах.","Начинайте с фасадов над плитой и рядом с ней — там жира больше всего, пока раствор чистый.","Раз в неделю протрите фасады у плиты влажной микрофиброй, и генеральная чистка почти не понадобится."]},
+ {t:"Решётка газовой плиты в жиру",deep:true,img:"kitchen",lead:"На решётке жир запекается слоями при каждой готовке. Тереть его бесполезно, его нужно размягчить и дать средству сделать работу за вас.",
+  methods:[
+   {name:"Пакет с нашатырём",time:"ночь + 10 минут",level:"Запущенный нагар",need:["плотный мусорный пакет","нашатырный спирт 1/2 стакана","перчатки"],
+    steps:["Положите решётку в плотный пакет, налейте полстакана нашатыря. Решётку заливать не нужно — работают пары.","Крепко завяжите пакет и оставьте на ночь на балконе или в ванной с открытым окном.","Утром откройте пакет на улице или у открытого окна, не наклоняясь над ним.","Нагар снимется губкой с горячей водой и средством для посуды."],
+    warn:"Только с проветриванием и в перчатках. Нашатырь нельзя смешивать с хлорными средствами."},
+   {name:"Ванна с содой",time:"ночь",level:"Сильный жир",need:["таз или ванна","кальцинированная сода 3–4 ст. л. на 5 л","средство для посуды","щётка","перчатки"],
+    steps:["Постелите на дно ванны старое полотенце, чтобы не поцарапать её.","Налейте горячую воду, растворите кальцинированную соду и ложку средства для посуды.","Опустите решётки на ночь.","Утром потрите щёткой и смойте."],
+    warn:"Кальцинированная сода сильнее пищевой и сушит кожу — только в перчатках. Алюминий от неё темнеет."},
+   {name:"Посудомойка",time:"1 цикл",level:"Каждую неделю",need:["посудомоечная машина"],
+    steps:["Проверьте инструкцию плиты: эмалированные решётки часто можно мыть в посудомойке.","Поставьте на самый горячий режим без другой посуды."],
+    warn:"Чугунные решётки в посудомойке ржавеют."}
+  ],
+  why:"Нашатырь — летучая щёлочь. Его пары проникают в запечённый жир без трения и разрыхляют его изнутри, поэтому утром нагар отходит пластами.",
+  mistakes:["Скоблить эмаль ножом или металлической щёткой: появятся сколы, и под ними начнётся ржавчина.","Оставлять чугунную решётку мокрой: к утру появится рыжий налёт.","Мыть горячую решётку холодной водой: эмаль может треснуть."],
+  hacks:["Протирайте решётку, пока она тёплая (не горячая) после готовки: свежий жир снимается одним движением.","Чугун после мытья прогрейте на конфорке досуха и протрите каплей масла: он не заржавеет и меньше пачкается.","Для замачивания большой решётки подойдёт глубокий противень из духовки."]},
+ {t:"Сетка-фильтр вытяжки",deep:true,lead:"Металлическая сетка над плитой собирает жир, который иначе осел бы на фасадах и потолке. Когда она забита, вытяжка гудит, а тянет плохо.",
+  methods:[
+   {name:"Кипячение",time:"30 минут",level:"Стальная сетка",need:["большая кастрюля или противень","пищевая сода 1/2 стакана","щётка"],
+    steps:["Вскипятите воду в самой большой кастрюле, постепенно всыпьте соду: вода вспенится.","Опустите сетку и кипятите 10–15 минут. Если не помещается — кипятите по половине и переверните.","Достаньте, потрите щёткой под горячей водой, высушите."]},
+   {name:"Кипяток в раковине",time:"30 минут",level:"Не помещается в кастрюлю",need:["раковина или ванна","кипяток","средство для посуды","сода"],
+    steps:["Положите сетку в раковину, засыпьте содой и полейте средством для посуды.","Залейте кипятком из чайника, оставьте на 20 минут.","Потрите щёткой и промойте."]},
+   {name:"Посудомойка",time:"1 цикл",level:"Профилактика раз в месяц",need:["посудомоечная машина"],
+    steps:["Поставьте сетку вертикально по краю нижней корзины.","Включите интенсивный режим без другой посуды."]}
+  ],
+  why:"Горячая вода плавит жир, а щёлочь из соды превращает его в подобие мыла, которое легко смывается.",
+  mistakes:["Кипятить алюминиевую сетку с кальцинированной содой или «Кротом»: она почернеет. Как узнать алюминий — сетка лёгкая и магнит к ней не липнет.","Мыть угольный фильтр: он не моется, его меняют.","Ставить сетку на место мокрой: в вытяжку попадёт влага."],
+  hacks:["Для алюминиевой сетки берите только пищевую соду и средство для посуды, без кальцинированной соды.","Пока сетка сохнет, протрите корпус вытяжки изнутри — там тот же жир.","Чистите сетку раз в месяц, и каждая чистка займёт 10 минут вместо часа."]}
+];
+const DEEP_WASHER=[
+ {t:"Генеральная чистка стиралки за час",deep:true,lead:"Порядок важен: сначала механическая чистка, потом хлор для резины, и только в другой день — кислота от накипи. Смешивать их в машине нельзя.",
+  methods:[
+   {name:"Весь план",time:"1 час",level:"Раз в 3 месяца",need:["кислородный отбеливатель","хлорсодержащее средство","тряпки","миска","старая зубная щётка"],
+    steps:["Лоток: нажмите на защёлку и вытащите его целиком. Замочите в горячей воде с кислородным отбеливателем на 30 минут.","Канал лотка в корпусе почистите зубной щёткой: там прячется чёрная слизь.","Манжета: отогните резину и удалите плесень по способу из раздела «Резина в плесени».","Фильтр насоса (внизу спереди за крышкой): подставьте миску и тряпку, медленно открутите, достаньте монеты, ворс, косточки от белья.","Соберите всё и запустите пустую стирку на 60° без средств, чтобы вымыть остатки хлора.","Накипь — в другой день, отдельным циклом с лимонной кислотой."],
+    warn:"Хлор и лимонную кислоту никогда не используйте в одном цикле."}
+  ],
+  why:"Неприятный запах и чёрные точки — это бактерии и плесень, которым нужны влага, тепло и остатки моющего средства. Если убрать хотя бы влагу, они почти не растут.",
+  mistakes:["Стирать всё при 30–40°: в машине никогда не бывает достаточно горячо, чтобы налёт смывался.","Лить много кондиционера и геля: остатки оседают в шлангах и манжете и становятся пищей для плесени.","Закрывать дверцу сразу после стирки."],
+  hacks:["Раз в неделю делайте одну стирку при 60° (полотенца, постельное) — это лучшая профилактика.","Держите в ванной отдельную сухую тряпку только для манжеты и протирайте складку после каждой стирки.","Подсветите фонариком через отверстия барабана: если видно белые хлопья на нагревателе — пора чистить от накипи."]},
+ {t:"Резина в плесени",deep:true,lead:"Чёрные точки в складке манжеты — это плесень. Если её снять вовремя, резина остаётся целой. Если пропустить, плесень прорастает внутрь, и пятна уже не отмываются.",
+  methods:[
+   {name:"Хлорные жгуты",time:"40 минут",level:"Чёрные точки",need:["хлорсодержащее средство (гель)","ватные диски или жгуты из ваты","перчатки"],
+    steps:["Откройте окно, наденьте перчатки, отогните манжету.","Протрите складку сухой тряпкой и уложите в неё ватные жгуты, пропитанные хлорным гелем.","Оставьте на 30 минут, не дольше: резина от долгого контакта с хлором пересыхает.","Снимите вату, протрите складку влажной, потом сухой тряпкой.","Запустите пустую стирку на 60°."]},
+   {name:"Без хлора",time:"30 минут",level:"Лёгкий налёт или запах",need:["сода","перекись 3%","зубная щётка"],
+    steps:["Смешайте соду с перекисью до кашицы.","Нанесите в складку щёткой, оставьте на 15 минут.","Потрите и смойте влажной тряпкой, вытрите насухо."]},
+   {name:"Профилактика",time:"30 секунд",level:"После каждой стирки",need:["сухая тряпка"],
+    steps:["Протрите складку манжеты сухой тряпкой.","Оставьте дверцу и лоток приоткрытыми до следующей стирки."]}
+  ],
+  why:"В складке резины после стирки остаётся вода с остатками порошка и ворсом. В закрытой тёплой машине это идеальные условия для плесени.",
+  mistakes:["Тереть резину металлической губкой: появятся микротрещины, в них плесень заселится ещё глубже.","Оставлять хлор в складке на ночь: резина рассохнется и начнёт течь.","Сразу после хлора запускать стирку с лимонной кислотой или уксусом."],
+  hacks:["Если пятна остались после двух чисток — плесень проросла в резину. Это косметика: машина работает, а новую манжету можно заменить в сервисе.","Заглядывайте в нижнюю часть складки: там стоит вода, и там прячется больше всего грязи (и потерянные носки)."]},
+ {t:"Накипь в стиральной машине",deep:true,lead:"Накипь оседает на нагревателе. Он греет воду медленнее, расходует больше электричества и в итоге перегорает.",
+  methods:[
+   {name:"Лимонная кислота",time:"1 цикл",level:"Раз в 1–3 месяца",need:["лимонная кислота 60–100 г"],
+    steps:["Убедитесь, что в барабане нет вещей.","Засыпьте лимонную кислоту прямо в барабан или в отсек для порошка.","Запустите самую длинную стирку на 60°. На 90° эффект сильнее, но резине тяжелее.","После цикла протрите манжету и откройте фильтр: там могут быть хлопья накипи."],
+    warn:"Не превышайте дозу и не делайте это каждую неделю: кислота сушит резиновые детали."},
+   {name:"Специальное средство",time:"1 цикл",level:"Если боитесь за машину",need:["средство от накипи для стиральных машин"],
+    steps:["Используйте строго по инструкции на упаковке.","Многие производители машин советуют именно такие средства."]},
+   {name:"Профилактика",time:"0 минут",level:"Жёсткая вода",need:["смягчитель воды или порошок с ним"],
+    steps:["Узнайте жёсткость воды: подойдут тест-полоски для аквариумов.","Если вода жёсткая, используйте порошок со смягчителем или отдельный смягчитель — тогда чистка нужна реже."]}
+  ],
+  why:"Накипь — это соли кальция и магния. Кислота превращает их в растворимые соли, которые вымываются водой.",
+  mistakes:["Делать чистку с вещами: пятна и износ ткани.","Использовать уксус в больших количествах: он хуже растворяет накипь и сильнее действует на резину.","Ждать, пока машина начнёт долго греть воду."],
+  hacks:["После чистки откройте фильтр насоса: там часто собираются белые хлопья, которые могут его забить.","Если хлопьев накипи на нагревателе много, сделайте два цикла с половинной дозой, а не один с двойной."]},
+ {t:"Ржавчина в стиральной машине",deep:true,lead:"Барабан стиральной машины из нержавейки сам не ржавеет. Рыжие пятна почти всегда от забытого металла или от воды в трубах.",
+  methods:[
+   {name:"Найти источник",time:"10 минут",level:"Сначала всегда",need:["фонарик"],
+    steps:["Проверьте складку манжеты и отверстия барабана: скрепки, монеты, косточки от бюстгальтера.","Откройте фильтр насоса — металл часто застревает там.","Если ржавые пятна на всех вещах и в воде, причина в трубах: поможет фильтр на вход воды."]},
+   {name:"Пятна в барабане",time:"20 минут",level:"Рыжие следы",need:["лимонная кислота","мягкая губка"],
+    steps:["Смешайте лимонную кислоту с каплей воды до пасты.","Нанесите на пятна на 15 минут.","Протрите мягкой губкой, смойте и запустите полоскание."]},
+   {name:"Ржавчина снаружи",time:"1 час",level:"Сколы на корпусе",need:["наждачная бумага","преобразователь ржавчины","эмаль для бытовой техники"],
+    steps:["Отключите машину от сети.","Зачистите ржавчину мелкой наждачкой.","Нанесите преобразователь ржавчины, дайте высохнуть.","Закрасьте эмалью для бытовой техники в цвет корпуса."]}
+  ],
+  why:"Мелкий металлический предмет ржавеет в мокрой машине и окрашивает всё, к чему прикасается. Убрали предмет — пятна перестают появляться.",
+  mistakes:["Тереть барабан абразивом: царапины на нержавейке потом действительно начинают ржаветь.","Стирать бельё с косточками без мешка — так они и попадают под манжету."],
+  hacks:["Бюстгальтеры стирайте в мешке: это сохраняет и бельё, и машину.","Рыжее пятно на одежде после стирки уберите лимонной кислотой (смотрите «Ржавчина на ткани» в разделе «Пятна»)."]},
+ {t:"Лоток для порошка в чёрной слизи",deep:true,lead:"Лоток — самое заросшее место машины. В нём постоянно влажно, и остатки геля и кондиционера там просто гниют.",
+  methods:[
+   {name:"Замочить",time:"40 минут",level:"Обычная чистка",need:["кислородный отбеливатель","горячая вода","зубная щётка"],
+    steps:["Нажмите на защёлку в лотке (обычно она в отсеке кондиционера) и вытащите его полностью.","Замочите в горячей воде с кислородным отбеливателем на 30 минут.","Почистите щёткой все уголки и вставку кондиционера.","Канал в корпусе машины, куда вставляется лоток, почистите щёткой с тем же раствором."]}
+  ],
+  why:"Кислородный отбеливатель в горячей воде выделяет активный кислород, который убивает плесень и размягчает слизь без хлора.",
+  mistakes:["Чистить только лоток и забыть про канал над ним: слизь сверху снова попадёт в лоток."],
+  hacks:["После стирки оставляйте лоток выдвинутым на пару сантиметров — он высохнет, и слизь не появится.","Если используете гель, проверьте: не налипает ли он в отсеке. Иногда лучше лить его прямо в барабан в специальном шарике."]}
+];
+const NEW_HACKS=[
+ ["Масло против жира","Липкий жир на фасадах растворяется растительным маслом с содой. Звучит странно, но жир растворяется в жире."],
+ ["Пакет и нашатырь","Решётку плиты на ночь в пакет с полстакана нашатыря — утром нагар снимается губкой."],
+ ["Магнит для фильтра","Магнит не липнет к сетке вытяжки — значит она алюминиевая, и её нельзя кипятить с кальцинированной содой."],
+ ["Фонарик в барабан","Посветите через отверстия барабана: белые хлопья на нагревателе — сигнал почистить машину от накипи."],
+ ["Лоток выдвинут","Оставляйте лоток стиралки выдвинутым после стирки — чёрная слизь не появится."],
+ ["Тёплая решётка","Протирайте решётку плиты, пока она тёплая после готовки: свежий жир снимается одним движением."]
+];
+
+(function(){
+ const K=CATS.find(c=>c.id==='kitchen');
+ K.items=K.items.filter(i=>i.t!=='Фильтр вытяжки');
+ const p=K.items.find(i=>i.t==='Плита и жир на фасадах');p.t='Плита и варочная панель';
+ K.items.unshift(...DEEP_KITCHEN);K.sub='Фасады, решётки, вытяжка';
+ const L=CATS.find(c=>c.id==='laundry');
+ L.items=L.items.filter(i=>i.t!=='Запах из стиральной машины');
+ L.items.unshift(...DEEP_WASHER);L.cat='Стирка и стиралка';L.sub='Резина, накипь, белое, пуховик';
+ HACKS.unshift(...NEW_HACKS);
+ CATS.forEach(c=>c.items.forEach(it=>{if(!it.steps)it.steps=it.methods.flatMap(m=>m.steps);if(!it.need)it.need=[...new Set(it.methods.flatMap(m=>m.need))]}));
+})();
+
+const HACK_TAGS=[["all","Все"],["kitchen","Кухня"],["bath","Ванная и туалет"],["laundry","Стирка и вещи"],["room","Комнаты и пыль"],["smell","Запахи"],["time","Экономия времени"]];
+const OLD_HACK_TAG={"Носок на руку":"room","Наволочка для вентилятора":"room","Зубная щётка":"bath","Плёнка на шкафы":"kitchen","Пена для бритья":"bath","Сода в обувь":"smell","Кофейная гуща":"smell","Бумага в ящике для овощей":"kitchen","Лёд для ковра":"room","Масло от наклеек":"room","Резиновая перчатка":"room","Вертикально и горизонтально":"room","Сверху вниз":"time","Правило двух минут":"time","Корзина «не на месте»":"time","Таймер на 15 минут":"time","Сначала нанести, потом другое":"time","Переноска для средств":"time","Сода на дно ведра":"smell","Ватные палочки":"kitchen","Лимон и соль":"kitchen","Микрофибра без кондиционера":"laundry","Сухой кран — без налёта":"bath","Сгон после душа":"bath","Пакеты в коробке":"kitchen","Мел в шкафу":"smell","Дверца стиралки открыта":"laundry","Фольга вместо ёршика":"kitchen","Сначала пыль, потом пылесос":"room","Губка сушится стоя":"kitchen","Масло против жира":"kitchen","Пакет и нашатырь":"kitchen","Магнит для фильтра":"kitchen","Фонарик в барабан":"laundry","Лоток выдвинут":"laundry","Тёплая решётка":"kitchen"};
+const MORE_HACKS=[
+ ["Блендер моет себя сам","Налейте тёплую воду с каплей средства для посуды и включите на 30 секунд. Ополосните — и всё, ножи трогать не нужно.","kitchen"],
+ ["Пригоревшая кастрюля","Залейте дно водой, добавьте 2 ст. л. соды и прокипятите 10 минут. Нагар отойдёт деревянной лопаткой.","kitchen"],
+ ["Тёрка после сыра","Натрите кусочек сырой картошки или корку хлеба — они вытащат сыр из отверстий, и тёрка отмоется за секунды.","kitchen"],
+ ["Жир не в раковину","Остывший жир со сковороды слейте в банку или пакет и выбросьте. Жир в трубах — главная причина засоров на кухне.","kitchen"],
+ ["Коврики на полки холодильника","Застелите полки силиконовыми ковриками или пищевой плёнкой. Пролилось — сняли, сполоснули, положили обратно.","kitchen"],
+ ["Запас пакетов на дне ведра","Положите на дно мусорного ведра несколько свёрнутых пакетов. Вынесли мусор — новый пакет уже под рукой.","kitchen"],
+ ["Полотенце под доску","Подложите влажное полотенце под разделочную доску — она не будет ездить по столешнице.","kitchen"],
+ ["Сначала стаканы","Мойте посуду от чистой к грязной: стаканы, тарелки, потом сковороды. Вода и губка дольше остаются чистыми.","kitchen"],
+ ["Чашки без чайного налёта","Коричневый налёт в кружках снимет щепотка соды на влажной губке. Без порошков и замачивания.","kitchen"],
+ ["Шипучая таблетка в унитаз","Бросьте в унитаз на ночь таблетку для очистки зубных протезов. Утром пройдитесь ёршиком — лёгкий налёт уйдёт.","bath"],
+ ["Ёршик сохнет над чашей","После чистки зажмите ручку ёршика сиденьем над унитазом на пару минут — вода стечёт в чашу, а не в подставку.","bath"],
+ ["Сеточка в слив","Сеточка-волосоуловитель в ванне и душе стоит копейки и почти избавляет от засоров.","bath"],
+ ["Пропитка для швов","После чистки швов плитки нанесите водоотталкивающую пропитку для затирки. Грязь и плесень въедаются гораздо медленнее.","bath"],
+ ["Полотенца не сохнут вдвое","Развешивайте полотенце в один слой, а не сложенным. Высыхает быстрее и не начинает пахнуть сыростью.","bath"],
+ ["Средства там, где ими пользуетесь","Держите отдельный набор под раковиной в ванной. Когда всё под рукой, протереть раковину — дело одной минуты.","bath"],
+ ["Носки в мешке","Стирайте носки в отдельном сетчатом мешке. Пары не теряются, а сортировать их потом вдвое быстрее.","laundry"],
+ ["Встряхните перед сушкой","Хорошенько встряхните вещь, прежде чем повесить. Складок меньше — гладить почти не придётся.","laundry"],
+ ["Рубашки сохнут на плечиках","Повесьте рубашку сразу после стирки на плечики и застегните верхнюю пуговицу. Половина складок разгладится сама.","laundry"],
+ ["Наизнанку","Джинсы, тёмные и яркие вещи стирайте вывернутыми. Меньше линяют, меньше катышков и вытертых мест.","laundry"],
+ ["Молния заедает","Проведите по зубчикам молнии простым графитовым карандашом — она снова будет ходить легко.","laundry"],
+ ["Свитера не на плечиках","Шерстяные свитера храните сложенными: на плечиках они вытягиваются и появляются «рожки» на плечах.","laundry"],
+ ["Одежда электризуется","Проведите по вещи металлической вешалкой с изнанки — статическое электричество уйдёт.","laundry"],
+ ["Подошва белых кроссовок","Серую резиновую подошву отмоет меламиновая губка за пару минут, даже без средств.","laundry"],
+ ["Кедр и лаванда в шкафу","Кедровые бруски или мешочки с сухой лавандой отпугивают моль и дают шкафу приятный запах.","laundry"],
+ ["Пыль за батареей","Повесьте за батарею мокрое полотенце и продуйте рёбра сверху феном. Вся пыль окажется на полотенце.","room"],
+ ["Экраны — только сухой тряпкой","Телевизор и ноутбук протирайте сухой микрофиброй. Спирт и средства для стёкол портят антибликовое покрытие.","room"],
+ ["Клавиатура","Переверните клавиатуру и постучите по ней. Пыль между клавишами соберите мягкой кисточкой или полоской малярного скотча.","room"],
+ ["Пульт и выключатели","Пульт, выключатели и дверные ручки трогают чаще всего. Раз в неделю протирайте их чуть влажной салфеткой.","room"],
+ ["Листья растений","Мелкие листья протрите влажной тряпкой, крупные растения раз в месяц ополосните под тёплым душем. Пыль на листьях мешает им дышать.","room"],
+ ["Плафоны в мыльной воде","Снимите стеклянные плафоны (свет выключен!) и замочите в тёплой воде со средством для посуды. Вытереть насухо — и как новые.","room"],
+ ["Вентиляционная решётка","Снимите решётку вытяжки в ванной или на кухне и вымойте под душем со средством для посуды. Тяга станет заметно лучше.","room"],
+ ["Коврик снаружи и внутри","Коврик у двери с обеих сторон задерживает песок, и полы в квартире пачкаются гораздо медленнее.","room"],
+ ["Запах лука с рук","Потрите руки о нержавеющую ложку или раковину под холодной водой, затем вымойте с мылом.","smell"],
+ ["Запах подгоревшего","Прокипятите 10 минут кастрюлю воды с ломтиками лимона и палочкой корицы. Запах гари уйдёт быстрее, чем от проветривания.","smell"],
+ ["Пахнет контейнер","Положите в пластиковый контейнер скомканную газету или ложку соды и закройте на ночь — запах уйдёт.","smell"],
+ ["Апельсиновые корки","Высушенные корки цитрусовых в мешочке освежают шкаф и ящики без ароматизаторов.","smell"],
+ ["Метки питомцев","Запах мочи на ковре и диване убирают только энзимные (ферментные) очистители. Обычные средства его лишь маскируют.","smell"],
+ ["Одна зона в день","Понедельник — кухня, вторник — ванная, среда — пыль. 20 минут в день вместо целой субботы на уборку.","time"],
+ ["Плейлист вместо таймера","Сделайте плейлист на 20 минут. Пока играет музыка, убираете одну зону. Музыка закончилась — уборка тоже.","time"],
+ ["Кухня чистая перед сном","10 минут вечером: посуда, столешница, плита. Утро начинается без завала, и весь день проще.","time"],
+ ["Сначала разбор, потом уборка","Сначала уберите вещи на места, потом мойте. По захламлённым поверхностям тряпкой проходят вдвое дольше.","time"],
+ ["Не всё сразу","Генеральную уборку растяните по плану на месяц: каждый день по одному пункту. Так она не отнимает выходные.","time"]
+];
+HACKS.forEach(h=>{h[2]=OLD_HACK_TAG[h[0]]||"time"});
+HACKS.push(...MORE_HACKS);
+
+const SHOP_GROUPS=[
+ {id:"chem",t:"Средства, которые правда работают"},
+ {id:"cheap",t:"Копеечные, но незаменимые"},
+ {id:"tools",t:"Инструменты: окупаются за месяц"},
+ {id:"tech",t:"Техника, на которую не жалко денег"}
+];
+const SHOP=[
+ {id:"shop-1",g:"chem",label:"ШУМАНИТ",sub:"Bagi «Шуманит», спрей 400 мл",price:2,
+  what:"Жир на плите, духовке, решётках, вытяжке. Снимает даже старый нагар.",
+  why:"Один из самых сильных бытовых жироудалителей. То, что сода берёт за ночь, он растворяет за 5–10 минут.",
+  how:"Брызнуть на холодную поверхность, подождать 5 минут, стереть влажной губкой, хорошо смыть водой.",
+  warn:"Очень едкий. Только в перчатках и с открытым окном. Не для алюминия, лака, дерева и стеклокерамики.",
+  link:"kitchen-2"},
+ {id:"shop-2",g:"chem",label:"SYNERGETIC",sub:"Synergetic, средства для ванной, кухни, посуды",price:2,
+  what:"Ежедневная уборка, когда в доме дети, аллергики или животные.",
+  why:"Биоразлагаемые, почти без запаха, хорошо смываются. Для ежедневной уборки этого хватает, а агрессивная химия нужна только для запущенных случаев.",
+  how:"Как обычное средство: нанести, подождать пару минут, протереть.",
+  warn:"Старый налёт и ржавчину не возьмёт — для них нужна кислота."},
+ {id:"shop-3",g:"chem",label:"АНТИПЯТИН",sub:"Мыло «Антипятин», брусок 90 г",price:1,
+  what:"Пятна от травы, жира, фруктов, косметики, воротники и манжеты.",
+  why:"Стоит как обычное мыло, а работает как пятновыводитель. Брусок живёт месяцами.",
+  how:"Намочить пятно, натереть мылом, оставить на 15–30 минут, потереть и постирать.",
+  link:"stains-9"},
+ {id:"shop-4",g:"chem",label:"КИСЛОРОДНЫЙ ОТБЕЛИВАТЕЛЬ",sub:"Vanish Oxi Action или любой «кислородный» порошок",price:2,
+  what:"Посеревшее белое, старые пятна, замачивание, лоток стиральной машины.",
+  why:"Отбеливает без хлора и не портит большинство цветных тканей. Половина советов на этом сайте начинается с него.",
+  how:"Замочить на 1–6 часов в тёплой воде (40–60°) или добавить ложку в барабан к порошку.",
+  warn:"Не для шерсти и шёлка. Ищите на упаковке слова «кислородный» или «перкарбонат натрия».",
+  link:"laundry-6"},
+ {id:"shop-5",g:"chem",label:"DOMESTOS",sub:"Domestos, хлорный гель 750 мл",price:1,
+  what:"Унитаз, плесень в швах плитки, чёрный силикон, дезинфекция.",
+  why:"Густой гель держится на стенках и в швах, а хлор убивает плесень, которую не берут обычные средства.",
+  how:"Нанести, оставить на 10–30 минут, смыть. На швы — ватными жгутами.",
+  warn:"Никогда в один день с кислотными средствами и нашатырём. Проветривать.",
+  link:"bath-5"},
+ {id:"shop-6",g:"chem",label:"САНОКС",sub:"«Санокс», гель от ржавчины и налёта. Классический «Санокс» получил высшую оценку Роскачества",price:1,
+  what:"Рыжие потёки, мочевой камень, известковый налёт в ванной и туалете.",
+  why:"Недорогой кислотный гель, который справляется с ржавчиной там, где лимонной кислоты мало.",
+  how:"Нанести на 10–15 минут, потереть щёткой, хорошо смыть.",
+  warn:"Не для акриловых ванн, мрамора и хрома с повреждённым покрытием. Не смешивать с хлоркой.",
+  link:"bath-4"},
+ {id:"shop-7",g:"chem",label:"ДИАМАНТ",sub:"Карандаш для чистки подошвы утюга",price:1,
+  what:"Пригоревшая синтетика и коричневый налёт на подошве утюга.",
+  why:"Стоит дешевле чашки кофе, а утюг снова скользит. Без карандаша пригар обычно скоблят и портят подошву.",
+  how:"Нагреть утюг, провести карандашом по подошве над старой тканью, протереть.",
+  warn:"Дымит — работать у открытого окна. Не наносить на отверстия для пара.",
+  link:"iron-6"},
+ {id:"shop-8",g:"chem",label:"ОЧИСТИТЕЛЬ ДЛЯ СТЕКЛОКЕРАМИКИ",sub:"Гель или крем для варочных панелей + скребок",price:2,
+  what:"Пригоревшее молоко, сахар и разводы на чёрной стеклянной плите.",
+  why:"Обычные порошки царапают стеклокерамику навсегда. Специальный крем чистит и оставляет защитную плёнку.",
+  how:"Пригар снять скребком под углом, затем крем, отполировать микрофиброй.",
+  link:"kitchen-4"},
+ {id:"shop-9",g:"cheap",label:"ЛИМОННАЯ КИСЛОТА",sub:"Пищевая, пакетик 50–100 г",price:1,
+  what:"Накипь в чайнике и стиралке, налёт на кранах, ржавые потёки.",
+  why:"Самое дешёвое средство против накипи. Специальные средства часто сделаны на той же кислоте, но стоят в разы дороже.",
+  how:"Чайник: 1–2 ст. л. на полный чайник. Стиралка: 60–100 г на пустую стирку.",
+  link:"kitchen-7"},
+ {id:"shop-10",g:"cheap",label:"СОДА КАЛЬЦИНИРОВАННАЯ",sub:"Не путать с пищевой, пачка 500–600 г",price:1,
+  what:"Замачивание решёток, кастрюль, смягчение воды при стирке.",
+  why:"В несколько раз сильнее пищевой соды и стоит копейки. Отличная замена дорогим жироудалителям для замачивания.",
+  how:"3–4 ст. л. на 5 л горячей воды, замочить на ночь.",
+  warn:"Только в перчатках. Алюминий от неё темнеет."},
+ {id:"shop-11",g:"cheap",label:"МЕЛАМИНОВАЯ ГУБКА",sub:"Белая губка-«ластик», упаковка 5–10 шт",price:1,
+  what:"Следы обуви, ручки на обоях, налёт на пластике, жёлтые подоконники.",
+  why:"Работает как очень мелкий ластик: стирает грязь просто водой, без химии.",
+  how:"Смочить, отжать, тереть уголком. Губка стирается — это нормально.",
+  warn:"Царапает глянец, лак и антипригарное покрытие. Работать в перчатках.",
+  link:"floors-4"},
+ {id:"shop-12",g:"cheap",label:"МИКРОФИБРА",sub:"Набор салфеток разных цветов",price:1,
+  what:"Пыль, стёкла, зеркала, полировка.",
+  why:"Собирает пыль, а не гоняет её. Разные цвета — для разных зон: кухня, ванная, туалет, стёкла.",
+  how:"Влажной — пыль, сухой — полировка. Стирать при 60° без кондиционера.",
+  link:"floors-9"},
+ {id:"shop-13",g:"cheap",label:"САЛФЕТКИ-ЛОВУШКИ ЦВЕТА",sub:"Для стирки, упаковка 10–30 шт",price:1,
+  what:"Стирка разноцветного вместе без риска окрасить белое.",
+  why:"Одна салфетка дешевле, чем испорченная белая рубашка.",
+  how:"Положить в барабан вместе с вещами. Если салфетка сильно окрасилась — эту вещь дальше стирайте отдельно.",
+  link:"laundry-7"},
+ {id:"shop-14",g:"tools",label:"ПЛОСКАЯ ШВАБРА С ОТЖИМОМ",sub:"Например Vileda, Leifheit или с ведром-отжимом",price:2,
+  what:"Мытьё полов без разводов и без рук в воде.",
+  why:"Микрофибра почти не оставляет воды на полу, поэтому нет разводов и вздутого ламината.",
+  how:"Отжимать хорошо, насадки стирать при 60°.",
+  link:"tech-3"},
+ {id:"shop-15",g:"tools",label:"СГОН ДЛЯ СТЕКЛА",sub:"Резиновый сгон 25–35 см",price:1,
+  what:"Окна, душевая кабина, зеркала.",
+  why:"30 секунд после душа заменяют полчаса борьбы с налётом.",
+  how:"Сверху вниз полосами внахлёст, лезвие вытирать после каждой полосы.",
+  link:"bath-10"},
+ {id:"shop-16",g:"tools",label:"МАШИНКА ДЛЯ КАТЫШКОВ",sub:"На батарейках или от USB",price:1,
+  what:"Свитера, пальто, диванные подушки, пледы.",
+  why:"Вещь, которую хотели выбросить, снова выглядит новой.",
+  how:"Работать по сухой ткани, натянув её на ровной поверхности.",
+  link:"laundry-9"},
+ {id:"shop-17",g:"tech",label:"СТЕКЛООЧИСТИТЕЛЬ-ПЫЛЕСОС",sub:"Аккумуляторный, например Kärcher WV",price:3,
+  what:"Окна, зеркала, плитка, душевые кабины.",
+  why:"Сам собирает воду со стекла. Окна моются вдвое быстрее и действительно без разводов.",
+  how:"Сбрызнуть стекло, протереть насадкой, провести пылесосом сверху вниз."},
+ {id:"shop-18",g:"tech",label:"РУЧНОЙ ПАРООЧИСТИТЕЛЬ",sub:"Компактный, с насадками-щётками",price:3,
+  what:"Швы плитки, плита, сантехника, вытяжка, дезинфекция без химии.",
+  why:"Горячий пар растворяет жир и налёт там, куда не залезает губка.",
+  how:"Пар на 2–3 секунды, сразу стереть микрофиброй.",
+  warn:"Не для ламината, паркета, лака и плёнки ПВХ.",
+  link:"tech-2"},
+ {id:"shop-19",g:"tech",label:"ОТПАРИВАТЕЛЬ",sub:"Вертикальный или ручной",price:2,
+  what:"Платья, пиджаки, шторы, вещи с принтом — без гладильной доски.",
+  why:"Освежает вещь за минуту прямо на плечиках. Для многих вещей заменяет утюг.",
+  how:"Вести паром сверху вниз, слегка натягивая ткань.",
+  link:"iron-9"},
+ {id:"shop-20",g:"chem",label:"CILLIT BANG",sub:"Спрей «Антиналёт + блеск», 750 мл",price:2,
+  what:"Известковый налёт на плитке, стенках душевой, смесителях.",
+  why:"Пена держится на вертикальных стенках и не стекает, поэтому успевает растворить налёт там, где жидкость сразу убегает вниз.",
+  how:"Нанести, подождать 5 минут, смыть водой и вытереть насухо.",
+  warn:"Не оставлять надолго на мраморе, эмали и нержавейке.",
+  link:"bath-10"},
+ {id:"shop-21",g:"chem",label:"UNICUM",sub:"Unicum, средство для плит и духовок",price:1,
+  what:"Пригоревший жир в духовке, на противнях и решётках.",
+  why:"Сильный жироудалитель по цене обычного средства. Хорошая замена «Шуманиту», если хочется дешевле.",
+  how:"Нанести на тёплую, не горячую поверхность, оставить на 15–20 минут, смыть.",
+  warn:"Резкий запах. Перчатки, вытяжка, открытое окно.",
+  link:"kitchen-5"},
+ {id:"shop-22",g:"chem",label:"DR. BECKMANN",sub:"Пятновыводитель «Эксперт»: ручка, жир, кровь, ржавчина",price:2,
+  what:"Одно конкретное трудное пятно, которое не берут универсальные средства.",
+  why:"У каждого флакона своя формула под свой тип пятна. Стоит купить тот, который нужен вашей семье чаще всего.",
+  how:"Нанести по инструкции на флаконе, затем постирать.",
+  warn:"Флакон «ручка и тушь» не возьмёт ржавчину, и наоборот. Читайте этикетку.",
+  link:"stains-8"},
+ {id:"shop-23",g:"chem",label:"БОС ПЛЮС MAXIMUM",sub:"Отбеливатель для белого белья",price:1,
+  what:"Посеревшее и пожелтевшее белое бельё.",
+  why:"Недорогой и сильный, отбеливает уже при 40°.",
+  how:"Добавить в отсек с порошком или замочить белое на пару часов.",
+  warn:"Только для белого."},
+ {id:"shop-24",g:"chem",label:"GRASS",sub:"Чистящий крем для кухни и ванной",price:1,
+  what:"Раковины, хром, плита, натуральный камень.",
+  why:"Мягкий абразив без кислот. Подходит там, где кислотные средства нельзя.",
+  how:"Нанести на влажную губку, тереть без нажима, смыть.",
+  warn:"Не для глянцевых пластиковых фасадов."},
+ {id:"shop-25",g:"cheap",label:"РЕЗИНОВЫЕ ПЕРЧАТКИ",sub:"Плотные, с длинной манжетой",price:1,
+  what:"Любая уборка с химией.",
+  why:"Руки и маникюр дороже любого средства. С манжетой вода не затекает в рукав.",
+  how:"Две пары разного цвета: одна для кухни, другая для туалета."},
+ {id:"shop-26",g:"cheap",label:"ПУСТЫЕ РАСПЫЛИТЕЛИ",sub:"Флаконы с курком, 500 мл",price:1,
+  what:"Свои растворы: уксус, лимонная кислота, мыльная вода.",
+  why:"Своё средство в распылителе стоит копейки.",
+  how:"Подпишите маркером, что внутри.",
+  warn:"Никогда не наливайте в один флакон разные средства."}
+];
+const NOBUY=[
+ ["Пять «универсальных» средств","Для ежедневной уборки хватает одного мягкого средства. Остальное — под конкретную задачу: жир, налёт, плесень."],
+ ["Ароматизаторы вместо уборки","Они маскируют запах, но не убирают его источник. Сода, проветривание и чистый слив работают лучше."],
+ ["Кондиционер для полотенец и микрофибры","Покрывает волокна плёнкой: полотенца хуже впитывают, а тряпки перестают собирать пыль."],
+ ["Отдельное средство на каждую поверхность","Средство «для холодильника» и средство «для микроволновки» часто одно и то же. Читайте состав, а не название."],
+ ["Дешёвые губки большими пачками","Они крошатся и пахнут через пару дней. Лучше несколько хороших и менять раз в 1–2 недели."]
+];
+
+
+const AVAIL=new Set(["hero","wine","banana","berries","stains","windows","sink","bath","faucet","toilet","kitchen","shirt","irons","vacuum","steam","bath-2","bath-4","bath-5","bath-6","bath-8","bath-9","bath-10","bath-11","cover-floors","cover-laundry","floors-1","floors-2","floors-3","floors-4","floors-5","floors-6","floors-7","floors-8","floors-9","iron-1","kitchen-3","iron-2","iron-3","iron-4","iron-5","iron-6","iron-7","iron-9","kitchen-1","kitchen-2","kitchen-13","laundry-1","laundry-2","laundry-3","laundry-4","laundry-5","laundry-6","laundry-7","laundry-8","laundry-9","kitchen-4","kitchen-5","kitchen-6","kitchen-7","kitchen-8","kitchen-9","kitchen-10","kitchen-11","kitchen-12","stains-6","stains-7","stains-8","stains-9","stains-10","stains-11","stains-12","stains-13","stains-14","stains-15","laundry-10","laundry-11","laundry-12","laundry-13","page-hacks","page-kit","page-plan","page-safety","stains-4","stains-5","tech-1","tech-3","tech-4","tech-5","tech-6","windows-2","windows-3","windows-4","windows-5","windows-6","windows-7"]);
+const OWN={"stains-1":"wine","stains-2":"banana","stains-3":"berries","bath-1":"sink","bath-3":"faucet","bath-7":"toilet","iron-8":"irons","tech-2":"steam"};
+const COVER={stains:"stains",windows:"windows",bath:"bath",kitchen:"kitchen",iron:"shirt",tech:"vacuum",laundry:"cover-laundry",floors:"cover-floors"};
+CATS.forEach(c=>{c.cover=COVER[c.id];c.items.forEach((it,i)=>{it.id=c.id+"-"+(i+1);it.c=c;it.img=OWN[it.id]||it.id;it.own=AVAIL.has(it.img)})});
+const P=(key,small,pos)=>AVAIL.has(key)?`<img src="img/${key}${small?'-s':''}.webp" alt="" loading="lazy"${pos?` style="object-position:${pos}"`:''}>`:`<span class="ph" aria-hidden="true"></span>`;
+const ALL=CATS.flatMap(c=>c.items);
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pl=(n,a,b,c)=>n%10===1&&n%100!==11?a:(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?b:c);
+const ARR='<span class="arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></span>';
+const BAR='<div class="bar"><button class="logo" data-go="" aria-label="На главную"><span class="dot"></span>Шпаргалка хозяйки</button></div>';
+const back=(to,label)=>`<button class="back" data-go="${to}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg>${label}</button>`;
+const row=(it,showCat)=>`<button class="row${it.deep?' deeprow':''}" data-go="${it.id}">${P(it.img,1)}<span class="t">${it.deep?'<em class="badge">Подробный разбор</em>':''}<b>${esc(it.t)}</b><small>${showCat?esc(it.c.cat)+' · ':''}${it.deep?it.methods.length+' '+pl(it.methods.length,'способ','способа','способов')+' · '+it.hacks.length+' '+pl(it.hacks.length,'лайфхак','лайфхака','лайфхаков'):it.steps.length+' '+pl(it.steps.length,'шаг','шага','шагов')}</small></span>${ARR}</button>`;
+const SHIELD='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="M12 8v5M12 16.5v.3"/></svg>';
+const BULB='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>';
+const hk=(h,i)=>`<div class="hk"><span class="n">№ ${i+1}${typeof HACK_TAGS!=='undefined'&&h[2]?' · '+(HACK_TAGS.find(x=>x[0]===h[2])||['',''])[1]:''}</span><b>${esc(h[0])}</b><p>${esc(h[1])}</p></div>`;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+function bubbles(){let s='';[[8,34,9,0],[22,18,7,-3],[38,26,11,-6],[61,14,8,-2],[74,40,12,-8],[88,22,9,-4],[52,30,10,-10]].forEach(([l,sz,d,dl])=>s+=`<i style="left:${l}%;width:${sz}px;height:${sz}px;animation-duration:${d}s;animation-delay:${dl}s"></i>`);return `<div class="bubbles" aria-hidden="true">${s}</div>`}
+let dayIdx=Math.floor(Date.now()/864e5)%HACKS.length;
+
+function home(){
+  const total=ALL.length+HACKS.length;
+  app.innerHTML=`<div class="view">${BAR}
+  <section class="hero"><img src="img/hero.webp" alt="Весёлая хозяйка в мятном фартуке с пульверизатором и тряпкой">${bubbles()}
+   <div class="in"><span class="kicker">${total} советов и лайфхаков</span><h1>Чистота <span>без&nbsp;мучений</span></h1><p>Выберите, что нужно отмыть, и получите решение по шагам.</p></div></section>
+  <label class="search" for="q"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+   <input id="q" type="search" placeholder="Вино, накипь, пуховик, запах…" autocomplete="off"></label>
+  <div id="res"></div>
+  <div id="main">
+   <div class="daily"><span class="bulb">${BULB}</span><div><small>Лайфхак дня</small><b id="dt"></b><p id="dd"></p></div><button class="more-btn" id="nexth">Ещё один</button></div>
+   <div class="h3"><h2>Что будем отмывать?</h2></div>
+   <div class="posters">${CATS.map(c=>`<button class="poster${c.wide?' wide':''}" data-go="${c.id}">${P(c.cover,0,c.pos)}<span class="cnt">${c.items.length} ${pl(c.items.length,'совет','совета','советов')}</span><span class="lab"><b>${c.cat}</b><small>${c.sub}</small></span></button>`).join('')}</div>
+   <button class="shopband" data-go="shop">${P("page-shop",1)}<span class="t"><em class="badge">Новое</em><b>Что купить, чтобы не жалеть</b><small>${SHOP.length} проверенных средств и вещей: как выглядят, от чего помогают</small></span>${ARR}</button>
+   <div class="h3"><h2>Подробные разборы</h2><span>несколько способов</span></div>
+   <div class="rows" style="margin-top:0">${ALL.filter(i=>i.deep).map(it=>row(it,true)).join('')}</div>
+   <div class="h3"><h2>Лайфхаки за минуту</h2><button class="linkbtn" data-go="hacks">Все ${HACKS.length} →</button></div>
+   <div class="strip">${HACKS.slice(0,8).map(hk).join('')}<button class="hk all" data-go="hacks"><b>Ещё ${HACKS.length-8} лайфхаков</b><span>Смотреть все →</span></button></div>
+   <div class="h3" style="margin-top:22px"><h2>Полезное</h2></div>
+   <div class="tools">
+    <button class="tool" data-go="plan">${P("page-plan",1)}<span class="t"><b>План уборки</b><small>Что и как часто, с галочками</small></span>${ARR}</button>
+    <button class="tool" data-go="kit">${P("page-kit",1)}<span class="t"><b>Аптечка хозяйки</b><small>${KIT.length} средств: для чего и где нельзя</small></span>${ARR}</button>
+    <button class="tool" data-go="safety">${P("page-safety",1)}<span class="t"><b>Что нельзя смешивать</b><small>Прочитайте один раз</small></span>${ARR}</button>
+   </div></div></div>`;
+  const showDaily=()=>{document.getElementById('dt').textContent=HACKS[dayIdx][0];document.getElementById('dd').textContent=HACKS[dayIdx][1]};
+  showDaily();document.getElementById('nexth').onclick=()=>{dayIdx=(dayIdx+1)%HACKS.length;showDaily()};
+  const q=document.getElementById('q'),res=document.getElementById('res'),main=document.getElementById('main');
+  q.addEventListener('input',()=>{const t=q.value.trim().toLowerCase();
+    if(!t){res.innerHTML='';main.hidden=false;return}
+    main.hidden=true;const ws=t.split(/\s+/);const m=s=>ws.every(w=>s.toLowerCase().includes(w));
+    const f=ALL.filter(it=>m(it.t+' '+it.c.cat+' '+it.need.join(' ')+' '+it.steps.join(' ')+' '+(it.tip||'')));
+    const sp=SHOP.filter(p=>m(p.label+' '+p.sub+' '+p.what+' '+p.why));
+    const h=HACKS.map((x,i)=>[x,i]).filter(([x])=>m(x[0]+' '+x[1]));
+    res.innerHTML=(f.length?`<div class="h3"><h2>Решения</h2><span>${f.length}</span></div><div class="rows" style="margin-top:0">${f.map(it=>row(it,true)).join('')}</div>`:'')+
+      (sp.length?`<div class="h3"><h2>Что купить</h2><span>${sp.length}</span></div><div class="shopgrid">${sp.map(prod).join('')}</div>`:'')+
+      (h.length?`<div class="h3"><h2>Лайфхаки</h2><span>${h.length}</span></div><div class="hgrid" style="margin-top:0">${h.map(([x,i])=>hk(x,i)).join('')}</div>`:'')+
+      (!f.length&&!h.length&&!sp.length?`<p class="empty">Ничего не нашлось. Попробуйте другое слово, например «пятно» или «налёт».</p>`:'');});
+}
+function category(c){
+  app.innerHTML=`<div class="view">${BAR}${back('','Все разделы')}
+  <section class="cover">${P(c.cover,0,c.pos)}<div class="in"><h1>${c.cat}</h1><p>${c.items.length} ${pl(c.items.length,'проблема','проблемы','проблем')} и их решения</p></div></section>
+  <div class="rows">${c.items.map(it=>row(it)).join('')}</div></div>`;
+}
+function solution(it){
+  if(it.deep)return deep(it);
+  const c=it.c,others=c.items.filter(x=>x!==it);
+  app.innerHTML=`<div class="view">${BAR}${back(c.id,c.cat)}
+  <section class="scene${it.own?'':' short'}">${P(it.img)}<div class="in"><span class="tag">${c.cat}</span><h1>${esc(it.t)}</h1></div></section>
+  ${it.need.length?`<div class="panel"><p class="lbl">Понадобится</p><div class="need">${it.need.map(n=>`<span>${esc(n)}</span>`).join('')}</div></div>`:''}
+  <div class="cols"><div class="panel"><p class="lbl">${it.need.length?'Как сделать':'На что смотреть'}</p><ol class="steps">${it.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>
+   ${it.tip||it.warn?`<div class="side">${it.tip?`<div class="note tip"><b>Совет</b>${esc(it.tip)}</div>`:''}${it.warn?`<div class="note warn"><b>Осторожно</b>${esc(it.warn)}</div>`:''}</div>`:''}</div>
+  ${others.length?`<div class="more"><div class="h3" style="margin-top:0"><h2>Ещё в разделе</h2><span>${c.cat}</span></div><div class="rows" style="margin-top:0">${others.map(x=>row(x)).join('')}</div></div>`:''}</div>`;
+}
+
+function deep(it){
+  const c=it.c,others=c.items.filter(x=>x!==it);let cur=0;
+  app.innerHTML=`<div class="view">${BAR}${back(c.id,c.cat)}
+  <section class="scene${it.own?'':' short'}">${P(it.img)}<div class="in"><span class="tag">Подробный разбор</span><h1>${esc(it.t)}</h1></div></section>
+  <p class="leadp">${esc(it.lead)}</p>
+  ${it.materials?`<div class="panel"><p class="lbl">Сначала узнайте материал</p><div class="mats">${it.materials.map(m=>`<div class="mat"><b>${esc(m[0])}</b><span class="ok">✓ ${esc(m[1])}</span><span class="bad">✕ ${esc(m[2])}</span></div>`).join('')}</div></div>`:''}
+  <div class="h3"><h2>Выберите способ</h2><span>${it.methods.length} ${pl(it.methods.length,'способ','способа','способов')}</span></div>
+  <div class="mtabs" role="tablist">${it.methods.map((m,i)=>`<button role="tab" class="mtab" data-m="${i}" aria-selected="${i===0}"><b>${esc(m.name)}</b><small>${esc(m.level)}</small></button>`).join('')}</div>
+  <div id="mbody"></div>
+  <div class="why"><p class="lbl">Почему это работает</p><p>${esc(it.why)}</p></div>
+  <div class="panel"><p class="lbl" style="color:var(--coral)">Ошибки, которые всё портят</p><ul class="mist">${it.mistakes.map(x=>`<li><i>✕</i><span>${esc(x)}</span></li>`).join('')}</ul></div>
+  <div class="h3"><h2>Лайфхаки</h2></div>
+  <div class="hgrid" style="margin-top:0">${it.hacks.map((h,i)=>`<div class="hk"><span class="n">Хитрость ${i+1}</span><p style="color:inherit;font-size:15px">${esc(h)}</p></div>`).join('')}</div>
+  ${others.length?`<div class="more"><div class="h3" style="margin-top:0"><h2>Ещё в разделе</h2><span>${c.cat}</span></div><div class="rows" style="margin-top:0">${others.map(x=>row(x)).join('')}</div></div>`:''}</div>`;
+  const show=i=>{const m=it.methods[i];app.querySelectorAll('.mtab').forEach(b=>b.setAttribute('aria-selected',b.dataset.m==i));
+    document.getElementById('mbody').innerHTML=`<div class="cols mview"><div class="panel"><div class="meta"><span>⏱ ${esc(m.time)}</span><span>${esc(m.level)}</span></div>
+     ${m.need.length?`<p class="lbl">Понадобится</p><div class="need" style="margin-bottom:18px">${m.need.map(n=>`<span>${esc(n)}</span>`).join('')}</div>`:''}
+     <p class="lbl">Как сделать</p><ol class="steps">${m.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>
+     ${m.warn?`<div class="side"><div class="note warn"><b>Осторожно</b>${esc(m.warn)}</div></div>`:''}</div>`};
+  app.querySelectorAll('.mtab').forEach(b=>b.onclick=()=>show(+b.dataset.m));show(0);
+}
+function hacks(){
+  let t='all';
+  app.innerHTML=`<div class="view">${BAR}${back('','Главная')}
+  <section class="cover">${P("page-hacks")}<div class="in"><h1>Лайфхаки за минуту</h1><p>${HACKS.length} маленьких хитростей, которые экономят часы</p></div></section>
+  <div class="chips2" style="margin-top:18px">${HACK_TAGS.map(([id,n])=>`<button class="chip2" data-t="${id}" aria-pressed="${id==='all'}">${esc(n)}<i class="cnt2">${id==='all'?HACKS.length:HACKS.filter(h=>h[2]===id).length}</i></button>`).join('')}</div>
+  <div class="hgrid" id="hlist"></div></div>`;
+  const draw=()=>{document.getElementById('hlist').innerHTML=HACKS.map((h,i)=>[h,i]).filter(([h])=>t==='all'||h[2]===t).map(([h,i])=>hk(h,i)).join('')};
+  app.querySelectorAll('.chip2').forEach(b=>b.onclick=()=>{t=b.dataset.t;app.querySelectorAll('.chip2').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  draw();
+}
+function plan(){
+  const done=store.get('plan-done',{});
+  const totalN=PLAN.reduce((n,g)=>n+g.items.length,0);
+  app.innerHTML=`<div class="view">${BAR}${back('','Главная')}
+  <section class="cover">${P("page-plan")}<div class="in"><h1>План уборки</h1><p>Отмечайте сделанное. Галочки запоминаются в этом браузере</p></div></section>
+  <div class="prog"><b id="pc"></b><div class="bar2"><i id="pb"></i></div><button id="reset">Сбросить</button></div>
+  ${PLAN.map((g,gi)=>`<div class="pgroup"><h3>${g.t}${g.s?`<small>${g.s}</small>`:''}</h3>${g.items.map((x,i)=>`<label class="chk"><input type="checkbox" id="p${gi}-${i}" ${done['p'+gi+'-'+i]?'checked':''}><span>${esc(x)}</span></label>`).join('')}</div>`).join('')}</div>`;
+  const upd=()=>{const n=app.querySelectorAll('.chk input:checked').length;document.getElementById('pc').textContent=n+' из '+totalN;document.getElementById('pb').style.width=(n/totalN*100)+'%'};
+  app.querySelectorAll('.chk input').forEach(cb=>cb.addEventListener('change',()=>{const d=store.get('plan-done',{});if(cb.checked)d[cb.id]=1;else delete d[cb.id];store.set('plan-done',d);upd()}));
+  document.getElementById('reset').onclick=()=>{store.set('plan-done',{});app.querySelectorAll('.chk input').forEach(c=>c.checked=false);upd()};
+  upd();
+}
+
+const PRICE=['','₽ — до 300 ₽','₽₽ — 300–1000 ₽','₽₽₽ — от 1000 ₽'];
+const prod=p=>`<article class="prod" id="${p.id}">
+  <div class="pimg">${P(p.id)}<span class="price" title="${PRICE[p.price]}">${'₽'.repeat(p.price)}<i>${'₽'.repeat(3-p.price)}</i></span></div>
+  <div class="pbody"><div class="plabel"><small>Ищите на полке</small><b>${esc(p.label)}</b><span>${esc(p.sub)}</span></div>
+  <p class="pw"><b>Для чего:</b> ${esc(p.what)}</p>
+  <p class="pw"><b>Почему стоит своих денег:</b> ${esc(p.why)}</p>
+  <p class="pw"><b>Как пользоваться:</b> ${esc(p.how)}</p>
+  ${p.warn?`<div class="note warn"><b>Осторожно</b>${esc(p.warn)}</div>`:''}
+  ${p.link&&ALL.find(i=>i.id===p.link)?`<button class="linkbtn" data-go="${p.link}">Где пригодится: ${esc(ALL.find(i=>i.id===p.link).t)} →</button>`:''}</div></article>`;
+function shop(){
+  let g='all';
+  app.innerHTML=`<div class="view">${BAR}${back('','Главная')}
+  <section class="cover">${P("page-shop")}<div class="in"><h1>Что купить, чтобы не жалеть</h1><p>Средства и вещи, которые правда помогают</p></div></section>
+  <p class="leadp">Названия написаны так, как на упаковке, чтобы было легко найти на полке или в интернет-магазине. Значок ₽ показывает примерную цену, проверяйте её в своём магазине.</p>
+  <div class="chips2">${[['all','Всё'],...SHOP_GROUPS.map(x=>[x.id,x.t])].map(([id,t])=>`<button class="chip2" data-g="${id}" aria-pressed="${id==='all'}">${esc(t)}</button>`).join('')}</div>
+  <div id="plist"></div>
+  <div class="panel" style="margin-top:28px"><p class="lbl" style="color:var(--coral)">На это деньги лучше не тратить</p><ul class="mist">${NOBUY.map(x=>`<li><i>✕</i><span><b>${esc(x[0])}.</b> ${esc(x[1])}</span></li>`).join('')}</ul></div></div>`;
+  const draw=()=>{document.getElementById('plist').innerHTML=SHOP_GROUPS.filter(x=>g==='all'||x.id===g).map(x=>`<div class="h3"><h2>${esc(x.t)}</h2><span>${SHOP.filter(p=>p.g===x.id).length}</span></div><div class="shopgrid">${SHOP.filter(p=>p.g===x.id).map(prod).join('')}</div>`).join('')};
+  app.querySelectorAll('.chip2').forEach(b=>b.onclick=()=>{g=b.dataset.g;app.querySelectorAll('.chip2').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  draw();
+}
+function kit(){
+  app.innerHTML=`<div class="view">${BAR}${back('','Главная')}
+  <section class="cover">${P("page-kit")}<div class="in"><h1>Аптечка хозяйки</h1><p>${KIT.length} средств, которых хватит почти на всё</p></div></section>
+  <div class="kit">${KIT.map(k=>`<div class="kc"><b>${esc(k.n)}</b><div class="need">${k.f.map(x=>`<span>${esc(x)}</span>`).join('')}</div><div class="no"><i>✕</i><span>${esc(k.no)}</span></div></div>`).join('')}</div></div>`;
+}
+function safety(){
+  app.innerHTML=`<div class="view">${BAR}${back('','Главная')}
+  <section class="cover">${P("page-safety")}<div class="in"><h1>Что нельзя смешивать</h1><p>Прочитайте один раз, это важно</p></div></section>
+  <div class="rule"><ul>
+   <li><i>!</i><span>Хлорные средства (белизна, гели с хлором) с кислотами: уксусом, лимонной кислотой, средствами от налёта и ржавчины.</span></li>
+   <li><i>!</i><span>Хлорные средства с нашатырём.</span></li>
+   <li><i>!</i><span>Перекись водорода с уксусом в одной ёмкости.</span></li>
+   <li><i>!</i><span>Разные средства для труб и для унитаза одновременно.</span></li></ul></div>
+  <div class="side"><div class="note warn"><b>Почему</b>При смешивании выделяются ядовитые газы или едкие вещества.</div>
+  <div class="note tip"><b>Привычка</b>Перчатки, открытое окно, одно средство за раз. Новое средство проверяйте на незаметном месте.</div></div></div>`;
+}
+const PAGES={hacks,plan,kit,safety,shop};
+function route(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  const c=CATS.find(c=>c.id===h),it=ALL.find(i=>i.id===h);
+  if(PAGES[h])PAGES[h]();else if(c)category(c);else if(it)solution(it);else home();
+  window.scrollTo(0,0);
+}
+app.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const to=b.dataset.go;
+  if(('#'+to)===location.hash||(!to&&!location.hash))route();else location.hash=to;});
+addEventListener('hashchange',route);
+route();
+</script>
+
+</body></html>
