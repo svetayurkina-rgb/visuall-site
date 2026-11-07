@@ -325,7 +325,7 @@ const PRODUCTS = {
   all: { e: "", n: "Полная коллекция", s: "Полная коллекция", p: 1490, d: "Все четыре материала Atelier вместе: Код рекламы, Новогодняя коллекция, 30 дней контента и Подарочная линия.\n\nВместо 2 360 ₽.", items: ["guide", "ny", "plan", "certs"] },
 };
 const SUBS = {
-  iidea: { n: "ИИдея", p: 990, d: "Сценарии ИИдеи на 30 дней: шаги, готовые запросы и подстановка своих данных. Нейросети оплачиваются отдельно, если нужен их платный режим. Напишите сюда почту или ник — Светлана откроет доступ и пришлёт, с чего начать." },
+  iidea: { n: "ИИдея", p: 990, d: "Сценарии ИИдеи на 30 дней: шаги, готовые запросы и подстановка своих данных. После оплаты сюда придёт личная ссылка — она открывает запросы на сайте. Нейросети оплачиваются отдельно, если нужен их платный режим." },
   ads: { n: "Реклама на месяц", p: 2990, d: "4 постера + 4 рекламных текста к ним в одном стиле в течение 30 дней. Присылаете материалы, когда удобно, — каждый постер готов за 1 рабочий день, 1 круг правок." },
   bot: { n: "Поддержка бота", p: 690, d: "Для тех, кому VISUALL сделал бота: правки цен, услуг и текстов, мелкие доработки и присмотр за работой бота в течение 30 дней." },
 };
@@ -401,11 +401,18 @@ async function fulfill(env, pid, how) {
     const plan = SUBS[r.ref] || SUBS.ads; const key = "sub:" + r.uid + ":" + r.ref;
     const cur = JSON.parse((await env.KV.get(key)) || "null"); const base = cur && cur.until > Date.now() ? cur.until : Date.now();
     const meta = { uid: r.uid, chat: r.chat, plan: r.ref, until: base + 30 * 86400e3, n: r.n, un: r.un, rem: 0 };
+    let link = "";
+    if (r.ref === "iidea") {
+      meta.token = (cur && cur.token) || newPid();
+      const ttl = Math.max(120, Math.ceil((meta.until - Date.now()) / 1000) + 86400);
+      await env.KV.put("acc:" + meta.token, JSON.stringify({ until: meta.until }), { expirationTtl: ttl });
+      link = `\n\nОткройте сценарии по ссылке. Она личная, не пересылайте её:\n${SITE}ai/?a=${meta.token}`;
+    }
     await env.KV.put(key, JSON.stringify(meta), { metadata: meta });
     const till = MSKD(meta.until).toISOString().slice(0, 10).split("-").reverse().join(".");
     if (admin) await send(env, admin, head + `\n💎 Подписка «${esc(plan.n)}» активна до ${till}.`);
-    const next = r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : r.ref === "iidea" ? "Напишите сюда почту или ник — Светлана откроет сценарии ИИдеи и пришлёт первый шаг на сегодня." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает.";
-    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}\n\n${next}\nЗа 3 дня до окончания я напомню о продлении.`);
+    const next = r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : r.ref === "iidea" ? "Ссылка выше включает готовые запросы на сайте в том браузере, где вы её откроете. На другом устройстве откройте её ещё раз." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает.";
+    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}${link}\n\n${next}\nЗа 3 дня до окончания я напомню о продлении.`);
   }
   if (r.kind === "poster") {
     const b64 = await env.KV.get("pp:" + r.ref);
@@ -1102,6 +1109,15 @@ export default {
       const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type" };
       if (req.method === "POST") { try { await trackSite(req, env); } catch (e) { console.log("track", e && e.stack || e); } }
       return new Response("ok", { headers: cors });
+    }
+    if (url.pathname === "/access" && req.method === "GET") {
+      const cors = { "access-control-allow-origin": "*", "content-type": "application/json", "cache-control": "no-store" };
+      const k = (url.searchParams.get("k") || "").replace(/[^a-z0-9]/gi, "").slice(0, 24);
+      if (k.length < 8) return new Response(JSON.stringify({ ok: false }), { headers: cors });
+      const raw = await env.KV.get("acc:" + k);
+      let until = 0; try { until = JSON.parse(raw || "null")?.until || 0; } catch { until = 0; }
+      const ok = until > Date.now();
+      return new Response(JSON.stringify(ok ? { ok: true, until } : { ok: false }), { headers: cors });
     }
     if (req.method === "GET") return new Response("VISUALL bot is running ✨");
     if (env.WEBHOOK_SECRET && req.headers.get("x-telegram-bot-api-secret-token") !== env.WEBHOOK_SECRET) return new Response("forbidden", { status: 403 });

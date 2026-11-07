@@ -1973,7 +1973,15 @@ const BILLING={
   async status(){ /* PRODUCTION: GET /api/me/access → {active, until, autorenew} из серверной БД */
     return {active:!!LS.get("iidea-demo-sub"),demo:true,until:null,autorenew:false}}
 };
-const hasSub=()=>!!LS.get("iidea-demo-sub"); /* демо-переключатель в кабинете; на сервере заменяется проверкой прав */
+const demoOn=()=>!!LS.get("iidea-demo-sub");
+function subRec(){const s=LS.get("iidea-sub");return s&&s.until>Date.now()?s:null}
+const hasSub=()=>demoOn()||!!subRec();
+function fmtUntil(ts){try{return new Date(ts).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/Moscow"})}catch(e){return ""}}
+const ACCESS_API=(location.hostname==="127.0.0.1"||location.hostname==="localhost")?"http://127.0.0.1:8099/access":"https://visuall-bot.svetayurkina.workers.dev/access";
+async function claimAccess(){let k="";try{k=new URL(location.href).searchParams.get("a")||""}catch(e){}k=String(k).replace(/[^a-z0-9]/gi,"").slice(0,24);if(k.length<8)return;
+ let ok=false;try{const j=await (await fetch(ACCESS_API+"?k="+encodeURIComponent(k))).json();if(j&&j.ok&&j.until>Date.now()){LS.set("iidea-sub",{until:j.until});ok=true}}catch(e){}
+ if(ok){try{const u=new URL(location.href);u.searchParams.delete("a");history.replaceState(null,"",u.pathname+u.search+u.hash)}catch(e){}}
+ LS.set("iidea-access-note",ok?"ok":"fail");render()}
 
 /* ---------- направления ---------- */
 const DIRS=[
@@ -2398,7 +2406,7 @@ document.addEventListener("click",e=>{
  const fv=e.target.closest("[data-fav]");if(fv){e.preventDefault();const on=ME.fav(fv.dataset.fav);fv.classList.toggle("on",on);fv.setAttribute("aria-pressed",on);return}
  const rs=e.target.closest("[data-res]");if(rs){const id=rs.dataset.id;if(rs.dataset.res==="ok"){ME.mark(id,{ok:1,at:Date.now()});track("result_reported_success",{material:id});resultDone(id,true)}else{document.getElementById("whyBox").hidden=false}return}
  const why=e.target.closest("[data-why]");if(why){const id=why.dataset.id;ME.mark(id,{ok:0,why:why.dataset.why,at:Date.now()});track("result_reported_failure",{material:id,reason:why.dataset.why});resultDone(id,false);return}
- const tg=e.target.closest("#demoSub");if(tg){LS.set("iidea-demo-sub",hasSub()?0:1);render();return}
+ const tg=e.target.closest("#demoSub");if(tg){LS.set("iidea-demo-sub",demoOn()?0:1);render();return}
  const nt=e.target.closest("[data-notif]");if(nt){const o=LS.get("iidea-notif")||{};o[nt.dataset.notif]=!o[nt.dataset.notif];LS.set("iidea-notif",o);nt.setAttribute("aria-pressed",!!o[nt.dataset.notif]);return}
  const cp=e.target.closest("[data-copyprompt]");if(cp){const t=document.getElementById("mOut").textContent;
   const done=()=>{flash(cp,"Скопировано");track("prompt_copy",{material:cp.dataset.copyprompt});const m=MID[cp.dataset.copyprompt];if(m&&m.access==="free")track("free_tutorial_start",{material:m.id},1);const o=document.getElementById("afterCopy");if(o)o.hidden=false};
@@ -2451,7 +2459,7 @@ function renderTry(){const c={c:"#DDB46E",ic:"rocket",name:"Попробоват
 function renderSub(){track("pricing_open",{},1);const c={c:"#DDB46E",ic:"spark",name:"Подписка ИИдеи"};
  const nSub=MATS.filter(m=>m.access==="sub").length,nFree=MATS.filter(m=>m.access==="free").length;
  let h=head(c.c,c,"Сначала бесплатный сценарий. Если зашло — оплата в боте: сценарии за 990\u00a0₽ или реклама под ключ за 2\u00a0990\u00a0₽.");
- h+=`<div class="block"><div class="tag">воронка</div><h2>Три шага</h2><ol class="paysteps"><li><b>Посмотреть.</b> ${nFree} сценариев открыты без карты. <button type="button" class="linkbtn" data-go="try">Начать бесплатно</button></li><li><b>Выбрать.</b> ИИдея — делаете сами по шагам. Реклама — Светлана делает 4 постера и 4 текста за 30 дней.</li><li><b>Оплатить.</b> Кнопка открывает @visuall_sveta_bot. Карта, СБП или SberPay. Если касса не ответит — перевод на Сбер и чек самозанятой.</li></ol></div>`;
+ h+=`<div class="block"><div class="tag">воронка</div><h2>Три шага</h2><ol class="paysteps"><li><b>Посмотреть.</b> ${nFree} сценариев открыты без карты. <button type="button" class="linkbtn" data-go="try">Начать бесплатно</button></li><li><b>Выбрать.</b> ИИдея — делаете сами по шагам. Реклама — Светлана делает 4 постера и 4 текста за 30 дней.</li><li><b>Оплатить.</b> Кнопка открывает @visuall_sveta_bot. После оплаты бот присылает ссылку: она открывает сценарии в этом браузере на 30 дней.</li></ol></div>`;
  h+=`<div class="sub-card"><div class="sc-l"><div class="tag">ИИдея · подписка</div><div class="sc-price"><b>${PRICE_RUB.toLocaleString("ru")} ₽</b><span>в месяц</span></div>
  <button type="button" class="btn big-btn" data-buy="sub">Оплатить 990 ₽</button><button type="button" class="btn ghost-btn" data-buy="ads">Реклама · 2 990 ₽</button><p class="sc-day">33 ₽ в день за сценарии. Реклама — 4 постера, которые делают за вас.</p><p class="sc-gift">🎁 Бесплатно для всех, даже без подписки: ГДЗ в клетку и Шпаргалка хозяйки</p><p class="fine">Нейросервисы (ChatGPT, Midjourney, Kling и другие) оплачиваются отдельно, если вам нужны их платные режимы.</p></div>
  <div class="sc-r"><h3>Что входит</h3><ul class="yes">${[`Все ${nSub} сценариев по подписке: фото, видео, мультики, музыка, озвучка, тексты, праздники и ИИ в работе, библиотека промптов`,"Проекты под ключ: фотосессия из селфи, песня, мультик, выпускной альбом, свадьба — шаг за шагом","Поля для подстановки и копирование готовых запросов","Новые сценарии и проекты по мере выхода","Избранное и история в кабинете"].map(x=>`<li>${x}</li>`).join("")}</ul>
@@ -2460,7 +2468,7 @@ function renderSub(){track("pricing_open",{},1);const c={c:"#DDB46E",ic:"spark",
  h+=bundleHTML();
  h+=`<div class="block"><div class="tag">условия</div><div class="terms">${[
   ["Срок доступа","30 дней с момента, когда оплата подтверждена в боте."],
-  ["Когда открывается доступ","Светлана открывает сценарии в чате бота после оплаты. Возврат на сайт доступ не включает."],
+  ["Когда открывается доступ","Бот присылает ссылку. Откройте её в браузере, где будете работать: сценарии включатся на оплаченные 30 дней. На другом устройстве откройте ту же ссылку ещё раз."],
   ["Автопродление","Его нет. За 3 дня до конца бот спросит, продлевать ли ещё на 30 дней."],
   ["Как не продлевать","Просто не нажимайте «Продлить». Оплаченные дни сохраняются до конца срока."],
   ["Возврат","Напишите в бот в течение 7 дней, если сценарии ещё не открыты и постер не начат."],
@@ -2475,9 +2483,9 @@ function renderSub(){track("pricing_open",{},1);const c={c:"#DDB46E",ic:"spark",
 /* ---------- кабинет ---------- */
 function renderMe(){const c={c:"#DDB46E",ic:"spark",name:"Кабинет"};const o=ME.get();const nt=LS.get("iidea-notif")||{};
  let h=head(c.c,c,"Избранное, история и отметки хранятся только в этом браузере. Синхронизации между устройствами пока нет.");
- h+=`<div class="block two"><div class="me-card"><div class="tag">подписка</div><h2>${hasSub()?"Демо-доступ включён":"Не оформлена"}</h2>
-  <p class="fine">${hasSub()?"Это демонстрация в этом браузере. Оплаченный доступ Светлана открывает в боте.":"Оплата проходит в боте. Кнопка ниже только показывает закрытые сценарии здесь и деньги не списывает."}</p>
-  <button type="button" class="btn ghost-btn" id="demoSub">${hasSub()?"Выключить демо-доступ":"Включить демо-доступ"}</button>
+ h+=`<div class="block two"><div class="me-card"><div class="tag">подписка</div><h2>${subRec()?`Открыта до ${fmtUntil(subRec().until)}`:demoOn()?"Демо-доступ включён":"Не оформлена"}</h2>
+  <p class="fine">${LS.get("iidea-access-note")==="fail"?"Ссылка не подтвердилась. Откройте её ещё раз из сообщения бота.":subRec()?"Сценарии открыты в этом браузере до конца срока.":demoOn()?"Это демонстрация в этом браузере. Оплата её не включает.":"Оплата проходит в боте. После неё придёт ссылка, которая откроет сценарии здесь."}</p>
+  <button type="button" class="btn ghost-btn" id="demoSub">${demoOn()?"Выключить демо-доступ":"Включить демо-доступ"}</button>
   <div class="me-links"><button type="button" class="linkbtn" data-go="pro">Управление подпиской</button><button type="button" class="linkbtn" data-go="help">Поддержка</button></div></div>
  <div class="me-card"><div class="tag">уведомления</div><p class="fine">Отписка от рекламных сообщений не отменяет подписку, и наоборот. Рассылки пока не подключены.</p>
   ${[["service","Служебные: оплата и срок доступа"],["news","Новые сценарии"],["promo","Акции и предложения"]].map(n=>`<button type="button" class="tgl" data-notif="${n[0]}" aria-pressed="${!!nt[n[0]]}"><span class="tgl-k"></span>${n[1]}</button>`).join("")}</div></div>`;
@@ -2550,6 +2558,7 @@ function homeCore(){const w=document.getElementById("hTasks");drawPains();const 
 document.addEventListener("click",e=>{const t=e.target.closest("[data-gocat]");if(!t)return;CF={q:"",dir:t.dataset.gocat,acc:"all",diff:"all",dev:"all",pay:"all"};track("category_open",{category:t.dataset.gocat});go("catalog")});
 
 render();
+claimAccess();
 
 /* живые видео: играют, только когда видны */
 (function(){const vids=()=>document.querySelectorAll("video.lv");
