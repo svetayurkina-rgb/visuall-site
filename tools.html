@@ -29,6 +29,11 @@ a{color:inherit}
 .kick::before{content:"";width:26px;height:1px;background:var(--gold)}
 h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,8vw,64px);line-height:.98;margin:12px 0 16px;letter-spacing:-.01em}
 h1 i{color:var(--gold)}
+.mate{display:grid;grid-template-columns:132px 1fr;gap:6px 14px;align-items:end;margin-top:6px}
+.mate img{width:132px;height:168px;object-fit:contain;object-position:center bottom;mix-blend-mode:lighten}
+.mate h1{margin:0 0 8px}
+.mate-say{margin:0;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.25}
+@media(max-width:560px){.mate{grid-template-columns:84px 1fr}.mate img{width:84px;height:108px}.mate-say{font-size:18px}}
 .lead{color:var(--mut);font-size:15px;line-height:1.6;margin:0 0 18px;max-width:600px}
 .lead b{color:var(--ink);font-weight:600}
 .chips-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
@@ -140,7 +145,13 @@ footer a{color:var(--gold);text-decoration:none}
   </div>
 
   <div class="kick">Мастерская предпринимателя · бесплатно</div>
-  <h1>Вы делаете своё дело.<br><i>Тексты — здесь.</i></h1>
+  <div class="mate">
+    <img src="img/robot-girl.webp" alt="Робот-помощница Мастерской" width="140" height="180">
+    <div>
+      <h1>Вы делаете своё дело.<br><i>Тексты — здесь.</i></h1>
+      <p class="mate-say">Я соберу пост, план и ответы. От вас — название, услуга, цена и куда писать клиенту.</p>
+    </div>
+  </div>
   <p class="lead">Для мастеров, самозанятых и малого бизнеса. Один раз расскажите о себе — и получайте <b>готовые посты, план на месяц, акции и ответы клиентам</b>. Без маркетолога и без часов над пустым листом.</p>
   <div class="chips-row"><span><b>1 минута</b> на пост</span><span><b>30 дней</b> контента</span><span><b>8</b> готовых акций</span><span><b>10</b> ответов клиентам</span></div>
 

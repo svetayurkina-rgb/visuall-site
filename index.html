@@ -869,7 +869,7 @@ main,footer{position:relative;z-index:1}
     <div class="eyebrow">С чего начать</div>
     <div class="center"><h2>Сначала польза, <em>потом заказ</em></h2>
     <p>Четыре шага. На каждом есть результат, которым можно пользоваться сразу. Заказ имеет смысл, когда уже понятны стиль и текст. Постер после предоплаты — за 1 рабочий день, 2 круга правок бесплатно.</p></div>
-    <ol class="vs-list" id="vsList"><li class="vs"><span class="vs-n">1</span><b>Проверка</b><p>Пришлите текущий пост или постер. Светлана ответит тремя советами: что убрать, что добавить и куда поставить цену.</p><a class="vs-a" href="https://t.me/visuall_sveta_bot?start=audit" target="_blank" rel="noopener">Разобрать мою рекламу →</a></li><li class="vs"><span class="vs-n">2</span><b>Пример</b><p>Три вопроса — и примеры вашей сферы, а не чужой. Так выбирается настроение, а не случайная картинка.</p><button class="vs-a" type="button" data-quiz>Подобрать стиль →</button></li><li class="vs"><span class="vs-n">3</span><b>Текст</b><p>Мастерская соберёт пост с вашей ценой и контактом. Этот текст потом встаёт на постер: одна мысль, цена, куда написать.</p><a class="vs-a" href="tools.html">Написать пост →</a></li><li class="vs"><span class="vs-n">4</span><b>Заявка</b><p>Нужны название, 3–5 цен, один контакт и фото. По ним Светлана называет срок и сумму — без длинного созвона.</p><a class="vs-a" href="https://t.me/visuall_sveta_bot?start=o_poster" target="_blank" rel="noopener">Оформить заказ →</a></li></ol>
+    <ol class="vs-list" id="vsList"><li class="vs"><img class="vs-bot" src="img/robot-girl-point.webp" alt="Робот-помощница: проверка рекламы" width="120" height="160"><span class="vs-n">1</span><b>Проверка</b><p>Пришлите текущий пост или постер. Светлана ответит тремя советами: что убрать, что добавить и куда поставить цену.</p><a class="vs-a" href="https://t.me/visuall_sveta_bot?start=audit" target="_blank" rel="noopener">Разобрать мою рекламу →</a></li><li class="vs"><img class="vs-bot" src="img/robot-boy-point.webp" alt="Робот-помощник: подбор стиля" width="120" height="160"><span class="vs-n">2</span><b>Пример</b><p>Три вопроса — и примеры вашей сферы, а не чужой. Так выбирается настроение, а не случайная картинка.</p><button class="vs-a" type="button" data-quiz>Подобрать стиль →</button></li><li class="vs"><img class="vs-bot" src="img/robot-girl.webp" alt="Робот-помощница: текст для рекламы" width="120" height="160"><span class="vs-n">3</span><b>Текст</b><p>Мастерская соберёт пост с вашей ценой и контактом. Этот текст потом встаёт на постер: одна мысль, цена, куда написать.</p><a class="vs-a" href="tools.html">Написать пост →</a></li><li class="vs"><img class="vs-bot" src="img/robot-boy.webp" alt="Робот-помощник: заявка на заказ" width="120" height="160"><span class="vs-n">4</span><b>Заявка</b><p>Нужны название, 3–5 цен, один контакт и фото. По ним Светлана называет срок и сумму — без длинного созвона.</p><a class="vs-a" href="https://t.me/visuall_sveta_bot?start=o_poster" target="_blank" rel="noopener">Оформить заказ →</a></li></ol>
   </section>
 
 
@@ -3715,10 +3715,11 @@ requestAnimationFrame(f);})();</script>
 .vp-bar:not(.has) .btn{opacity:.45;pointer-events:none}
 /* steps */
 .vs-list{list-style:none;padding:0;margin:34px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative;counter-reset:s}
-.vs-list::before{content:"";position:absolute;left:6%;right:6%;top:27px;height:1px;background:var(--line)}
-.vs-list::after{content:"";position:absolute;left:6%;top:27px;height:1px;width:0;background:linear-gradient(90deg,var(--gold),#fff1cc);transition:width 1.6s cubic-bezier(.4,0,.2,1) .2s}
+.vs-list::before{content:"";position:absolute;left:6%;right:6%;top:145px;height:1px;background:var(--line)}
+.vs-list::after{content:"";position:absolute;left:6%;top:145px;height:1px;width:0;background:linear-gradient(90deg,var(--gold),#fff1cc);transition:width 1.6s cubic-bezier(.4,0,.2,1) .2s}
 .vf-on .vs-list::after{width:88%}
-.vs{position:relative;z-index:1;padding:0 6px}
+.vs{position:relative;z-index:1;padding:118px 6px 0}
+.vs-bot{position:absolute;left:50%;top:-6px;width:108px;height:128px;transform:translateX(-50%);object-fit:contain;object-position:center bottom;pointer-events:none;mix-blend-mode:lighten;filter:drop-shadow(0 12px 14px rgba(0,0,0,.35))}
 .vs-n{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:#120f16;border:1px solid var(--gold);font:italic 500 26px/1 var(--f-display);color:var(--gold);margin-bottom:14px;box-shadow:0 0 0 6px var(--bg)}
 .vf-on .vs-n{animation:vsPop .6s cubic-bezier(.3,1.6,.5,1) backwards;animation-delay:calc(var(--d)*300ms + .2s)}
 @keyframes vsPop{from{transform:scale(.4);opacity:0}}
@@ -3752,11 +3753,13 @@ requestAnimationFrame(f);})();</script>
 @media (max-width:980px){.vp-grid{grid-template-columns:1fr 1fr}.vfr-row{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){
  .vs-list{grid-template-columns:1fr;gap:22px}
- .vs-list::before,.vs-list::after{left:27px;right:auto;top:27px;bottom:27px;width:1px;height:auto}
+ .vs-list::before,.vs-list::after{left:111px;right:auto;top:36px;bottom:36px;width:1px;height:auto}
  .vs-list::after{height:0;bottom:auto;background:linear-gradient(var(--gold),#fff1cc);transition:height 1.6s cubic-bezier(.4,0,.2,1) .2s}
- .vf-on .vs-list::after{width:1px;height:calc(100% - 54px)}
- .vs{display:grid;grid-template-columns:54px 1fr;column-gap:16px;padding:0}
+ .vf-on .vs-list::after{width:1px;height:calc(100% - 72px)}
+ .vs{display:grid;grid-template-columns:72px 54px 1fr;column-gap:12px;padding:0;align-items:center}
+ .vs-bot{position:static;width:72px;height:88px;transform:none;grid-row:span 3}
  .vs-n{grid-row:span 3;margin:0}
+ .vs b,.vs p,.vs .vs-a{grid-column:3}
  .vsf{grid-template-columns:1fr}
 }
 @media (max-width:560px){
