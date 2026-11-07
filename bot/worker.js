@@ -325,6 +325,7 @@ const PRODUCTS = {
   all: { e: "", n: "Полная коллекция", s: "Полная коллекция", p: 1490, d: "Все четыре материала Atelier вместе: Код рекламы, Новогодняя коллекция, 30 дней контента и Подарочная линия.\n\nВместо 2 360 ₽.", items: ["guide", "ny", "plan", "certs"] },
 };
 const SUBS = {
+  iidea: { n: "ИИдея", p: 990, d: "Сценарии ИИдеи на 30 дней: шаги, готовые запросы и подстановка своих данных. Нейросети оплачиваются отдельно, если нужен их платный режим. Напишите сюда почту или ник — Светлана откроет доступ и пришлёт, с чего начать." },
   ads: { n: "Реклама на месяц", p: 2990, d: "4 постера + 4 рекламных текста к ним в одном стиле в течение 30 дней. Присылаете материалы, когда удобно, — каждый постер готов за 1 рабочий день, 1 круг правок." },
   bot: { n: "Поддержка бота", p: 690, d: "Для тех, кому VISUALL сделал бота: правки цен, услуг и текстов, мелкие доработки и присмотр за работой бота в течение 30 дней." },
 };
@@ -403,7 +404,8 @@ async function fulfill(env, pid, how) {
     await env.KV.put(key, JSON.stringify(meta), { metadata: meta });
     const till = MSKD(meta.until).toISOString().slice(0, 10).split("-").reverse().join(".");
     if (admin) await send(env, admin, head + `\n💎 Подписка «${esc(plan.n)}» активна до ${till}.`);
-    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}\n\n${r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает."}\nЗа 3 дня до окончания я напомню о продлении.`);
+    const next = r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : r.ref === "iidea" ? "Напишите сюда почту или ник — Светлана откроет сценарии ИИдеи и пришлёт первый шаг на сегодня." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает.";
+    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}\n\n${next}\nЗа 3 дня до окончания я напомню о продлении.`);
   }
   if (r.kind === "poster") {
     const b64 = await env.KV.get("pp:" + r.ref);
@@ -441,8 +443,8 @@ async function showPosterOffer(env, chat) {
   return media(env, chat, "photo", "shop/poster.jpg?v=4", `<b>VISUALL Studio — постер за 5 минут</b>\n<i>Реклама уровня дорогого бренда — без дизайнера.</i>\n\nВыберите пример или один из 4 стилей — Noir, Ivory, Cinema, Emerald. Впишите своё предложение, добавьте фото работы и смотрите, как постер собирается на ваших глазах.\n\nПредпросмотр бесплатный. Файл 1080×1350 без водяного знака — <b>${rub(POSTER_PRICE)}</b>, придёт сюда сразу после оплаты.\n\n🎁 В подарок: версия для сторис 1080×1920 и мини-гайд «15 ошибок в рекламе».`, kb([[{ text: "Открыть Studio", web_app: { url: POSTER_URL } }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
 }
 async function showSubs(env, chat) {
-  return media(env, chat, "photo", "shop/subs.jpg?v=4", `<b>Подписки VISUALL</b>\n\n<b>${SUBS.ads.n}</b> · ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> · ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> · от 9 900 ₽\nКак этот: услуги и цены, приём заявок, уведомления вам.\n\nПродление — только по вашему решению: за 3 дня до конца я пришлю ссылку.`,
-    kb([[{ text: `${SUBS.ads.n} · ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `${SUBS.bot.n} · ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "Заказать бота", callback_data: "svc0:bot" }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
+  return media(env, chat, "photo", "shop/subs.jpg?v=4", `<b>Подписки VISUALL</b>\n\n<b>${SUBS.iidea.n}</b> · ${rub(SUBS.iidea.p)}/мес\n${esc(SUBS.iidea.d)}\n\n<b>${SUBS.ads.n}</b> · ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> · ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\nПродление — только по вашему решению: за 3 дня до конца я пришлю ссылку.`,
+    kb([[{ text: `${SUBS.iidea.n} · ${rub(SUBS.iidea.p)}`, callback_data: "sb:iidea" }], [{ text: `${SUBS.ads.n} · ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `${SUBS.bot.n} · ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
 }
 async function subsTick(env) {
   const l = await env.KV.list({ prefix: "sub:", limit: 200 }); const admin = await getAdmin(env); let n = 0;
@@ -1015,6 +1017,9 @@ async function onMessage(env, m) {
   const pd = text.match(/^\/start\s+paid_([a-z0-9]+)/i);
   if (pd) { await commerceCallback(env, chat, user, "pchk:" + pd[1], s); return; }
   if (/^\/start\s+(audit|free)$/i.test(text)) return route(env, chat, text.split(/\s+/)[1].toLowerCase(), user);
+  const payStart = text.match(/^\/start\s+(iidea|ads)$/i);
+  if (payStart) { const ref = payStart[1].toLowerCase(); const plan = SUBS[ref];
+    return createPay(env, chat, user, { kind: "sub", ref, amount: plan.p, title: `Подписка «${plan.n}» на 30 дней` }); }
   const sd = text.match(/^\/start\s+(shop|subs|poster|pr_[a-z]+)$/i);
   if (sd) { const k = sd[1].toLowerCase(); if (k === "poster") return showPosterOffer(env, chat);
     await commerceCallback(env, chat, user, k.startsWith("pr_") ? "pr:" + k.slice(3) : k, s); return; }
