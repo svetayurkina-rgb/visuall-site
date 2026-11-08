@@ -40,31 +40,34 @@ const priceStr = (s) => (s.p ? (s.from ? "от " : "") + rub(s.p) + (s.month ? "
 
 // ---------- тексты ----------
 const T = {
-  hello: (name) => `Здравствуйте${name ? ", " + esc(name) : ""}! Я бот <b>VISUALL</b> — помощник Светланы Музыки.\n\nДелаем рекламу уровня дорогого бренда для малого бизнеса: постеры, визитки, сертификаты, прайсы, видео, ботов и сайты — всё в одном стиле, чтобы вас узнавали.\n\n🎁 <b>К каждому заказу — подарок.</b> А ещё бесплатно: мини-гайд «15 ошибок в рекламе» и разбор вашей текущей рекламы.\n🎟 −10% на первый заказ по промокоду <code>${PROMO}</code> — до ${promoUntil()}.\n\nВыберите, с чего начнём 👇`,
+  hello: (name) => `Здравствуйте${name ? ", " + esc(name) : ""}! Я бот <b>VISUALL</b> — помощник Светланы Музыки.\n\nДальше четыре шага. На каждом есть польза, заказ — только когда понятны стиль и текст.\n\n<b>1. Проверка.</b> Пришлите пост или постер — Светлана пришлёт 3 совета, что мешает заявке.\n<b>2. Пример.</b> Квиз из 3 вопросов покажет постеры вашей сферы.\n<b>3. Текст.</b> Мастерская напишет пост с вашей ценой и контактом.\n<b>4. Заявка.</b> Название, 3–5 цен, один контакт и фото — по ним назовут срок и сумму.\n\n🎟 −10% на первый заказ по промокоду <code>${PROMO}</code> — до ${promoUntil()}. Подарок к заказу остаётся.\n\nС чего начнём?`,
   prices: () => `💰 <b>Цены</b>\n\n<b>Реклама в одном стиле</b>\n• Постер — 990 ₽\n• Комбо: постер + визитка, сертификат или прайс — 1 490 ₽\n• Пакет из 4 форматов — 2 590 ₽ (выгоднее всего: по отдельности 3 560 ₽)\n\n<b>Отдельные форматы</b>\n• Визитка, 2 стороны — 590 ₽\n• Подарочный сертификат — 690 ₽\n• Прайс на 3 страницы — 1 290 ₽\n• Рекламный текст, 10 вариантов — 490 ₽\n• Срочно за 24 часа — +50%\n\n<b>Больше</b>\n• Видео / Reels — от 1 990 ₽\n• Telegram-бот — от 9 900 ₽\n• Сайт — от 24 900 ₽\n• Instagram под ключ — от 15 000 ₽/мес\n• Всё под ключ — от 39 900 ₽\n\n🎁 К каждому заказу — подарок: например, к постеру — версия для сторис и 3 подписи к посту.\n🎟 −10% по промокоду <code>${PROMO}</code> до ${promoUntil()}.\n\nЧтобы узнать, что входит в услугу и какой подарок к ней, напишите её название, например: «визитка».`,
   terms: () => `⏱ <b>Сроки</b>\n• Постер, визитка, сертификат, текст — 1 рабочий день\n• Комбо и прайс — 1–2 дня · Пакет из 4 — 2–3 дня\n• Видео — 2–3 дня · Бот — 5–7 дней · Сайт — 7–14 дней\n• Срочно за 24 часа — +50% (для дизайна и текстов)\n\nСрок считается с момента, когда пришли все материалы и предоплата. Если материалы приходят частями, срок начинается с последнего.\n\n✏️ <b>Правки</b>\nПостер, комбо, пакет и отдельные форматы — 2 круга бесплатно, видео — 1, бот — 2, сайт — 3.\n<b>Круг правок</b> — это все замечания одним сообщением: текст, цены, контакты, цвета, размер элементов, замена фото. Чем точнее список, тем быстрее результат.\nДополнительный круг — 300 ₽. Смена стиля после согласования — новый вариант со скидкой 50%.`,
   pay: () => `💳 <b>Оплата</b>\n\n<b>Заказ дизайна</b>\n• Сначала Светлана согласует с вами задачу и итоговую цену\n• Предоплата 50% — после согласования, остаток — когда результат вам понравился\n• Готовые файлы — сразу после полной оплаты\n• Если работа ещё не начата — предоплата возвращается полностью\n\n<b>Готовые решения</b> (Studio, гайды, сертификаты) — оплата сразу, файлы приходят автоматически.\n\nСпособ: СБП на <b>Сбербанк</b> по номеру <code>${PHONE}</code> или кнопка оплаты в боте.\n🧾 Светлана самозанятая — после каждой оплаты присылает официальный чек из «Мой налог».\n\n⚠️ Не переводите деньги за заказ дизайна, пока Светлана лично не подтвердила задачу и сумму.`,
   disc: () => `🎟 <b>Скидки</b>\n• <b>−10%</b> на первый заказ — промокод <code>${PROMO}</code>, до ${promoUntil()}\n• <b>−15%</b> на следующий заказ — за отзыв\n• <b>−20%</b> — если разрешите показать «было — стало» на сайте\n• <b>−15%</b> вам и другу — по вашей ссылке-приглашению\n\nСкидки не суммируются — действует самая большая. Распространяются на дизайн и тексты (постер, комбо, пакет, отдельные форматы).\n\n🎁 <b>Подарки — всегда и без условий</b>: к каждому заказу и каждой покупке. Подарок к вашей услуге назову, если напишете её название.`,
-  how: () => `📝 <b>Как проходит заказ</b>\n\n1. Выбираете стиль в каталоге или проходите квиз\n2. Оформляете заявку здесь — 1–2 минуты\n3. Светлана уточняет детали и называет итоговую цену\n4. Предоплата 50% — работа начинается\n5. Первый вариант → ваши правки (2 круга бесплатно)\n6. Оплата остатка → файлы для соцсетей и PDF для печати + подарок\n\n<b>Что подготовить</b>\n• Название бизнеса или ваше имя как мастера\n• 3–5 главных услуг с ценами — не весь прайс\n• Одна главная мысль: что должен понять клиент за 3 секунды\n• Контакты: телефон, ник, адрес или «онлайн»\n• Логотип и фото работ — если есть (лучше дневной свет, без фильтров)\n\nНе знаете, что написать? Не страшно: Светлана поможет сформулировать.`,
+  how: () => `📝 <b>Как устроена работа</b>\n\n<b>До заказа</b>\n1. Проверка — 3 совета по вашей рекламе\n2. Пример — квиз и постеры вашей сферы\n3. Текст — пост с ценой в Мастерской\n4. Заявка — название, 3–5 цен, контакт, фото\n\n<b>После заявки</b>\nСветлана называет цену и срок. Предоплата 50% — работа начинается. Первый вариант, затем 2 круга правок. Остаток — когда макет нравится: файлы для соцсетей, PDF для печати и подарок.\n\n<b>Что подготовить к заявке</b>\n• Название бизнеса или ваше имя как мастера\n• 3–5 главных услуг с ценами — не весь прайс\n• Одна мысль, которую клиент должен понять за 3 секунды\n• Один контакт: телефон, ник или «онлайн»\n• Фото работ при дневном свете — если есть\n\nНет формулировки — Светлана поможет. Нет фото — можно начать с текста и стиля.`,
   about: () => `👩‍🎨 <b>Светлана Музыка</b> — основатель VISUALL.\n\nДелает рекламу для малого бизнеса в едином стиле: постеры, визитки, сертификаты, прайсы, видео и Reels, Telegram-ботов и сайты. Главный принцип — реклама должна за 3 секунды объяснять, что вы предлагаете, сколько это стоит и как к вам попасть, и при этом выглядеть дорого.\n\n📱 Telegram: @sveta_muzyka\n📞 ${PHONE}\n🌐 Каталог: ${SITE}`,
   faq: () => `❓ <b>Частые вопросы</b>\n\n<b>Можно со своими фото?</b>\nДа, и это лучший вариант: реальная работа вызывает больше доверия. Подойдёт фото с телефона при дневном свете.\n\n<b>В каком виде я получу рекламу?</b>\nКартинки для соцсетей (1080×1350) и PDF для типографии с вылетами в CMYK. К постеру — версия для сторис 1080×1920 в подарок.\n\n<b>Где и на чём печатать?</b>\nВ любой типографии или копицентре. Визитки — плотность 300–350 г/м², сертификаты — дизайнерская бумага 250–300 г/м², постеры — A4 или A3.\n\n<b>Чьи файлы?</b>\nПосле оплаты готовые файлы ваши: печатайте и публикуйте сколько угодно для рекламы своего бизнеса.\n\n<b>Можно дизайн не из каталога?</b>\nДа — заявка «Свой дизайн / другое».\n\n<b>Чек будет?</b>\nДа, официальный чек самозанятой после каждой оплаты.\n\n<b>Вы в каком городе?</b>\nРаботаем онлайн по всей России, всё в Telegram.\n\nНе нашли ответ? Напишите вопрос сюда — отвечу сам или передам Светлане.`,
 };
 
 const MAIN_KB = { inline_keyboard: [
-  [{ text: "🛒 Оформить заказ — 1 минута", callback_data: "order" }],
-  [{ text: "📱 Каталог-приложение", web_app: { url: SITE } }],
-  [{ text: "✨ ИИдея — нейросети просто", web_app: { url: SITE + "iideya/" } }],
-  [{ text: "🔮 Какой стиль ваш? Квиз", callback_data: "quiz" }, { text: "🎲 Удиви меня", callback_data: "rnd" }],
-  [{ text: "🔥 Примеры работ", callback_data: "ex" }, { text: "💰 Цены", callback_data: "prices" }],
-  [{ text: "🧮 Калькулятор", callback_data: "calc" }, { text: "🎟 Скидки до −20%", callback_data: "disc" }],
+  [{ text: "1. Проверить мою рекламу", callback_data: "audit" }],
+  [{ text: "2. Подобрать стиль", callback_data: "quiz" }],
+  [{ text: "3. Написать пост бесплатно", url: SITE + "tools.html" }],
+  [{ text: "4. Оформить заказ", callback_data: "order" }],
+  [{ text: "💰 Цены", callback_data: "prices" }, { text: "Ещё", callback_data: "more" }],
+] };
+const MORE_KB = { inline_keyboard: [
+  [{ text: "🔥 Примеры работ", callback_data: "ex" }, { text: "🧮 Калькулятор", callback_data: "calc" }],
+  [{ text: "📱 Каталог", web_app: { url: SITE } }, { text: "🎲 Случайный пример", callback_data: "rnd" }],
+  [{ text: "🎁 Гайд и разбор", callback_data: "free" }, { text: "🎟 Скидки", callback_data: "disc" }],
   [{ text: "💳 Оплата", callback_data: "pay" }, { text: "⏱ Сроки и правки", callback_data: "terms" }],
-  [{ text: "📝 Как заказать", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
+  [{ text: "📝 Как устроена работа", callback_data: "how" }, { text: "❓ Вопросы", callback_data: "faq" }],
   [{ text: "👩‍🎨 О Светлане", callback_data: "about" }, { text: "🤝 Пригласить друга", callback_data: "invite" }],
-  [{ text: "✍️ Мастерская: посты, акции, ответы", url: SITE + "tools.html" }],
-  [{ text: "🎁 Бесплатно и полезно", callback_data: "free" }],
-  [{ text: "✦ Atelier — готовые решения", callback_data: "shop" }],
-  [{ text: "✦ Studio — постер за 5 минут", callback_data: "ap" }, { text: "Подписки", callback_data: "subs" }],
+  [{ text: "✦ Готовые решения", callback_data: "shop" }, { text: "✦ Studio", callback_data: "ap" }],
+  [{ text: "Подписки", callback_data: "subs" }, { text: "✨ ИИдея", web_app: { url: SITE + "iideya/" } }],
   [{ text: "💬 Позвать Светлану", callback_data: "human" }],
+  [{ text: "⬅️ К четырём шагам", callback_data: "menu" }],
 ] };
 const BACK = [{ text: "🛒 Оформить заказ", callback_data: "order" }, { text: "⬅️ Меню", callback_data: "menu" }];
 const kb = (rows) => ({ inline_keyboard: rows });
@@ -163,6 +166,7 @@ ${SPH_EMOJI[k]} ${esc(SPHERES[k])} · ${mood[0]}
 Вот 4 постера под ваше настроение. Выберите любимый — сделаю такой же с вашим названием и ценами.
 
 💡 Вам подойдёт: <b>${esc(rec.n)}</b> — ${priceStr(rec)}
+${WHERE[s.q.w][1] === "poster" ? "Один постер нужен, если клиент видит вас в ленте и в переписке: одна мысль, цена и куда написать." : WHERE[s.q.w][1] === "combo" ? "Комбо нужно, если один стиль должен жить и в ленте, и на бумаге: визитка, сертификат или прайс." : "Пакет из четырёх нужен, если вас должны узнавать везде: лента, визитка, сертификат и прайс."}
 🎟 −10% по промокоду <code>${PROMO}</code> до ${promoUntil()}`, kb(rows));
 }
 
@@ -321,9 +325,19 @@ const PRODUCTS = {
   all: { e: "", n: "Полная коллекция", s: "Полная коллекция", p: 1490, d: "Все четыре материала Atelier вместе: Код рекламы, Новогодняя коллекция, 30 дней контента и Подарочная линия.\n\nВместо 2 360 ₽.", items: ["guide", "ny", "plan", "certs"] },
 };
 const SUBS = {
+  iidea: { n: "ИИдея", p: 990, d: "Сценарии ИИдеи на 30 дней: шаги, готовые запросы и подстановка своих данных. После оплаты сюда придёт личная ссылка — она открывает запросы на сайте. Нейросети оплачиваются отдельно, если нужен их платный режим." },
   ads: { n: "Реклама на месяц", p: 2990, d: "4 постера + 4 рекламных текста к ним в одном стиле в течение 30 дней. Присылаете материалы, когда удобно, — каждый постер готов за 1 рабочий день, 1 круг правок." },
   bot: { n: "Поддержка бота", p: 690, d: "Для тех, кому VISUALL сделал бота: правки цен, услуг и текстов, мелкие доработки и присмотр за работой бота в течение 30 дней." },
 };
+const BUNDLE_SITES = { mama: "Мамина мастерская", cena: "Цена слова", remont: "Продумано", perelet: "Перелётные", visuall: "VISUALL", klyuch: "Ключ от всех дверей" };
+const ADDON_RUB = 490;
+export function payOffer(ref) {
+  if (ref === "ads" || ref === "iidea") { const plan = SUBS[ref]; return { kind: "sub", ref, amount: plan.p, title: `Подписка «${plan.n}» на 30 дней`, extra: "" }; }
+  if (!ref.startsWith("b_")) return null;
+  const ids = [...new Set(ref.slice(2).split("_").filter((id) => BUNDLE_SITES[id]))];
+  const names = ids.map((id) => BUNDLE_SITES[id]);
+  return { kind: "sub", ref: "iidea", amount: SUBS.iidea.p + ADDON_RUB * ids.length, title: `${names.length ? `ИИдея + ${names.join(", ")}` : "Подписка «ИИдея»"} на 30 дней`, extra: names.join(", ") };
+}
 const POSTER_PRICE = 390;
 const POSTER_URL = SITE + "poster.html";
 
@@ -342,9 +356,9 @@ async function ykApi(cfg, path, body, idem) {
 }
 
 // Создаёт оплату и отправляет клиенту сообщение с кнопкой
-async function createPay(env, chat, user, { kind, ref, amount, title }) {
+async function createPay(env, chat, user, { kind, ref, amount, title, extra }) {
   const pid = newPid();
-  const rec = { uid: String(user.id), chat: String(chat), kind, ref: ref || "", amount, title, st: "new", t: Date.now(), un: user.username || "", n: user.first_name || "" };
+  const rec = { uid: String(user.id), chat: String(chat), kind, ref: ref || "", amount, title, extra: extra || "", st: "new", t: Date.now(), un: user.username || "", n: user.first_name || "" };
   const cfg = await ykCfg(env);
   if (cfg) {
     const body = { amount: { value: amount.toFixed(2), currency: "RUB" }, capture: true, description: title.slice(0, 128),
@@ -396,10 +410,19 @@ async function fulfill(env, pid, how) {
     const plan = SUBS[r.ref] || SUBS.ads; const key = "sub:" + r.uid + ":" + r.ref;
     const cur = JSON.parse((await env.KV.get(key)) || "null"); const base = cur && cur.until > Date.now() ? cur.until : Date.now();
     const meta = { uid: r.uid, chat: r.chat, plan: r.ref, until: base + 30 * 86400e3, n: r.n, un: r.un, rem: 0 };
+    let link = "";
+    if (r.ref === "iidea") {
+      meta.token = (cur && cur.token) || newPid();
+      const ttl = Math.max(120, Math.ceil((meta.until - Date.now()) / 1000) + 86400);
+      await env.KV.put("acc:" + meta.token, JSON.stringify({ until: meta.until }), { expirationTtl: ttl });
+      link = `\n\nОткройте сценарии по ссылке. Она личная, не пересылайте её:\n${SITE}ai/?a=${meta.token}`;
+      if (r.extra) link += `\n\nВ набор также входят: ${esc(r.extra)}. Эти сайты Светлана подключит в этом чате.`;
+    }
     await env.KV.put(key, JSON.stringify(meta), { metadata: meta });
     const till = MSKD(meta.until).toISOString().slice(0, 10).split("-").reverse().join(".");
     if (admin) await send(env, admin, head + `\n💎 Подписка «${esc(plan.n)}» активна до ${till}.`);
-    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}\n\n${r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает."}\nЗа 3 дня до окончания я напомню о продлении.`);
+    const next = r.ref === "ads" ? "Присылайте сюда материалы для первого постера: текст, цены, контакты, фото — и пожелания по стилю. Светлана начнёт сразу." : r.ref === "iidea" ? "Ссылка выше включает готовые запросы на сайте в том браузере, где вы её откроете. На другом устройстве откройте её ещё раз." : "Пишите сюда, что нужно поменять в боте, — Светлана всё сделает.";
+    return send(env, r.chat, `💎 <b>Подписка «${esc(plan.n)}» активна до ${till}!</b>\n\n${esc(plan.d)}${link}\n\n${next}\nЗа 3 дня до окончания я напомню о продлении.`);
   }
   if (r.kind === "poster") {
     const b64 = await env.KV.get("pp:" + r.ref);
@@ -437,8 +460,8 @@ async function showPosterOffer(env, chat) {
   return media(env, chat, "photo", "shop/poster.jpg?v=4", `<b>VISUALL Studio — постер за 5 минут</b>\n<i>Реклама уровня дорогого бренда — без дизайнера.</i>\n\nВыберите пример или один из 4 стилей — Noir, Ivory, Cinema, Emerald. Впишите своё предложение, добавьте фото работы и смотрите, как постер собирается на ваших глазах.\n\nПредпросмотр бесплатный. Файл 1080×1350 без водяного знака — <b>${rub(POSTER_PRICE)}</b>, придёт сюда сразу после оплаты.\n\n🎁 В подарок: версия для сторис 1080×1920 и мини-гайд «15 ошибок в рекламе».`, kb([[{ text: "Открыть Studio", web_app: { url: POSTER_URL } }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
 }
 async function showSubs(env, chat) {
-  return media(env, chat, "photo", "shop/subs.jpg?v=4", `<b>Подписки VISUALL</b>\n\n<b>${SUBS.ads.n}</b> · ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> · ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\n<b>Бот для вашего бизнеса</b> · от 9 900 ₽\nКак этот: услуги и цены, приём заявок, уведомления вам.\n\nПродление — только по вашему решению: за 3 дня до конца я пришлю ссылку.`,
-    kb([[{ text: `${SUBS.ads.n} · ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `${SUBS.bot.n} · ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "Заказать бота", callback_data: "svc0:bot" }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
+  return media(env, chat, "photo", "shop/subs.jpg?v=4", `<b>Подписки VISUALL</b>\n\n<b>${SUBS.iidea.n}</b> · ${rub(SUBS.iidea.p)}/мес\n${esc(SUBS.iidea.d)}\n\n<b>${SUBS.ads.n}</b> · ${rub(SUBS.ads.p)}/мес\n${esc(SUBS.ads.d)}\n\n<b>${SUBS.bot.n}</b> · ${rub(SUBS.bot.p)}/мес\n${esc(SUBS.bot.d)}\n\nПродление — только по вашему решению: за 3 дня до конца я пришлю ссылку.`,
+    kb([[{ text: `${SUBS.iidea.n} · ${rub(SUBS.iidea.p)}`, callback_data: "sb:iidea" }], [{ text: `${SUBS.ads.n} · ${rub(SUBS.ads.p)}`, callback_data: "sb:ads" }], [{ text: `${SUBS.bot.n} · ${rub(SUBS.bot.p)}`, callback_data: "sb:bot" }], [{ text: "← Коллекция", callback_data: "shop" }, { text: "Меню", callback_data: "menu" }]]));
 }
 async function subsTick(env) {
   const l = await env.KV.list({ prefix: "sub:", limit: 200 }); const admin = await getAdmin(env); let n = 0;
@@ -629,15 +652,15 @@ async function askService(env, chat) {
   const rows = [["poster", "combo"], ["pack"], ["card", "cert"], ["price", "text"], ["video", "bot"], ["site", "insta"], ["all", "custom"]]
     .map((r) => r.map((k) => ({ text: `${SERVICES[k].n} · ${priceStr(SERVICES[k])}`, callback_data: "svc:" + k })));
   rows.push([{ text: "⬅️ Меню", callback_data: "menu" }]);
-  return send(env, chat, "🛒 <b>Шаг 1.</b> Что нужно сделать?", kb(rows));
+  return send(env, chat, "🛒 <b>Шаг 1. Что сделать?</b>\nФормат зависит от того, где вас видит клиент: только в ленте, ещё и на бумаге или везде сразу.", kb(rows));
 }
 async function askSphere(env, chat) {
   const ks = Object.keys(SPHERES), rows = [];
   for (let i = 0; i < ks.length; i += 2) rows.push(ks.slice(i, i + 2).map((k) => ({ text: SPHERES[k], callback_data: "sph:" + k })));
-  return send(env, chat, "🏷 <b>Шаг 2.</b> Какая у вас сфера?", kb(rows));
+  return send(env, chat, "🏷 <b>Шаг 2. Какая сфера?</b>\nОт неё зависят примеры и слова: реклама мастера и реклама доставки не могут звучать одинаково.", kb(rows));
 }
-const askBiz = (env, chat) => send(env, chat, "🏪 <b>Шаг 3.</b> Как называется ваш бизнес или как вас зовут как мастера?\n\n<i>Напишите ответ сообщением.</i>");
-const askStyle = (env, chat) => send(env, chat, `🎨 <b>Шаг 4.</b> Какой стиль понравился в каталоге? Напишите название или опишите идею.\n\nКаталог: ${SITE}`, kb([[{ text: "Пока не выбрал(а) — помогите подобрать", callback_data: "style:help" }]]));
+const askBiz = (env, chat) => send(env, chat, "🏪 <b>Шаг 3. Как вас узнать?</b>\nНазвание или имя попадёт на макет крупно — по нему клиент понимает, кому писать.\n\n<i>Напишите ответ сообщением.</i>");
+const askStyle = (env, chat) => send(env, chat, `🎨 <b>Шаг 4. Какой стиль?</b>\nНазвание из каталога или своими словами. Если не выбрали — Светлана предложит 2–3 варианта по вашей сфере.\n\nКаталог: ${SITE}`, kb([[{ text: "Пока не выбрал(а) — помогите подобрать", callback_data: "style:help" }]]));
 async function askOptions(env, chat, o) {
   const s = SERVICES[o.svc];
   if (!s.design) return askPhone(env, chat);
@@ -664,8 +687,8 @@ const TASK_Q = {
   all: "✨ <b>Расскажите о задаче.</b> Что уже есть (логотип, сайт, Instagram) и что нужно сделать в первую очередь?",
   custom: "🎨 <b>Опишите идею.</b> Что за реклама, где будет размещаться, какое настроение? Если есть пример — пришлите на следующем шаге.",
 };
-const askContent = (env, chat, o) => send(env, chat, `📝 <b>Шаг 5. Что написать на рекламе?</b>\nПришлите одним сообщением: заголовок или главную мысль, список услуг с ценами, акцию — всё, что должно быть на ${o.svc === "card" ? "визитке" : o.svc === "cert" ? "сертификате (номинал, на что можно потратить, срок)" : o.svc === "price" ? "прайсе" : o.svc === "text" ? "тексте (о чём рассказать, что предлагаете)" : "рекламе"}.\n\n<i>Например: «Маникюр с покрытием — 1 800 ₽, наращивание — 2 500 ₽, дизайн в подарок при первой записи».</i>`, kb([[{ text: "🎰 Нет слогана? Взять с сайта", url: SITE + "#slogan" }], [{ text: "Пришлю позже", callback_data: "br:content:skip" }]]));
-const askContacts = (env, chat) => send(env, chat, "📍 <b>Шаг 6. Какие контакты разместить?</b>\nТелефон, адрес, Instagram, Telegram, сайт — как будет на рекламе. QR-код сделаем на любой из них.", kb([[{ text: "Такие же, как телефон для связи", callback_data: "br:contacts:same" }], [{ text: "Пришлю позже", callback_data: "br:contacts:skip" }]]));
+const askContent = (env, chat, o) => send(env, chat, `📝 <b>Шаг 5. Что написать на рекламе?</b>\nБез цены и смысла картинка не приводит заявку. Одним сообщением: главная мысль и 3–5 услуг с ценами — то, что должно быть на ${o.svc === "card" ? "визитке" : o.svc === "cert" ? "сертификате (номинал, на что можно потратить, срок)" : o.svc === "price" ? "прайсе" : o.svc === "text" ? "тексте" : "рекламе"}.\n\n<i>Например: «Маникюр с покрытием — 1 800 ₽, наращивание — 2 500 ₽, дизайн в подарок при первой записи».</i>`, kb([[{ text: "Нет текста — написать в Мастерской", url: SITE + "tools.html" }], [{ text: "Пришлю позже", callback_data: "br:content:skip" }]]));
+const askContacts = (env, chat) => send(env, chat, "📍 <b>Шаг 6. Куда клиенту написать?</b>\nОдин понятный контакт лучше пяти иконок. Телефон, ник, адрес или «онлайн» — как будет на макете. QR сделаем на любой из них.", kb([[{ text: "Такие же, как телефон для связи", callback_data: "br:contacts:same" }], [{ text: "Пришлю позже", callback_data: "br:contacts:skip" }]]));
 const askTask = (env, chat, o) => send(env, chat, (TASK_Q[o.svc] || TASK_Q.custom) + "\n\n<i>Напишите ответ одним сообщением.</i>", kb([[{ text: "Обсудим со Светланой", callback_data: "br:task:skip" }]]));
 const askFiles = (env, chat, o) => send(env, chat, `📎 <b>Логотип и фото.</b>\nЕсли есть логотип, фото работ, товара, интерьера или пример, который нравится, — пришлите сюда (можно несколько). ${o.files && o.files.length ? `\n\nПолучено файлов: <b>${o.files.length}</b>` : ""}\n\nКогда всё отправите — нажмите «Готово».`, kb([[{ text: o.files && o.files.length ? "✅ Готово" : "Нет логотипа и фото", callback_data: "br:files:done" }]]));
 const askWishes = (env, chat) => send(env, chat, "💭 <b>Пожелания.</b> Цвета, настроение, что точно должно быть или чего не нужно? Напишите или пропустите.", kb([[{ text: "Без пожеланий — доверяю", callback_data: "br:wishes:skip" }]]));
@@ -839,6 +862,7 @@ async function forwardToAdmin(env, user, text) {
 async function route(env, chat, key, user, msgId) {
   switch (key) {
     case "menu": return media(env, chat, "video", "hero.mp4", T.hello(user?.first_name), MAIN_KB);
+    case "more": return send(env, chat, "Здесь всё остальное: примеры, цены, оплата, гайд и готовые решения. Четыре шага на старте — короче и по делу.", MORE_KB);
     case "ex": return showSpheres(env, chat);
     case "quiz": { const s = await getS(env, user.id); s.q = {}; await setS(env, user.id, s); return quizStep(env, chat, s, 1); }
     case "invite": return showInvite(env, chat, user);
@@ -1010,6 +1034,8 @@ async function onMessage(env, m) {
   const pd = text.match(/^\/start\s+paid_([a-z0-9]+)/i);
   if (pd) { await commerceCallback(env, chat, user, "pchk:" + pd[1], s); return; }
   if (/^\/start\s+(audit|free)$/i.test(text)) return route(env, chat, text.split(/\s+/)[1].toLowerCase(), user);
+  const payStart = text.match(/^\/start\s+(iidea|ads|b_[a-z_]+)$/i);
+  if (payStart) { const offer = payOffer(payStart[1].toLowerCase()); if (offer) return createPay(env, chat, user, offer); }
   const sd = text.match(/^\/start\s+(shop|subs|poster|pr_[a-z]+)$/i);
   if (sd) { const k = sd[1].toLowerCase(); if (k === "poster") return showPosterOffer(env, chat);
     await commerceCallback(env, chat, user, k.startsWith("pr_") ? "pr:" + k.slice(3) : k, s); return; }
@@ -1092,6 +1118,15 @@ export default {
       const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type" };
       if (req.method === "POST") { try { await trackSite(req, env); } catch (e) { console.log("track", e && e.stack || e); } }
       return new Response("ok", { headers: cors });
+    }
+    if (url.pathname === "/access" && req.method === "GET") {
+      const cors = { "access-control-allow-origin": "*", "content-type": "application/json", "cache-control": "no-store" };
+      const k = (url.searchParams.get("k") || "").replace(/[^a-z0-9]/gi, "").slice(0, 24);
+      if (k.length < 8) return new Response(JSON.stringify({ ok: false }), { headers: cors });
+      const raw = await env.KV.get("acc:" + k);
+      let until = 0; try { until = JSON.parse(raw || "null")?.until || 0; } catch { until = 0; }
+      const ok = until > Date.now();
+      return new Response(JSON.stringify(ok ? { ok: true, until } : { ok: false }), { headers: cors });
     }
     if (req.method === "GET") return new Response("VISUALL bot is running ✨");
     if (env.WEBHOOK_SECRET && req.headers.get("x-telegram-bot-api-secret-token") !== env.WEBHOOK_SECRET) return new Response("forbidden", { status: 403 });
