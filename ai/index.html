@@ -1697,7 +1697,7 @@ function renderPro(c){
 }
 function openBuy(id){track("checkout_start",{plan:id});
  const bot="https://t.me/visuall_sveta_bot?start=";
- const url=id==="ads"?bot+"ads":id==="kit"?"https://t.me/sveta_muzyka?text="+encodeURIComponent("Здравствуйте! Хочу стартовый набор ИИдеи за 390 ₽. Напишите, что внутри и как оплатить."):String(id).startsWith("bundle")||id==="course"?"https://t.me/sveta_muzyka?text="+encodeURIComponent("Здравствуйте! Хочу "+(id==="course"?"курс «Профессия ИИ-креатор»":"набор сайтов ИИдеи со скидкой на следующие")+". Подскажите состав и оплату."):bot+"iidea";
+ const url=id==="ads"?bot+"ads":id==="kit"?"https://t.me/sveta_muzyka?text="+encodeURIComponent("Здравствуйте! Хочу стартовый набор ИИдеи за 390 ₽. Напишите, что внутри и как оплатить."):String(id).startsWith("b_")?bot+id:bot+"iidea";
  window.open(url,"_blank","noopener")}
 function closeBuy(){document.querySelectorAll(".modal").forEach(m=>m.hidden=true)}
 document.getElementById("mClose").addEventListener("click",closeBuy);
@@ -2231,9 +2231,10 @@ function bundleHTML(){return `<div class="block bundle" id="bundle"><div class="
  <p class="fine">ИИдея — основа: ${rub(PRICE_RUB)} в месяц. ГДЗ в клетку и Шпаргалка хозяйки и так бесплатны для всех. Любой другой сайт — ${rub(ADDON_RUB)} вместо ${rub(PRICE_RUB)}. Отметьте, что нужно вам, — сумма посчитается сразу.</p>
  <div class="bd-list"><label class="bd base"><input type="checkbox" checked disabled><span><b>ИИдея</b><small>основная подписка</small></span><em>${rub(PRICE_RUB)}</em></label>${SITES.filter(x=>GIFT_IDS.includes(x[0])).map(x=>`<label class="bd bd-gift" style="--pc:${x[4]}"><input type="checkbox" checked disabled><span><b>${x[1]}</b><small>${x[2]} · бесплатно для всех</small></span><em>0 ₽</em></label>`).join("")}${SITES.filter(x=>!GIFT_IDS.includes(x[0])).map(x=>`<label class="bd" style="--pc:${x[4]}"><input type="checkbox" data-bd="${x[0]}"><span><b>${x[1]}</b><small>${x[2]}</small></span><em><s>${rub(PRICE_RUB)}</s> ${rub(ADDON_RUB)}</em></label>`).join("")}</div>
  <div class="bd-sum" id="bdSum"></div>
- <p class="fine">Скидка действует, пока активна подписка ИИдеи. Если её отменить, оплаченные сайты работают до конца своего срока, а следующие продления будут по ${rub(PRICE_RUB)}. Нейросервисы оплачиваются отдельно.</p></div>`}
+ <p class="fine">Кнопка открывает оплату в боте. ИИдея включается ссылкой сразу, остальные сайты набора Светлана подключает в том же чате. Скидка держится, пока подписка ИИдеи активна.</p></div>`}
 function bundleSum(){const el=document.getElementById("bdSum");if(!el)return;const n=document.querySelectorAll("[data-bd]:checked").length;const tot=PRICE_RUB+ADDON_RUB*n,full=PRICE_RUB*(n+1);
- const gv=0;el.innerHTML=`<div><span>Итого в месяц</span><b>${rub(tot)}</b>${n?`<s>${rub(full)}</s><em>выгода ${rub(full-tot)} · ${n+1} ${plural(n+1,"сайт","сайта","сайтов")} + 2 бесплатно</em>`:`<em>отметьте сайт — второй за полцены</em>`}</div><button type="button" class="btn big-btn" data-buy="bundle-${n}">${n?`Оформить набор из ${n+1}`:"Оформить ИИдею"}</button>`}
+ const ids=[...document.querySelectorAll("[data-bd]:checked")].map(x=>x.dataset.bd);const code=ids.length?"b_"+ids.join("_"):"iidea";
+ el.innerHTML=`<div><span>Итого в месяц</span><b>${rub(tot)}</b>${n?`<s>${rub(full)}</s><em>выгода ${rub(full-tot)} · ${n+1} ${plural(n+1,"сайт","сайта","сайтов")} + 2 бесплатно</em>`:`<em>отметьте сайт — второй за полцены</em>`}</div><button type="button" class="btn big-btn" data-buy="${code}">Оплатить ${rub(tot)}</button>`}
 document.addEventListener("click",e=>{const j=e.target.closest("[data-jump-after]");if(j){const id=j.dataset.jumpAfter;setTimeout(()=>{const t=document.getElementById(id);if(t)t.scrollIntoView({behavior:"smooth",block:"start"})},350)}});
 document.addEventListener("change",e=>{if(e.target.matches("[data-bd]")){bundleSum();track("bundle_change",{n:document.querySelectorAll("[data-bd]:checked").length})}});
 function offerAfterWin(m){if(hasSub()){const sid=SITE_FOR[m.dir]||"mama";const x=SITES.find(y=>y[0]===sid);return `<div class="win-offer"><b>Ваша скидка подписчика: −50%</b><span>${esc(x[1])} (${esc(x[2])}) — ${rub(ADDON_RUB)} в месяц вместо ${rub(PRICE_RUB)}.</span><button type="button" class="linkbtn" data-go="pro">Добавить в набор →</button></div>`}

@@ -329,6 +329,15 @@ const SUBS = {
   ads: { n: "Реклама на месяц", p: 2990, d: "4 постера + 4 рекламных текста к ним в одном стиле в течение 30 дней. Присылаете материалы, когда удобно, — каждый постер готов за 1 рабочий день, 1 круг правок." },
   bot: { n: "Поддержка бота", p: 690, d: "Для тех, кому VISUALL сделал бота: правки цен, услуг и текстов, мелкие доработки и присмотр за работой бота в течение 30 дней." },
 };
+const BUNDLE_SITES = { mama: "Мамина мастерская", cena: "Цена слова", remont: "Продумано", perelet: "Перелётные", visuall: "VISUALL", klyuch: "Ключ от всех дверей" };
+const ADDON_RUB = 490;
+export function payOffer(ref) {
+  if (ref === "ads" || ref === "iidea") { const plan = SUBS[ref]; return { kind: "sub", ref, amount: plan.p, title: `Подписка «${plan.n}» на 30 дней`, extra: "" }; }
+  if (!ref.startsWith("b_")) return null;
+  const ids = [...new Set(ref.slice(2).split("_").filter((id) => BUNDLE_SITES[id]))];
+  const names = ids.map((id) => BUNDLE_SITES[id]);
+  return { kind: "sub", ref: "iidea", amount: SUBS.iidea.p + ADDON_RUB * ids.length, title: `${names.length ? `ИИдея + ${names.join(", ")}` : "Подписка «ИИдея»"} на 30 дней`, extra: names.join(", ") };
+}
 const POSTER_PRICE = 390;
 const POSTER_URL = SITE + "poster.html";
 
@@ -347,9 +356,9 @@ async function ykApi(cfg, path, body, idem) {
 }
 
 // Создаёт оплату и отправляет клиенту сообщение с кнопкой
-async function createPay(env, chat, user, { kind, ref, amount, title }) {
+async function createPay(env, chat, user, { kind, ref, amount, title, extra }) {
   const pid = newPid();
-  const rec = { uid: String(user.id), chat: String(chat), kind, ref: ref || "", amount, title, st: "new", t: Date.now(), un: user.username || "", n: user.first_name || "" };
+  const rec = { uid: String(user.id), chat: String(chat), kind, ref: ref || "", amount, title, extra: extra || "", st: "new", t: Date.now(), un: user.username || "", n: user.first_name || "" };
   const cfg = await ykCfg(env);
   if (cfg) {
     const body = { amount: { value: amount.toFixed(2), currency: "RUB" }, capture: true, description: title.slice(0, 128),
@@ -407,6 +416,7 @@ async function fulfill(env, pid, how) {
       const ttl = Math.max(120, Math.ceil((meta.until - Date.now()) / 1000) + 86400);
       await env.KV.put("acc:" + meta.token, JSON.stringify({ until: meta.until }), { expirationTtl: ttl });
       link = `\n\nОткройте сценарии по ссылке. Она личная, не пересылайте её:\n${SITE}ai/?a=${meta.token}`;
+      if (r.extra) link += `\n\nВ набор также входят: ${esc(r.extra)}. Эти сайты Светлана подключит в этом чате.`;
     }
     await env.KV.put(key, JSON.stringify(meta), { metadata: meta });
     const till = MSKD(meta.until).toISOString().slice(0, 10).split("-").reverse().join(".");
@@ -1024,9 +1034,8 @@ async function onMessage(env, m) {
   const pd = text.match(/^\/start\s+paid_([a-z0-9]+)/i);
   if (pd) { await commerceCallback(env, chat, user, "pchk:" + pd[1], s); return; }
   if (/^\/start\s+(audit|free)$/i.test(text)) return route(env, chat, text.split(/\s+/)[1].toLowerCase(), user);
-  const payStart = text.match(/^\/start\s+(iidea|ads)$/i);
-  if (payStart) { const ref = payStart[1].toLowerCase(); const plan = SUBS[ref];
-    return createPay(env, chat, user, { kind: "sub", ref, amount: plan.p, title: `Подписка «${plan.n}» на 30 дней` }); }
+  const payStart = text.match(/^\/start\s+(iidea|ads|b_[a-z_]+)$/i);
+  if (payStart) { const offer = payOffer(payStart[1].toLowerCase()); if (offer) return createPay(env, chat, user, offer); }
   const sd = text.match(/^\/start\s+(shop|subs|poster|pr_[a-z]+)$/i);
   if (sd) { const k = sd[1].toLowerCase(); if (k === "poster") return showPosterOffer(env, chat);
     await commerceCallback(env, chat, user, k.startsWith("pr_") ? "pr:" + k.slice(3) : k, s); return; }
